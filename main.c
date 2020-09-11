@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 12:26:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/11 12:53:06 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/11 12:54:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	display_prompt(void)
 	char	*cwd; /*경로 */
 
 	cwd = getcwd(buf, 1024);
-	printf("cwd >");
+	printf("%s >", cwd);
 }
 
 int		main(int ac, char **av, char **env)
