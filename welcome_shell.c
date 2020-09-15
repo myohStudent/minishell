@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   welcome_shell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/18 10:39:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/05/19 16:49:56 by myoh             ###   ########.fr       */
+/*   Created: 2020/09/15 17:39:14 by myoh              #+#    #+#             */
+/*   Updated: 2020/09/15 17:41:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#include <stdio.h>
+#include "./libft/libft.h"
+#include "./minishell.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
-# endif
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-
-int							get_next_line(int fd, char **line);
-size_t						ft_strlen(const char *s);
-char						*ft_strjoin(char *s1, char *s2);
-char						*ft_strdup(char *s);
-
-#endif
+void	welcome_shell(void)
+{
+	printf("HELLo! WELCOME TO THE MINIsHELL (ㅇㅅㅇ)/\n");
+	printf("으아아아아아앙아아아아!\n");
+}

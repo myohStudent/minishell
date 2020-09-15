@@ -6,7 +6,7 @@
 #    By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/02 10:13:24 by myoh              #+#    #+#              #
-#    Updated: 2020/03/03 14:43:31 by myoh             ###   ########.fr        #
+#    Updated: 2020/09/15 17:13:05 by myoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,14 +42,14 @@ SRC	 = ft_isalpha.c \
 				ft_strjoin.c \
 				ft_strtrim.c \
 				ft_split.c \
+				ft_strnew.c \
 				ft_itoa.c \
 				ft_strmapi.c \
 				ft_putchar_fd.c \
 				ft_putstr_fd.c \
 				ft_putendl_fd.c \
-				ft_putnbr_fd.c
-
-BNS	= ft_lstnew.c \
+				ft_putnbr_fd.c \
+				ft_lstnew.c \
 				ft_lstadd_front.c \
 				ft_lstsize.c \
 				ft_lstlast.c \
@@ -57,7 +57,9 @@ BNS	= ft_lstnew.c \
 				ft_lstdelone.c \
 				ft_lstclear.c \
 				ft_lstiter.c \
-				ft_lstmap.c 
+				ft_lstmap.c \
+				get_next_line.c \
+				get_next_line_utils.c \
 
 OBJ			= $(SRC:%.c=%.o)
 OBB			= $(BNS:%.c=%.o)

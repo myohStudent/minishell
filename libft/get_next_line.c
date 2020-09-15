@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "libft.h"
 
-int					finding_n(char *stock)
+static int			finding_n(char *stock)
 {
 	int				n;
 
@@ -26,7 +26,7 @@ int					finding_n(char *stock)
 	return (-1);
 }
 
-int					line_coupe(char **stock, char **line, int n)
+static int			line_coupe(char **stock, char **line, int n)
 {
 	int				l;
 	char			*imsi;
@@ -46,7 +46,7 @@ int					line_coupe(char **stock, char **line, int n)
 	return (1);
 }
 
-int					get_output(char **stock, char **line, int size)
+static int			get_output(char **stock, char **line, int size)
 {
 	int				n;
 
@@ -76,7 +76,7 @@ int					get_next_line(int fd, char **line)
 	while ((size = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[size] = '\0';
-		stock[fd] = ft_strjoin(stock[fd], buf);
+		stock[fd] = j_strjoin(stock[fd], buf);
 		n = finding_n(stock[fd]);
 		if (n >= 0)
 			return (line_coupe(&stock[fd], line, n));

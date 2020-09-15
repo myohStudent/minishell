@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 23:07:43 by myoh              #+#    #+#             */
-/*   Updated: 2020/03/03 14:25:05 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/15 17:10:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <ctype.h>
+# include <string.h>
+# include <fcntl.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 255
+# endif
 
 int             ft_isalpha(int c);
 int             ft_isdigit(int c);
@@ -39,7 +45,9 @@ void            *ft_memccpy(void *dst, const void *src, int c, size_t n);
 void            *ft_memmove(void *dst, const void *src, size_t len);
 void            *ft_memchr(const void *s, int c, size_t n);
 void            *ft_calloc(size_t count, size_t size);
+void        	ft_strdel(char **as);
 size_t          ft_strlen(const char *str);
+char	        *ft_strnew(size_t size);
 size_t      	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t          ft_strlcat(char *dst, const char *src, size_t dstsize);
 char            *ft_substr(char const *s, unsigned int start, size_t len);
@@ -68,5 +76,9 @@ void            ft_lstdelone(t_list *lst, void (*del)(void *));
 void            ft_lstclear(t_list **lst, void (*del)(void *));
 void            ft_lstiter(t_list *lst, void (*f)(void *));
 t_list          *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+char			*ft_strrealloc(char *s1, char *s2);
 
-# endif
+char				*j_strjoin(char *s1, char *s2);
+int					get_next_line(int fd, char **line);
+
+#endif

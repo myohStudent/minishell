@@ -1,45 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 20:22:42 by myoh              #+#    #+#             */
-/*   Updated: 2020/05/22 14:57:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/13 19:58:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "libft.h"
 
-size_t					ft_strlen(const char *s)
-{
-	size_t				i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char					*ft_strdup(char *s)
-{
-	size_t				i;
-	char				*new;
-
-	i = 0;
-	if (!(new = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))))
-		return (NULL);
-	while (s[i] != '\0')
-	{
-		new[i] = s[i];
-		i++;
-	}
-	new[i] = '\0';
-	return (new);
-}
-
-char					*ft_strjoin(char *s1, char *s2)
+char					*j_strjoin(char *s1, char *s2)
 {
 	char				*new;
 	unsigned int		i;
