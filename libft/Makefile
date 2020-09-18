@@ -6,7 +6,7 @@
 #    By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/02 10:13:24 by myoh              #+#    #+#              #
-#    Updated: 2020/09/15 17:13:05 by myoh             ###   ########.fr        #
+#    Updated: 2020/09/16 14:11:33 by myoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,8 @@ SRC	 = ft_isalpha.c \
 				ft_lstmap.c \
 				get_next_line.c \
 				get_next_line_utils.c \
+				ft_realloc.c \
+				ft_memalloc.c \
 
 OBJ			= $(SRC:%.c=%.o)
 OBB			= $(BNS:%.c=%.o)

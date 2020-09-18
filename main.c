@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 12:26:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/15 17:43:09 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/18 17:33:41 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,13 @@
 /* 프롬프트 만들고 pwd부터 구현하기
 현재 디렉토리 구하는 함수: getcwd (unistd에 있다)*/
 
-void	*ft_realloc(void *ptr, size_t prev_size, size_t new_size)
-{
-	void	*new;
-
-	if (!ptr)
-		return (NULL);
-	if (!(new = ft_memalloc(new_size)))
-	{
-		free(ptr);
-		return (NULL);
-	}
-	ft_memcpy(new, ptr, prev_size < new_size ? prev_size : new_size);
-	free(ptr);
-	return (new);
-}
-
 void	display_prompt(void)
 {
 	char	buf[4096]; /*얼마를 넣어야 하나?*/
 	char	*cwd; /*경로 */
 	cwd = getcwd(buf, 4096);
-	printf("%s > ", cwd);
+	printf("%s ", cwd);
+	printf(" > ");
 }
 
 void	sig_handler(int signo)
@@ -51,14 +36,30 @@ void	sig_handler(int signo)
 	}
 }
 
-static void		get_input(char **input)
+void		get_input(t_minishell *minishell)
 {
 	int		ret;
-	char	buf;
 	int		i;
 	int		count;
+	char		buf[2];
+	char	*cwd;
 
-	*input = ft_strnew(1);
+	buf[0] = ' ';
+	buf[1] = '\0';
+	free(minishell->input);
+	minishell->input = ft_strdup("");
+	while(buf[0] != '\n')
+	{
+		read(STDIN_FILENO, buf, 1);
+		//minishell->input = 
+		if (buf[0] != '\n')
+			minishell->input = ft_strjoin(minishell->input,buf);
+	}
+	printf("\n 너는 뭔가를 입력했지...$ > %s\n",minishell->input);
+	if ((ft_strncmp(minishell->input, "pwd", 3)) == 0)
+		printf("%s\n", getcwd(minishell->path, 4096));
+	exit(1);
+	/**input = ft_strnew(1);
 	count = 1;
 	i = 0;
 	while ((ret = read(0, &buf, 1)) && buf != '\n')
@@ -72,28 +73,21 @@ static void		get_input(char **input)
 	{
 		free(*input);
 		ft_exit(input);
-	}
-	/*if ((ft_strchr(*input, '$') != NULL) || (ft_strchr(*input, '~') != NULL))
-		*input = parse_input(*input);*/
+	}*/
 }
 
 int		main(int ac, char **av, char **env)
 {
-	char *input;
-	char **shell_env;
-	welcome_shell();
+	t_minishell	minishell;
 
+	welcome_shell();
+	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
-		input = NULL;
-		//shell_env = initenv(ac, av, env);
 		display_prompt(); //스탠다드 인풋이 먼저 떠서 프롬프트가 안나와여ㅠㅠㅠ
 		signal(SIGINT, sig_handler); //Ctrl + D를 누르면 종료된다!
-		get_input(&input);
-		//get_next_line(0, &input);
-		//read(0, input, 255);
-		//fgets(input, 255, stdin); 
-		if (*input == '\n')
+		get_input(&minishell); // stdin 입력을 input에 저장한다. 
+		if (*(minishell.input) != '\n')
 			break ;
 	}
 	return (0);
