@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 23:07:43 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/16 14:20:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/19 15:54:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void            ft_putendl_fd(char *s, int fd);
 void            ft_putnbr_fd(int n, int fd);
 void	        *ft_realloc(void *ptr, size_t prev_size, size_t new_size);
 void        	*ft_memalloc(size_t size);
+int             ft_isspace(int c);
 
 
 typedef struct      s_list

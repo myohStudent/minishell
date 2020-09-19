@@ -1,8 +1,9 @@
 NAME	=	minishell
 
 SRCS	=	main.c \
-			initenv.c \
 			welcome_shell.c \
+			sig_handler.c \
+			parse_input.c \
 
 all:	$(NAME)
 

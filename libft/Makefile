@@ -6,7 +6,7 @@
 #    By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/02 10:13:24 by myoh              #+#    #+#              #
-#    Updated: 2020/09/16 14:11:33 by myoh             ###   ########.fr        #
+#    Updated: 2020/09/19 15:54:09 by myoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRC	 = ft_isalpha.c \
 				ft_lstnew.c \
 				ft_lstadd_front.c \
 				ft_lstsize.c \
+				ft_isspace.c \
 				ft_lstlast.c \
 				ft_lstadd_back.c \
 				ft_lstdelone.c \
