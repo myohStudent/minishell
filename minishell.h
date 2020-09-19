@@ -70,7 +70,7 @@ void ctrld_handler(int signo);
 ** parse_input.c
 */
 void get_argc(t_minishell *minishell, char *input);
-void split_argv(t_minishell *minishell, char *input, int i, int j);
+void split_argv(t_minishell *minishell, char *input, int word_len, int i);
 void split_input(t_minishell *minishell, char *input);
 void parse_input(t_minishell *minishell, char *input);
 

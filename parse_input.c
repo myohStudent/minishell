@@ -10,40 +10,42 @@ void get_argc(t_minishell *minishell, char *input)
 	{
 		if (ft_isspace(input[i]))
 			minishell->input.argc++;
-		i++; 
+		i++;
 	}
+	minishell->input.argc++;
 }
 
-void split_argv(t_minishell *minishell, char *input, int i, int j)
+void split_argv(t_minishell *minishell, char *input, int word_len, int i)
 {
-	int k;
+	int j;
 
-	k = 0;
-	while (k < j)
+	j = 0;
+	while (j < word_len)
 	{
-		minishell->input.argv[i][k] = input[k];
-		k++;
+		minishell->input.argv[i][j] = input[j];
+		j++;
 	}
-	minishell->input.argv[i][k] = 0;
+	minishell->input.argv[i][j] = 0;
 }
 
 void split_input(t_minishell *minishell, char *input)
 {
 	int j;
 	int i;
+	int k;
 	
 	i = 0;
-	j = 0;
-	while (*input)
+	k = 0;
+	while (input[k])
 	{
-		j = 0;
-		while (!(ft_isspace(*input)))
-		{
-			input++;
-			j++;
-		}
-		minishell->input.argv[i] = (char *)malloc(sizeof(char) * (j + 1));
-		split_argv(minishell, input, i, j);
+		j = k;
+		while (!(ft_isspace(input[k])) && input[k])
+			k++;
+		minishell->input.argv[i] = (char *)malloc(sizeof(char) * ((k - j) + 1));
+		//printf("(%c)",input[k]);
+		//printf("(%d)",j);
+		split_argv(minishell, input + j, k - j, i);
+		k++;
 		i++;
 	}
 }
@@ -51,10 +53,9 @@ void split_input(t_minishell *minishell, char *input)
 void parse_input(t_minishell *minishell, char *input)
 {
 	get_argc(minishell, input);
-	printf("(%d)",minishell->input.argc);
 	minishell->input.argv = (char **)malloc(sizeof(char *) * (minishell->input.argc + 1));
 	split_input(minishell,input);
-
-	for (int i = 0; minishell->input.argv[i]; i++)
-		printf("%s\n", minishell->input.argv[i]);
+	minishell->input.argv[minishell->input.argc] = 0;
+	//printf("\nargc : %d\n",minishell->input.argc);
+	//printf("\n-------------------------\n");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   welcome_shell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 17:39:14 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/15 17:41:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/20 00:44:38 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 void	welcome_shell(void)
 {
+	
 	printf("HELLo! WELCOME TO THE MINIsHELL (ㅇㅅㅇ)/\n");
 	printf("으아아아아아앙아아아아!\n");
 }
