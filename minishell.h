@@ -28,6 +28,11 @@
 #include <signal.h>
 #include <limits.h>
 
+# define STDIN 0
+# define STDOUT 1
+# define STDERROR 2
+
+
 typedef struct s_env
 {
 	char			**temp;
@@ -36,18 +41,21 @@ typedef struct s_env
 	void			*next;
 } 					t_env;
 
-typedef struct		s_input
+typedef struct		s_cmd
 {
-	int				argc;
-	char			**argv;
-}					t_input;
+	//int				argc;
+	char			*command;
+	char			*option;
+	struct s_cmd	*next;
+}					t_cmd;
 
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
 	t_env			*env;
 	char			*path;
-	t_input			input;
+	int				cmd_num;
+	t_cmd			*cmd;
 } 					t_minishell;
 
 void	welcome_shell(void);
@@ -63,15 +71,22 @@ void init_env(char **env, t_minishell *minishell);
 /*
 ** sig_handler.c
 */
-void ctrlc_handler(int signo);
-void ctrld_handler(int signo);
+
+int			get_fork(void);
+int			set_fork(int current_fork);
+void		parent_signal_handler(int signo);
+/*
+** get_input.c
+*/
+
+void get_input(t_minishell *minishell); 
 
 /*
 ** parse_input.c
 */
-void get_argc(t_minishell *minishell, char *input);
+/*void get_argc(t_minishell *minishell, char *input);
 void split_argv(t_minishell *minishell, char *input, int word_len, int i);
 void split_input(t_minishell *minishell, char *input);
-void parse_input(t_minishell *minishell, char *input);
+void parse_input(t_minishell *minishell, char *input);*/
 
 #endif
