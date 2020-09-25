@@ -43,7 +43,7 @@ typedef struct s_env
 
 typedef struct		s_cmd
 {
-	//int				argc;
+	int				argc;
 	char			*command;
 	char			*option;
 	struct s_cmd	*next;
@@ -76,17 +76,19 @@ int			get_fork(void);
 int			set_fork(int current_fork);
 void		parent_signal_handler(int signo);
 /*
-** get_input.c
+** cmd_handler.c
 */
 
-void get_input(t_minishell *minishell); 
+void cmd_handler(t_minishell *minishell);
 
 /*
 ** parse_input.c
 */
-/*void get_argc(t_minishell *minishell, char *input);
-void split_argv(t_minishell *minishell, char *input, int word_len, int i);
-void split_input(t_minishell *minishell, char *input);
-void parse_input(t_minishell *minishell, char *input);*/
+
+int get_argc(t_cmd *curr);
+void split_argv(t_cmd *curr);
+void set_node(t_cmd *new, char *data, int word_end);
+t_cmd *create_node(char *data, int word_len);
+void parse_cmd(t_cmd *cmd, char *input);
 
 #endif

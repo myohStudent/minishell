@@ -4,20 +4,20 @@ SRCS	=	main.c \
 			welcome_shell.c \
 			sig_handler.c \
 
-PARSE_DIR	=   ./parse_input
-PARSE_FILE	=	get_input.c \
+CMD_DIR	=   ./cmd_handler
+CMD_FILE	=	cmd_handler.c \
 				parse_input.c
-PARSE		= $(addprefix $(PARSE_DIR)/, $(PARSE_FILE))
+CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 
-OBJ_PARSE = $(PARSE:%.c=%.o)
+OBJ_CMD = $(CMD:%.c=%.o)
 
 LIB = -L ./libft -lft
 
 all:	$(NAME)
 
-$(NAME): $(OBJ_PARSE)
+$(NAME): $(OBJ_CMD)
 	@$(MAKE) -C ./libft all
-	gcc $(SRCS) $(OBJ_PARSE) $(LIB) -o minishell
+	gcc $(SRCS) $(OBJ_CMD) $(LIB) -o minishell
 
 .c.o:
 	gcc $(LIB) -o $@ -c $<

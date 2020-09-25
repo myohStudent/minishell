@@ -40,7 +40,7 @@ int		main(int ac, char **av, char **env)
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
 		//display_prompt();
 		printf("minishell >\n \b\b \b\b");
-		get_input(&minishell);		  // stdin 입력을 input에 저장한다.
+		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
 		/*if (*(minishell.input) != '\n')
 			break;*/
 	}
