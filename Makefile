@@ -24,10 +24,12 @@ $(NAME): $(OBJ_CMD)
 
 clean:
 	@$(MAKE) -C ./libft clean
+	rm -f $(OBJ_CMD) 
+#여기다가 OBJ_CMD이 아닌 objs의 종합을 넣어야 함
 
 fclean:
 	@$(MAKE) -C ./libft fclean
-	rm -rf minishell
+	rm -rf $(NAME) $(OBJ_CMD)
 
 re:
 	@$(MAKE) fclean all
