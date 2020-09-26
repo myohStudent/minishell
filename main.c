@@ -17,15 +17,6 @@
 /* 프롬프트 만들고 pwd부터 구현하기
 현재 디렉토리 구하는 함수: getcwd (unistd에 있다)*/
 
-void display_prompt(void)
-{
-	char buf[4096]; /*얼마를 넣어야 하나?*/
-	char *cwd;		/*경로 */
-	cwd = getcwd(buf, 4096);
-	printf("%s ", cwd);
-	printf("> \b\b");
-}
-
 int		main(int ac, char **av, char **env)
 {
 	t_minishell minishell;
@@ -35,12 +26,10 @@ int		main(int ac, char **av, char **env)
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
-		ft_putstr_fd("(ㅇㅅㅇ) > ", 1);
+		ft_putstr_fd("minishell > ", 1);
 		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
-		/*if (*(minishell.input) != '\n')
-			break;*/
 	}
 	return (0);
 }
