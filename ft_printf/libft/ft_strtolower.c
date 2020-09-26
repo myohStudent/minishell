@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strtolower.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/04/19 09:34:52 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/04/19 09:36:09 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+char	*ft_strtolower(char *str)
 {
-	exit(1);
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] = ft_tolower(str[i]);
+		i++;
+	}
+	return (str);
 }

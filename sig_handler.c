@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
 #include "minishell.h"
 
 static	int	check_fork = 0;

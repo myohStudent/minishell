@@ -13,20 +13,21 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "./libft/libft.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <limits.h>
+# include "./ft_printf/inc/ft_printf.h"
+# include "./ft_printf/libft/libft.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <string.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <dirent.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <limits.h>
 
 # define STDIN 0
 # define STDOUT 1
@@ -38,7 +39,7 @@ typedef struct s_env
 	char			**temp;
 	char			*name;
 	char			*value;
-	void			*next;
+	struct s_env	*next;
 } 					t_env;
 
 typedef struct		s_cmd
@@ -59,7 +60,7 @@ typedef struct	 	s_minishell
 } 					t_minishell;
 
 void	welcome_shell(void);
-void	ft_exit(char **environ);
+//void	ft_exit(void);
 void	*ft_memalloc(size_t size);
 void	display_prompt(void);
 

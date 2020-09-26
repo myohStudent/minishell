@@ -3,6 +3,7 @@ NAME	=	minishell
 SRCS	=	main.c \
 			welcome_shell.c \
 			sig_handler.c \
+			initenv.c \
 
 CMD_DIR	=   ./cmd_handler
 CMD_FILE	=	cmd_handler.c \
@@ -11,24 +12,21 @@ CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 
 OBJ_CMD = $(CMD:%.c=%.o)
 
-LIB = -L ./libft -lft
+LIB = -L ./ft_printf -lftprintf
 
 all:	$(NAME)
 
 $(NAME): $(OBJ_CMD)
-	@$(MAKE) -C ./libft all
+	@$(MAKE) -C ./ft_printf all
 	gcc $(SRCS) $(OBJ_CMD) $(LIB) -o minishell
 
-.c.o:
-	gcc $(LIB) -o $@ -c $<
-
 clean:
-	@$(MAKE) -C ./libft clean
+	@$(MAKE) -C ./ft_printf clean
 	rm -f $(OBJ_CMD) 
 #여기다가 OBJ_CMD이 아닌 objs의 종합을 넣어야 함
 
 fclean:
-	@$(MAKE) -C ./libft fclean
+	@$(MAKE) -C ./ft_printf fclean
 	rm -rf $(NAME) $(OBJ_CMD)
 
 re:

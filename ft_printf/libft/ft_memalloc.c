@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/09/16 14:11:15 by myoh              #+#    #+#             */
+/*   Updated: 2020/09/26 22:55:25 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+void	*ft_memalloc(size_t size)
 {
-	exit(1);
+	char	*mem;
+	char	*p;
+
+	mem = (char*)malloc(size);
+	if (mem == NULL)
+		return (NULL);
+	p = mem;
+	while (size--)
+		*p++ = 0;
+	return (mem);
 }

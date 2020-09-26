@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/02/26 14:58:50 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/08/13 17:26:34 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+void				ft_bzero(void *ptr, size_t n)
 {
-	exit(1);
+	unsigned char	*ptr_temp;
+
+	ptr_temp = (unsigned char *)ptr;
+	while ((int)n-- > 0)
+		*ptr_temp++ = 0;
 }

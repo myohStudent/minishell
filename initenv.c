@@ -3,72 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/19 17:41:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/26 22:56:17 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
 #include "./minishell.h"
 
-void	ft_exit(char **environ)
+/*void	ft_exit(void)
 {
-	//free(environ);
 	write(1, "\n", 1);
-	exit(0);
+	exit(1);
+}*/
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		free(arr[i++]);
+	free(arr);
 }
 
-static int		arr_len(char **env)
+static int	arr_len(char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i] != NULL)
+		i++;
+	return (i);
+}
+
+char	**arr_realloc(char **arr, char *line)
+{
+	char	**res;
+	int		i;
+
+	i = 0;
+	res = (char **)malloc(sizeof(char *) * (arr_len(arr) + 2));
+	while (arr[i] != NULL)
+	{
+		res[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	res[i++] = ft_strdup(line);
+	res[i] = NULL;
+	i = 0;
+	free_arr(arr);
+	return (res);
+}
+
+char	**set_env(char **env)
 {
 	int		i;
 	int		j;
+	char	**new;
+	char	*temp;
 
+	i = arr_len(env);
+	if (!(new = (char **)ft_memalloc(sizeof(char *) * (i + 1))))
+		exit(1);
+	new[0] = NULL;
 	i = 0;
-	j = 0;
 	while (env[i])
 	{
-		j++;
-		i++;
+		j = 0;
+		while (env[i][j] != '=')
+			j++;
+		env[i][j] = '\0';
+		temp = ft_strdup(env[i]);
+		new = arr_realloc(new, temp);
+		free(temp);
+		temp = ft_strdup(&env[i][++j]);
+		new = arr_realloc(new, temp);
+		free(temp);
 	}
-	return (j);
+	return (new);
 }
 
 void init_env(char **env, t_minishell *minishell)
 {
-	int		i;
-	char	**new;
-
-	i = arr_len(env);
-	printf("ㅇㅅㅇinit_env들어옴\n");
-	minishell->env.temp = getenv(env);
-	new = (char **)ft_memalloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (new[i])
-	{
-		if (!(new[i] = ft_strdup(env[i])))
-			ft_exit(new[i]);
-		i++;
-	}
-	minishell->env.temp = new;
-	free(new);
-	printf("ㅇㅅㅇinit_env나감\n");
+	minishell->env->temp = set_env(env);
+	ft_printf("%s\n", minishell->env->temp);
 }
-
-/*char		*ft_get_env(const char *key)
-{
-	extern char		**environ;
-	char			*return_str;
-	int				i;
-	int				j;
-	int				k;
-	i = -1;
-	j = 0;
-	k = 0;
-	return_str = NULL;
-	while (*(environ + ++i))
-		if (ft_strnstr(*(environ + i), key, ft_strlen((char *)key)))
-			break ;
-	return (ft_exec_get_env(*(environ + i), key, j, k));
-}*/

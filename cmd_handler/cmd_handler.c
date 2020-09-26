@@ -1,5 +1,33 @@
-#include "../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_handler.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seohchoichoi <seohchchoioi@student.42seoul.kr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/26 20:13:27 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/09/26 20:25:31 by seohchchoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "../minishell.h"
+
+
+char				*search(char *s, int c)
+{
+	unsigned char	s2;
+	int				i;
+
+	s2 = (unsigned char)c;
+	i = 0;
+	while (s[i] != s2 && s && s[i])
+		i++;
+	if (s[i] == s2)
+		return (&s[i]);
+	return (0);
+}
+
 
 void cmd_handler(t_minishell *minishell)
 {
@@ -17,10 +45,16 @@ void cmd_handler(t_minishell *minishell)
 	while (buf[0] != '\n')
 	{
 		read(STDIN_FILENO, buf, 1);
-		if (buf[0] != '\n')
+		else if (buf[0] != '\n')
 			input = ft_strjoin(input, buf);
+		
 	}
-	
+	/*char *temp;
+	if ((temp = search(input, '\\')))
+	{
+		if (temp[1] == 'n')
+			*temp = [1]
+	}*/
 	//1. 한줄로 받아서 파싱을 하면 파싱을 하면서 연결리스트를 바로바로 만들수있다
 	//2. 하나하나씩 하면 연결리스트를 만들 필요가 없다 (이 경우 cd나 echo에서 2번째 인자만 따로 다뤄줘야됨)
 	//2번으로 결정!	
@@ -44,9 +78,10 @@ void cmd_handler(t_minishell *minishell)
 			if (!(ft_strncmp(curr->command, "pwd", 3)))
 			{
 				if (curr->argc == 1)
-					printf("%s\n", getcwd(minishell->path, 4096));
+					ft_putstr_fd(getcwd(minishell->path, 4096), 1);
 				else
-					printf("pwd: too many arguments\n");
+					ft_putstr_fd("pwd: too many arguments", 1);
+				ft_putchar('\n');
 			}
 			else if (!(ft_strncmp(curr->command, "cd", 2)))
 			{
@@ -55,10 +90,30 @@ void cmd_handler(t_minishell *minishell)
 				else if (curr->argc == 2)
 				{
 					if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
-						printf("cd: no such file or directory\n");
+						ft_putstr_fd("cd: no such file or directory\n", 1);
 				}
 				else if (curr->argc > 2)
-					printf("cd: too many arguments\n");
+					ft_putstr_fd("cd: too many arguments\n", 1);
+			}
+			else if (!(ft_strncmp(curr->command, "echo", 4)))
+			{
+				if (curr->option && !(ft_strncmp(curr->option, "-n", 2)))
+					ft_putstr_fd(curr->option + 3, 1);
+				else
+				{
+					if (curr->option)
+						ft_putstr_fd(curr->option, 1);
+					ft_putchar('\n');
+				}
+			}
+			else if (!(ft_strncmp(curr->command, "exit", 4)))
+			{
+				ft_putstr_fd("\n[Process Completed]", 1);
+				exit(1);
+			}
+			else if (!(ft_strncmp(curr->command, "env", 3)))
+			{
+				
 			}
 		}
         curr = curr->next;
@@ -79,19 +134,5 @@ void cmd_handler(t_minishell *minishell)
 	for (int i = 0; minishell->cmd.command[i]; i++)
 		free(minishell->cmd.command[i]);*/
 	/**input = ft_strnew(1);
-	count = 1;
-	i = 0;
-	while ((ret = read(0, &buf, 1)) && buf != '\n')
-	{
-		*(*input + i++) = buf;
-		*input = ft_realloc(*input, count, count + 1);
-		count++;
-	}
-	*(*input + i) = '\0';
-	if (!ret)
-	{
-		free(*input);
-		ft_exit(input);
-	}*/
-	
+	count = 1;*/
 }

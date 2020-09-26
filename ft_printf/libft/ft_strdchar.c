@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strdchar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/04/19 09:42:13 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/04/19 09:42:14 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+char	*ft_strdchar(char src)
 {
-	exit(1);
+	char	*a;
+	int		i;
+
+	i = 1;
+	a = (char *)malloc(sizeof(char) * (i + 1));
+	*a = 0;
+	a[0] = src;
+	a[1] = '\0';
+	return (a);
 }

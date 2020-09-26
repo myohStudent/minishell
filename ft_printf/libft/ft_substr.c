@@ -1,18 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/02/28 17:54:44 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/04/19 09:35:59 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+char		*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	exit(1);
+	char	*a;
+	int		i;
+
+	i = 0;
+	if (!(a = (char *)malloc(sizeof(char) * (len))))
+		return (NULL);
+	while (i < (int)len)
+	{
+		a[i] = s[start];
+		i++;
+		start++;
+	}
+	a[i] = 0;
+	return (a);
 }

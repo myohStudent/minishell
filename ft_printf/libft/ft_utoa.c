@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_utoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 19:07:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:31:05 by seohchoi         ###   ########.fr       */
+/*   Created: 2020/04/19 09:33:43 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/09/26 21:44:13 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "libft.h"
 
-void	ft_exit()
+char				*ft_utoa(long long n)
 {
-	exit(1);
+	char			*answer;
+	int				number;
+	long long		dest;
+
+	number = ft_numlen(n);
+	dest = n;
+	if (!(answer = (char *)malloc(sizeof(char) * (number))))
+		return (NULL);
+	answer[number] = 0;
+	while (number-- > 0)
+	{
+		answer[number] = dest % 10 + '0';
+		dest /= 10;
+	}
+	if (n == 0)
+		answer[0] = '0';
+	return (answer);
 }

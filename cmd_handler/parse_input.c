@@ -1,4 +1,3 @@
-#include "../libft/libft.h"
 #include "../minishell.h"
 
 int get_argc(t_cmd *curr)
