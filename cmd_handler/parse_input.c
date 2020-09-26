@@ -37,7 +37,7 @@ void split_argv(t_cmd *curr)
 	free(curr->command);
 	curr->command = ft_strdup(temp);
 	free(temp);
-	printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
+	//printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 
 }
 
@@ -51,7 +51,7 @@ void set_node(t_cmd *new, char *data, int word_end)
 	while (ft_isspace(data[word_end]) || data[word_end] == ';')
 		word_end--;
 	word_end++;
-	printf("(%d %d)\n", word_start, word_end);
+	//printf("(%d %d)\n", word_start, word_end);
 	new->command = ft_substr(data, word_start, word_end - word_start);
 	split_argv(new);
 }

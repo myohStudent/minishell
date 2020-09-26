@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoichoi <seohchchoioi@student.42seoul.kr>    +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/26 20:13:27 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/26 20:25:31 by seohchchoi         ###   ########.fr       */
+/*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/09/27 05:36:58 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+
 #include "../minishell.h"
 
-
+/*
 char				*search(char *s, int c)
 {
 	unsigned char	s2;
@@ -27,7 +28,7 @@ char				*search(char *s, int c)
 		return (&s[i]);
 	return (0);
 }
-
+*/
 
 void cmd_handler(t_minishell *minishell)
 {
@@ -45,19 +46,27 @@ void cmd_handler(t_minishell *minishell)
 	while (buf[0] != '\n')
 	{
 		read(STDIN_FILENO, buf, 1);
-		else if (buf[0] != '\n')
+		if (buf[0] != '\n')
 			input = ft_strjoin(input, buf);
-		
 	}
 	/*char *temp;
 	if ((temp = search(input, '\\')))
 	{
 		if (temp[1] == 'n')
-			*temp = [1]
+		{
+			*temp = '\n';
+			while(temp[1])
+			{
+				temp++;
+				*temp = temp[1];
+			}
+		}
 	}*/
 	//1. 한줄로 받아서 파싱을 하면 파싱을 하면서 연결리스트를 바로바로 만들수있다
-	//2. 하나하나씩 하면 연결리스트를 만들 필요가 없다 (이 경우 cd나 echo에서 2번째 인자만 따로 다뤄줘야됨)
-	//2번으로 결정!	
+	//2. 하나하나씩 하면(isspace가 나왔을 경우 바로 옵션으로 넘어가게 하면) 따로 연결리스트를 만들 필요가 없다
+	
+	//할일 : quote, double quote, redirection, pipe 구현
+
 	//[해결] 할일 : 이하 내용을 parse 함수에 담기
 	//[해결] 할일 : parse_input에서 ; 별로 명령어 나누는 처리 해줘야함(linked list 사용해야할듯)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
@@ -71,7 +80,7 @@ void cmd_handler(t_minishell *minishell)
 	int i = 0;
     while (curr != NULL)               // 포인터가 NULL이 아닐 때 계속 반복
     {
-        printf("%d : %s|\n", i, curr->command);    // 현재 노드의 데이터 출력
+        //printf("%d : %s|\n", i, curr->command);    // 현재 노드의 데이터 출력
 		i++;
 		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 		if (curr->command) {
@@ -118,7 +127,7 @@ void cmd_handler(t_minishell *minishell)
 		}
         curr = curr->next;
     }
-	//free 함수
+	//할일 : free함수를 만들기.
 	t_cmd *next;
 
 	curr = minishell->cmd;
@@ -129,10 +138,4 @@ void cmd_handler(t_minishell *minishell)
 		free(curr);
 		curr = curr->next;
 	}
-/*
-	//할일 : free함수를 만들기.
-	for (int i = 0; minishell->cmd.command[i]; i++)
-		free(minishell->cmd.command[i]);*/
-	/**input = ft_strnew(1);
-	count = 1;*/
 }

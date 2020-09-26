@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoichoi <seohchchoioi@student.42seoul.kr>    +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/10 12:26:13 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/19 16:21:15 by seohchchoi         ###   ########.fr       */
+/*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
+/*   Updated: 2020/09/27 02:55:06 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include <stdio.h>
 #include "./minishell.h"
