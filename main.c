@@ -23,7 +23,7 @@ void display_prompt(void)
 	char *cwd;		/*경로 */
 	cwd = getcwd(buf, 4096);
 	printf("%s ", cwd);
-	printf("> ");
+	printf("> \b\b");
 }
 
 int		main(int ac, char **av, char **env)
@@ -35,11 +35,9 @@ int		main(int ac, char **av, char **env)
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
-		//display_prompt();			  //스탠다드 인풋이 먼저 떠서 프롬프트가 안나와여ㅠㅠㅠ
+		ft_putstr_fd("(ㅇㅅㅇ) > ", 1);
 		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
-		//display_prompt();
-		printf("minishell >\n \b\b \b\b");
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
 		/*if (*(minishell.input) != '\n')
 			break;*/

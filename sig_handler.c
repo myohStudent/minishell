@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/25 23:00:16 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/09/26 11:53:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void		parent_signal_handler(int signo)
 	{
 		if (SIGINT == signo)
 		{
-			write(1, "\n", 1);
+			write(1, "\b\b \b\b bye!\n", 11);
 			exit(1);
 		}
 		else if (SIGQUIT == signo)
 		{
-			write(1,"bye\n", 4);
+			write(1,"\b\b \b\b bye!!\n", 12);
 			exit(1);
 		}
 	}
