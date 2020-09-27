@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/27 20:48:09 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 20:49:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	cmd_env(t_minishell *minishell)
 				write(1, &minishell->env_temp[i][j], 1);
 				j++;
 			}
-			if ((minishell->env_temp[i + 1]))
-				write(1, "=", 1);
 		}
 		else
 		{
