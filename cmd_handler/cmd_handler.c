@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/27 19:22:59 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 19:47:59 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,11 @@ void cmd_handler(t_minishell *minishell)
 					i++;
 				}
 			}
-			else
-				ft_printf("command not found: %s\n", curr->command);
+			else if ((ft_strncmp(curr->command, "pwd", 3)) &&
+				(ft_strncmp(curr->command, "cd", 2)) &&
+				(ft_strncmp(curr->command, "exit", 4)) &&
+				(ft_strncmp(curr->command, "env", 3)))
+					ft_printf("command not found: %s\n", curr->command);
 		}
         curr = curr->next;
     }
