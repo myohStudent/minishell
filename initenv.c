@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 22:56:17 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/09/27 18:03:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,23 @@ char	**set_env(char **env)
 		temp = ft_strdup(env[i]);
 		new = arr_realloc(new, temp);
 		free(temp);
-		temp = ft_strdup(&env[i][++j]);
+		j++;
+		temp = ft_strdup(&env[i][j]);
 		new = arr_realloc(new, temp);
 		free(temp);
+		i++;
 	}
+	i = 0;
 	return (new);
 }
 
 void init_env(char **env, t_minishell *minishell)
 {
-	minishell->env->temp = set_env(env);
-	ft_printf("%s\n", minishell->env->temp);
+	int i = 0;
+	minishell->env_temp = set_env(env);
+	while (minishell->env_temp[i])
+	{
+		ft_printf("%s\n", minishell->env_temp[i]);
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/27 08:01:34 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 17:42:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		main(int ac, char **av, char **env)
 	t_minishell minishell;
 
 	welcome_shell();
-	//init_env(env, &minishell);
+	init_env(env, &minishell);
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
