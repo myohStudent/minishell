@@ -55,6 +55,7 @@ typedef struct	 	s_minishell
 	pid_t			pid;
 	t_env			*env;
 	char			**env_temp;
+	char			**env_set;
 	char			*path;
 	int				cmd_num;
 	t_cmd			*cmd;

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/27 20:49:29 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 21:47:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,19 @@
 void	cmd_env(t_minishell *minishell)
 {
 	int		i;
-	int		j;
-
-	i = 0;
-	while (minishell->env_temp[i])
+	//int		j;
+	i = 3;
+	while (minishell->env_temp[i] != NULL)
 	{
-		j = 0;
-		if (!(i / 2))
+		if (i == 3)
+			ft_printf("%s=%s\n", minishell->env_temp[0], minishell->env_temp[1]);
+		if (i / 2 != 0)
 		{
-			while (minishell->env_temp[i][j] != '\0' && minishell->env_temp[i + 1] != NULL)
-			{
-				write(1, &minishell->env_temp[i][j], 1);
-				j++;
-			}
+			ft_printf("%s", minishell->env_temp[i]);
+			if (minishell->env_temp[i + 1] != NULL)
+				ft_printf("=%s\n", minishell->env_temp[i + 1]);
 		}
-		else
-		{
-			while (minishell->env_temp[i][j] != '\0')
-			{
-				write(1, &minishell->env_temp[i][j], 1);
-				j++;
-			}
-		}
-		write(1, "\n", 1);
 		i++;
 	}
+	ft_printf("\n");
 }

@@ -6,11 +6,9 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/27 19:59:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 23:27:12 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "../minishell.h"
 
@@ -72,18 +70,20 @@ void cmd_handler(t_minishell *minishell)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
 
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	curr = minishell->cmd;
 	parse_cmd(minishell->cmd, input);
+	curr = minishell->cmd->next; // 헤드 노드
 
 	//할일 : 이하 내용을 담을 함수 만들기 (명령어 처리기)
 
 	int i = 0;
-    while (curr != NULL)               // 포인터가 NULL이 아닐 때 계속 반복
+	while (curr != NULL && *input != 0)               // 포인터가 NULL이 아닐 때 계속 반복
     {
-        //printf("%d : %s|\n", i, curr->command);    // 현재 노드의 데이터 출력
-		i++;
+        //ft_printf("%d", i);    // 현재 노드의 데이터 출력
+	   	i++;
+		//ft_printf(" : %s|", curr->command);
 		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
-		if (curr->command) {
+		if (curr->command)
+		{
 			if (!(ft_strncmp(curr->command, "pwd", 3)))
 			{
 				if (curr->argc == 1)
@@ -122,23 +122,14 @@ void cmd_handler(t_minishell *minishell)
 			}
 			else if (!(ft_strncmp(curr->command, "env", 3)))
 				cmd_env(minishell);
-			else if ((ft_strncmp(curr->command, "pwd", 3)) &&
-				(ft_strncmp(curr->command, "cd", 2)) &&
-				(ft_strncmp(curr->command, "exit", 4)) &&
-				(ft_strncmp(curr->command, "env", 3)))
-					ft_printf("command not found: %s\n", curr->command);
+			else
+				ft_printf("command not found: %s\n", curr->command);	
 		}
-        curr = curr->next;
-    }
-	//할일 : free함수를 만들기.
-	t_cmd *next;
-
-	curr = minishell->cmd;
-	while (curr != NULL)
-	{
+		t_cmd *next;
 		next = curr->next;
-		curr->command = 0;		
 		free(curr);
-		curr = curr->next;
-	}
+		curr = next;
+    }
+	free(input);
+	free (minishell->cmd);
 }

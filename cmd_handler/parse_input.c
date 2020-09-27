@@ -74,6 +74,8 @@ void parse_cmd(t_cmd *cmd, char *input)
 	int start = 0;
 	int end = 0;
 
+	if (!input)
+		return ;
 	while (input[end] && end < ft_strlen(input))
 	{
 		start = end;
@@ -86,5 +88,4 @@ void parse_cmd(t_cmd *cmd, char *input)
 		}
 		end++;
 	}
-	free(input);
 }
