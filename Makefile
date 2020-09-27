@@ -1,13 +1,15 @@
 NAME	=	minishell
 
 SRCS	=	main.c \
-			welcome_shell.c \
-			sig_handler.c \
-			initenv.c \
+				welcome_shell.c \
+				sig_handler.c \
+				initenv.c \
+				cmd_env.c \
 
-CMD_DIR	=   ./cmd_handler
+CMD_DIR	=	./cmd_handler
 CMD_FILE	=	cmd_handler.c \
-				parse_input.c
+						parse_input.c \
+
 CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 
 OBJ_CMD = $(CMD:%.c=%.o)

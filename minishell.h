@@ -71,6 +71,11 @@ void	display_prompt(void);
 void init_env(char **env, t_minishell *minishell);
 
 /*
+** cmd_env.c
+*/
+void	cmd_env(t_minishell *minishell);
+
+/*
 ** sig_handler.c
 */
 

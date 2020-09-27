@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/27 19:47:59 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 19:59:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,7 @@ void cmd_handler(t_minishell *minishell)
 				exit(1);
 			}
 			else if (!(ft_strncmp(curr->command, "env", 3)))
-			{
-				i = 0;
-				while (minishell->env_temp[i])
-				{
-					ft_printf("%s\n", minishell->env_temp[i]);
-					i++;
-				}
-			}
+				cmd_env(minishell);
 			else if ((ft_strncmp(curr->command, "pwd", 3)) &&
 				(ft_strncmp(curr->command, "cd", 2)) &&
 				(ft_strncmp(curr->command, "exit", 4)) &&
