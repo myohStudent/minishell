@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/27 18:03:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/09/27 19:18:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,4 @@ void init_env(char **env, t_minishell *minishell)
 {
 	int i = 0;
 	minishell->env_temp = set_env(env);
-	while (minishell->env_temp[i])
-	{
-		ft_printf("%s\n", minishell->env_temp[i]);
-		i++;
-	}
 }
