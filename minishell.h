@@ -87,8 +87,12 @@ void		parent_signal_handler(int signo);
 ** cmd_handler.c
 */
 
-void cmd_handler(t_minishell *minishell);
+int cmd_handler(t_minishell *minishell);
 
+/*
+** cmd_export.c
+*/
+void    cmd_export(t_cmd *curr, t_minishell *minishell);
 /*
 ** parse_input.c
 */

@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   cmd_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/04 21:53:05 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/02 17:16:24 by myoh             ###   ########.fr       */
+/*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
+/*   Updated: 2020/10/02 17:03:41 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n)
+void	cmd_env(t_minishell *minishell)
 {
-	if (!n)
-		return (0);
-	while (--n && *s1 && *s1 == *s2)
+	int		i;
+	//int		j;
+	i = 0;
+	while (minishell->env_temp[i] != NULL)
 	{
-		s1++;
-		s2++;
+		ft_printf("%s=%s\n", minishell->env_temp[i], minishell->env_temp[i+1]);
+		i++;
+		i++;
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	ft_printf("\n");
 }

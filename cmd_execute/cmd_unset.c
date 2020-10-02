@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:46 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/27 23:13:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 17:16:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../minishell.h"
 
 void	cmd_unset(t_minishell *minishell)
 {

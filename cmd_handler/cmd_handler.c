@@ -3,32 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/09/27 23:27:12 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 17:53:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-char				*search(char *s, int c)
-{
-	unsigned char	s2;
-	int				i;
 
-	s2 = (unsigned char)c;
-	i = 0;
-	while (s[i] != s2 && s && s[i])
-		i++;
-	if (s[i] == s2)
-		return (&s[i]);
-	return (0);
-}
-*/
-
-void cmd_handler(t_minishell *minishell)
+int cmd_handler(t_minishell *minishell)
 {
 	char buf[2];
 	char *input;
@@ -84,7 +69,7 @@ void cmd_handler(t_minishell *minishell)
 		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 		if (curr->command)
 		{
-			if (!(ft_strncmp(curr->command, "pwd", 3)))
+			if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 			{
 				if (curr->argc == 1)
 					ft_putstr_fd(getcwd(minishell->path, 4096), 1);
@@ -92,10 +77,19 @@ void cmd_handler(t_minishell *minishell)
 					ft_putstr_fd("pwd: too many arguments", 1);
 				ft_putchar('\n');
 			}
-			else if (!(ft_strncmp(curr->command, "cd", 2)))
+			else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 			{
 				if (curr->argc == 1)
-					chdir("~"); //환경변수가 없어서 작동을 안합니다.
+				{
+					int i = 0;
+					while (minishell->env_temp[i])
+					{
+						if (ft_strncmp(minishell->env_temp[i], "HOME\0", 5) == 0)
+							chdir(minishell->env_temp[i + 1]);
+						i++;
+					}
+					return (-1);
+				}
 				else if (curr->argc == 2)
 				{
 					if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
@@ -104,9 +98,9 @@ void cmd_handler(t_minishell *minishell)
 				else if (curr->argc > 2)
 					ft_putstr_fd("cd: too many arguments\n", 1);
 			}
-			else if (!(ft_strncmp(curr->command, "echo", 4)))
+			else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
 			{
-				if (curr->option && !(ft_strncmp(curr->option, "-n", 2)))
+				if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 					ft_putstr_fd(curr->option + 3, 1);
 				else
 				{
@@ -115,13 +109,15 @@ void cmd_handler(t_minishell *minishell)
 					ft_putchar('\n');
 				}
 			}
-			else if (!(ft_strncmp(curr->command, "exit", 4)))
+			else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
 			{
 				ft_putstr_fd("\n[Process Completed]", 1);
 				exit(1);
 			}
-			else if (!(ft_strncmp(curr->command, "env", 3)))
+			else if (ft_strncmp(curr->command, "env\0", 4) == 0)
 				cmd_env(minishell);
+			else if (ft_strncmp(curr->command, "export\0", 7) == 0)
+				cmd_export(curr, minishell);
 			else
 				ft_printf("command not found: %s\n", curr->command);	
 		}
@@ -132,4 +128,5 @@ void cmd_handler(t_minishell *minishell)
     }
 	free(input);
 	free (minishell->cmd);
+	return (1);
 }
