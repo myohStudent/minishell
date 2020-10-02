@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/27 21:47:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 15:26:09 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,11 @@ void	cmd_env(t_minishell *minishell)
 {
 	int		i;
 	//int		j;
-	i = 3;
+	i = 0;
 	while (minishell->env_temp[i] != NULL)
 	{
-		if (i == 3)
-			ft_printf("%s=%s\n", minishell->env_temp[0], minishell->env_temp[1]);
-		if (i / 2 != 0)
-		{
-			ft_printf("%s", minishell->env_temp[i]);
-			if (minishell->env_temp[i + 1] != NULL)
-				ft_printf("=%s\n", minishell->env_temp[i + 1]);
-		}
+		ft_printf("%s=%s\n", minishell->env_temp[i], minishell->env_temp[i+1]);
+		i++;
 		i++;
 	}
 	ft_printf("\n");
