@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/02 17:16:27 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 21:23:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,7 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 int				ft_isspace(int c);
 void			*ft_memalloc(size_t size);
+char                    **ft_split(char const *s, char c);
+
+
 #endif

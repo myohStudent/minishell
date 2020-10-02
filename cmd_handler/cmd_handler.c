@@ -6,12 +6,11 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/02 17:53:32 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 21:58:28 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int cmd_handler(t_minishell *minishell)
 {
@@ -55,7 +54,7 @@ int cmd_handler(t_minishell *minishell)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
 
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	parse_cmd(minishell->cmd, input);
+	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드
 
 	//할일 : 이하 내용을 담을 함수 만들기 (명령어 처리기)
@@ -82,10 +81,10 @@ int cmd_handler(t_minishell *minishell)
 				if (curr->argc == 1)
 				{
 					int i = 0;
-					while (minishell->env_temp[i])
+					while (minishell->env_set[i])
 					{
-						if (ft_strncmp(minishell->env_temp[i], "HOME\0", 5) == 0)
-							chdir(minishell->env_temp[i + 1]);
+						if (ft_strncmp(minishell->env_set[i], "HOME\0", 5) == 0)
+							chdir(minishell->env_set[i + 1]);
 						i++;
 					}
 					return (-1);
@@ -94,6 +93,8 @@ int cmd_handler(t_minishell *minishell)
 				{
 					if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
 						ft_putstr_fd("cd: no such file or directory\n", 1);
+					ft_printf("- %s\n",curr->option);
+
 				}
 				else if (curr->argc > 2)
 					ft_putstr_fd("cd: too many arguments\n", 1);

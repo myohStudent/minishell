@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_env.c                                          :+:      :+:    :+:   */
+/*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/02 20:27:05 by myoh             ###   ########.fr       */
+/*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
+/*   Updated: 2020/10/02 22:03:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cmd_env(t_minishell *minishell)
+int        env_index(t_minishell *minishell, char *str)
 {
-	int		i;
-	//int		j;
-	i = 0;
-	while (minishell->env_set[i] != NULL)
+    int     i;
+    int     l;
+
+    l = ft_strlen(str);
+    i = 0;
+    while (minishell->env_set[i] && minishell->env_set[i + 1])
 	{
-		ft_printf("%s=%s\n", minishell->env_set[i], minishell->env_set[i+1]);
-		i++;
-		i++;
-	}
-	ft_printf("\n");
+		if (ft_strncmp(minishell->env_set[i], str, l) == 0)
+     		return (i + 1);
+    }
+    return (-1);
 }

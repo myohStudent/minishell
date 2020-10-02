@@ -53,8 +53,6 @@ typedef struct		s_cmd
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
-	t_env			*env;
-	char			**env_temp;
 	char			**env_set;
 	char			*path;
 	int				cmd_num;
@@ -88,7 +86,10 @@ void		parent_signal_handler(int signo);
 */
 
 int cmd_handler(t_minishell *minishell);
-
+/*
+** 
+*/
+int        env_index(t_minishell *minishell, char *str);
 /*
 ** cmd_export.c
 */
@@ -99,8 +100,8 @@ void    cmd_export(t_cmd *curr, t_minishell *minishell);
 
 int get_argc(t_cmd *curr);
 void split_argv(t_cmd *curr);
-void set_node(t_cmd *new, char *data, int word_end);
-t_cmd *create_node(char *data, int word_len);
-void parse_cmd(t_cmd *cmd, char *input);
+void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
+t_cmd *create_node(t_minishell *minishell, char *data, int word_len);
+void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 
 #endif

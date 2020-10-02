@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/02 16:40:47 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/02 20:26:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ char	**set_env(char **env)
 void init_env(char **env, t_minishell *minishell)
 {
 	int i = 0;
-	minishell->env_temp = set_env(env);
+	minishell->env_set = set_env(env);
 }
