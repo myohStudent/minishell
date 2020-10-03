@@ -21,7 +21,7 @@ int get_argc(t_cmd *curr)
 
 	return (curr->argc);
 }
-/*
+
 char				*parse_search(char *s, int c)
 {
 	unsigned char	s2;
@@ -35,26 +35,6 @@ char				*parse_search(char *s, int c)
 		return (&s[i]);
 	return (0);
 }
-*/
-void split_argv(t_cmd *curr)
-{
-	int i;
-	char *temp;
-
-	i = 0;
-	if (!curr || !curr->command || get_argc(curr) == 1)
-		return ;
-	while (!(ft_isspace(curr->command[i])) && curr->command[i])
-		i++;
-	temp = ft_substr(curr->command, 0, i);
-	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i);
-	ft_printf("%d, %d \n",i + 1, (ft_strlen(curr->command) ));
-	free(curr->command);
-	curr->command = ft_strdup(temp);
-	free(temp);
-	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
-
-}
 
 void				tild_handler(t_minishell *minishell, t_cmd *curr)
 {
@@ -62,28 +42,48 @@ void				tild_handler(t_minishell *minishell, t_cmd *curr)
 	char *HOME;
 	char *new;
 
-	i = 0;
-	while (curr->option[i])
+	while (ft_strncmp(curr->option, "~", 1) == 0)
 	{
-		if (curr->option[i] == '~')
+		new = parse_search(curr->option, '~');
+		
+		if (ft_isspace(curr->option[i + 1]) || !curr->option[i + 1])
 		{
-			if (i == 0 || ft_isspace(curr->option[i - 1]))
-			{
-				HOME = ft_strdup(minishell->env_set[env_index(minishell, "HOME\0")]);
-				new = ft_substr(curr->option, 0, i);
-				new = ft_strjoin(curr->option, HOME);
-				new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
-				curr->option = ft_strdup(new);
-			}
-			else
-			{
-				new = ft_substr(curr->option, 0, i);
-				curr->option = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
-			}
-			free(new);
+			HOME = ft_strdup(minishell->env_set[env_index(minishell, "HOME\0")]);
+			new = ft_substr(curr->option, 0, i);
+			new = ft_strjoin(curr->option, HOME);
+			new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
+			curr->option = ft_strdup(new);
+			free (HOME);
 		}
-		i++;
+		else
+			curr->option = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
+		free(new);
 	}
+}
+
+
+void split_argv(t_cmd *curr)
+{
+	int i;
+	char *temp;
+
+	i = 0;
+	curr->option = NULL;
+	if (!curr || !curr->command || get_argc(curr) == 1)
+		return ;
+	while (!(ft_isspace(curr->command[i])) && curr->command[i])
+		i++;
+	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
+	temp = ft_substr(curr->command, 0, i);
+	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
+	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i);
+	ft_printf("%d, %d, %d \n",i + 1, (ft_strlen(curr->command) - i));
+	free(curr->command);
+	curr->command = ft_strdup(temp);
+	free(temp);
+	temp = 0;
+	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
+
 }
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
@@ -97,12 +97,10 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 		word_end--;
 	word_end++;
 	//printf("(%d %d)\n", word_start, word_end);
-	new->command = ft_substr(data, word_start, word_end - word_start);
+	new->command = ft_substr(data, word_start, word_end - word_start + 1);
 	split_argv(new);
-	//if (new->option != NULL && new->option[0] != 0)
-	//	ft_printf("옵션이 있어요 \n");
-		//tild_handler(minishell, new);
-
+	if (new->option != NULL && new->option)
+		tild_handler(minishell, new);
 }
 
 t_cmd *create_node(t_minishell *minishell, char *data, int word_len)

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/02 20:26:32 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/03 16:28:06 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-static int	arr_len(char **env)
+int	arr_len(char **env)
 {
 	int i;
 

@@ -68,7 +68,7 @@ void	display_prompt(void);
 ** initenv.c
 */ 
 void init_env(char **env, t_minishell *minishell);
-
+int	arr_len(char **env);
 /*
 ** cmd_env.c
 */

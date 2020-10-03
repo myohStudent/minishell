@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/02 21:58:28 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/03 16:58:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int cmd_handler(t_minishell *minishell)
 				{
 					if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
 						ft_putstr_fd("cd: no such file or directory\n", 1);
-					ft_printf("- %s\n",curr->option);
-
 				}
 				else if (curr->argc > 2)
 					ft_putstr_fd("cd: too many arguments\n", 1);
@@ -129,5 +127,6 @@ int cmd_handler(t_minishell *minishell)
     }
 	free(input);
 	free (minishell->cmd);
+	minishell->cmd = 0;
 	return (1);
 }
