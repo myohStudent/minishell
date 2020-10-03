@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/03 16:58:53 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/03 21:44:50 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int cmd_handler(t_minishell *minishell)
 	//2. 하나하나씩 하면(isspace가 나왔을 경우 바로 옵션으로 넘어가게 하면) 따로 연결리스트를 만들 필요가 없다
 	
 	//할일 : quote, double quote, redirection, pipe 구현
+	//할일 : $환경변수 실행, $?실행
 
 	//[해결] 할일 : 이하 내용을 parse 함수에 담기
 	//[해결] 할일 : parse_input에서 ; 별로 명령어 나누는 처리 해줘야함(linked list 사용해야할듯)
@@ -80,14 +81,8 @@ int cmd_handler(t_minishell *minishell)
 			{
 				if (curr->argc == 1)
 				{
-					int i = 0;
-					while (minishell->env_set[i])
-					{
-						if (ft_strncmp(minishell->env_set[i], "HOME\0", 5) == 0)
-							chdir(minishell->env_set[i + 1]);
-						i++;
-					}
-					return (-1);
+					if (chdir(minishell->env_set[env_index(minishell, "HOME\0")]) < 0)
+						return (-1);
 				}
 				else if (curr->argc == 2)
 				{

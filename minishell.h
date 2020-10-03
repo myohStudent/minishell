@@ -54,6 +54,8 @@ typedef struct	 	s_minishell
 {
 	pid_t			pid;
 	char			**env_set;
+	char			**export_variable;
+	char			**export_value;
 	char			*path;
 	int				cmd_num;
 	t_cmd			*cmd;
@@ -93,7 +95,7 @@ int        env_index(t_minishell *minishell, char *str);
 /*
 ** cmd_export.c
 */
-void    cmd_export(t_cmd *curr, t_minishell *minishell);
+int    cmd_export(t_cmd *curr, t_minishell *minishell);
 /*
 ** parse_input.c
 */

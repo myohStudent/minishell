@@ -39,25 +39,19 @@ char				*parse_search(char *s, int c)
 void				tild_handler(t_minishell *minishell, t_cmd *curr)
 {
 	int i;
-	char *HOME;
-	char *new;
+	char *home;
 
-	while (ft_strncmp(curr->option, "~", 1) == 0)
+	if (curr->option[0] == '~' && (ft_isspace(curr->option[1]) || curr->option[1] == '/' || curr->option[1] == 0))
 	{
-		new = parse_search(curr->option, '~');
-		
-		if (ft_isspace(curr->option[i + 1]) || !curr->option[i + 1])
-		{
-			HOME = ft_strdup(minishell->env_set[env_index(minishell, "HOME\0")]);
-			new = ft_substr(curr->option, 0, i);
-			new = ft_strjoin(curr->option, HOME);
-			new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
-			curr->option = ft_strdup(new);
-			free (HOME);
-		}
-		else
-			curr->option = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
-		free(new);
+		ft_printf("if 1 진입\n");
+		ft_printf("%d\n",env_index(minishell, "home\0"));
+		home = ft_strdup(minishell->env_set[env_index(minishell, "home\0")]);
+		ft_printf("home : %s\n",home);
+		curr->option = ft_strjoin(home, curr->option + 1);
+		ft_printf("> %s < \n",curr->option);
+		//new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
+		//curr->option = ft_strdup(new);
+		free (home);
 	}
 }
 
@@ -99,6 +93,8 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//printf("(%d %d)\n", word_start, word_end);
 	new->command = ft_substr(data, word_start, word_end - word_start + 1);
 	split_argv(new);
+	//if (new->option != NULL && new->option)
+		//tild_handler(minishell, new);
 	if (new->option != NULL && new->option)
 		tild_handler(minishell, new);
 }

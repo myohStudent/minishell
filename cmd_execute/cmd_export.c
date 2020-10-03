@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:29 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/03 17:23:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/03 22:07:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,76 +22,95 @@ int			ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 } 
 
-char    *bubble_bubble(char *src)
+void    bubble_bubble(t_minishell *minishell)
 {
     int i;
     int j;
+    int c;
     char *temp;
-    char    **dst;
 
     i = 0;
-    j = arr_len(src);
-    printf("minishell->set_env length : %d\n", j);
-    dst = (char *)malloc(sizeof(char) * j);
-    while (i < j)
+    c = 0;
+    j = arr_len(minishell->env_set);
+    minishell->export_variable = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
+    minishell->export_value = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
+    while (minishell->env_set[i]) 
     {
-        temp[i] = ft_strdup(src[i]);
-
+        //minishell->export_variable[c] = ft_strjoin("", "");
+        minishell->export_variable[c] = ft_strdup(minishell->env_set[i]);
+        //minishell->export_value[c] = ft_strjoin("", "");
+        minishell->export_value[c] = ft_strdup(minishell->env_set[i + 1]);
         i++;
+        i++;
+        c++;
     }
+    ft_printf("center: %d\n, c: %d", i / 2, c);
     i = 0;
-    while (dst[i] && (i / 2) != 0 && i < j)
+    for (i = 0; i < j ; i++)
+        {
+            for(int k = 0; k < (c / 2) - i - 1 ; k++)
+            {
+                if (ft_strcmp(minishell->export_variable[k], minishell->export_variable[k + 1]) > 0)
+                {
+                    temp = ft_strdup(minishell->export_variable[k]);
+                    minishell->export_variable[k] = ft_strdup(minishell->export_variable[k + 1]);
+                    minishell->export_variable[k + 1] = temp;
+                    free(temp);
+                    temp = ft_strdup(minishell->export_value[k]);
+                    minishell->export_value[k] = ft_strdup(minishell->export_value[k + 1]);
+                    minishell->export_value[k + 1] = temp;
+                    free(temp);
+                }
+            }
+        }
+    /*while (dst[i] && !(i % 2))
     {
-        //if (ft_strcmp(src[i], src[i + 2]) == 0)
-
-        if (ft_strcmp(dst[i], dst[i + 2]) < 0)
+        if ((dst[i + 2]) && ft_strcmp(dst[i], dst[i + 2]) > 0)
         {
             temp = ft_strdup(dst[i]);
             dst[i] = ft_strdup(dst[i + 2]);
             dst[i + 2] = temp;
-
+            free(temp);
             temp = ft_strdup(dst[i + 1]);
             dst[i + 1] = ft_strdup(dst[i + 3]);
             dst[i + 3] = temp;
             free(temp);
         }
+        else if (dst[i + 2] == NULL)
+            break;
         i++;
         i++;    
-    }   
-    return (dst);
+    }   */
 }
 
-void    cmd_export(t_cmd *curr, t_minishell *minishell)
+int    cmd_export(t_cmd *curr, t_minishell *minishell)
 {
     int i;
     int e;
     int j;
 
     char    **str;
-    char    **temp;
 
     i = 0;
     e = 0;
-    if (!(temp = (char **)malloc(sizeof(char) * (arr_len(minishell->env_set)))))
-        return ;
+   
     if (curr->argc == 1)
     {
-        temp = bubble_bubble(minishell->env_set);
-        while (minishell->env_set[i] != NULL)
+        bubble_bubble(minishell);
+        while (minishell->export_variable[i] != NULL)
 	    {
-            ft_printf("declare -x ");
-		    ft_printf("%s=%s\n", minishell->env_set[i], minishell->env_set[i+1]);
+            ft_printf("declare -x %d ", i);
+		    ft_printf("%s=%s\n", minishell->export_variable[i], minishell->export_value[i]);
 		    i++;
-	    	i++;
 	    }
 	    ft_printf("\n");
-        return ;
+        return (1);
     }
     if (curr->argc == 2 && curr->option != NULL)
     {
 		ft_printf("- %s\n",curr->option);
         if (!(str = ft_split(curr->option, '=')))
-            return ;
+            return (0);
         ft_printf("[%s]\n %s, %s \n", curr->option, str[0], str[1]);
         while (minishell->env_set[i])
         {
@@ -99,14 +118,10 @@ void    cmd_export(t_cmd *curr, t_minishell *minishell)
             if ((ft_strcmp(str[0], minishell->env_set[i]) == 0) && (minishell->env_set[i + 1] != NULL))
             {
                 //free(minishell->env_set[i + 1]);
-                minishell->env_set[i + 1] = ft_strjoin("", "");
+                //minishell->env_set[i + 1] = ft_strjoin("", "");
+                minishell->env_set[i + 1] = NULL;
                 j = 0;
                 minishell->env_set[i + 1] = ft_strdup(str[1]);
-                /*while (minishell->env_set[i + 1] && str[1][j])
-                {
-                    minishell->env_set[i + 1][j] = str[1][j];
-                    j++;
-                }*/
                 ft_printf("(%s| %d)\n",minishell->env_set[i + 1], j);
                 e = 1;
             }
@@ -126,4 +141,5 @@ void    cmd_export(t_cmd *curr, t_minishell *minishell)
     }
     free(str[0]);
     free(str[1]);
+    return (1);
 }
