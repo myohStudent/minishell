@@ -36,9 +36,11 @@
 
 typedef struct s_env
 {
+	char			**export_variable;
+	char			**export_value;
 	char			**temp;
-	char			*name;
-	char			*value;
+	char			**variable;
+	char			**value;
 	struct s_env	*next;
 } 					t_env;
 
@@ -54,10 +56,9 @@ typedef struct	 	s_minishell
 {
 	pid_t			pid;
 	char			**env_set;
-	char			**export_variable;
-	char			**export_value;
 	char			*path;
 	int				cmd_num;
+	t_env			env;
 	t_cmd			*cmd;
 } 					t_minishell;
 
