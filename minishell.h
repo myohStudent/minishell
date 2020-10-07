@@ -36,8 +36,6 @@
 
 typedef struct s_env
 {
-	char			**export_variable;
-	char			**export_value;
 	char			**temp;
 	char			**variable;
 	char			**value;
