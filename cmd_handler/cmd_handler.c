@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/03 21:44:50 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/08 17:56:08 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int cmd_handler(t_minishell *minishell)
 			}
 			else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
 			{
-				ft_putstr_fd("\n[Process Completed]", 1);
+				ft_putstr_fd("\n[Process Completed]\0", 1);
 				exit(1);
 			}
 			else if (ft_strncmp(curr->command, "env\0", 4) == 0)
