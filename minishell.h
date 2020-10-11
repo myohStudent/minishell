@@ -32,6 +32,7 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERROR 2
+# define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
 
 typedef struct s_env
