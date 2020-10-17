@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:29 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 20:50:07 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/18 00:54:22 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,14 @@ static void     cpy_env(t_minishell *minishell, int j)
 
     i = 0;
     c = 0;
-    ft_printf("---cpy_env 들어옴--- \n");
+    minishell->export_set = (char **)ft_memalloc(sizeof(char *) * (j + 1));
+    while (minishell->env_set[i] != NULL)
+    {
+        minishell->export_set[i] = ft_strdup(minishell->env_set[i]);
+        i++;
+        ft_printf("%d ", i);
+    }
+   /* ft_printf("---cpy_env 들어옴--- \n");
    // j = arr_len(minishell->env_set);
     minishell->env.variable = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
     minishell->env.value = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
@@ -45,7 +52,7 @@ static void     cpy_env(t_minishell *minishell, int j)
         c++;
         ft_printf("%d",i);
     }
-    minishell->env.val_index = c;
+    minishell->env.val_index = c;*/
     ft_printf("cpy_env 나옴\n");
 }
 
@@ -57,11 +64,26 @@ static void     sort_export(t_minishell *minishell, int j)
     int k;
 
     c = 0;
-    //cpy_env(minishell, j);
+   // cpy_env(minishell, j);
     ft_printf("j : %d\n", j);
     i = (j / 2) - 1;
     ft_printf("---이것---\n");
-    while (i >= 0 && minishell->env.variable[i])
+    while (i >= 0 && minishell->export_set[i])
+    {
+        k = 0;
+        while (k < (j / 2) && minishell->export_set[k + 1])
+        {
+            if (ft_strcmp(minishell->export_set[k], minishell->export_set[k + 1]) > 0)
+            {
+                temp = ft_strdup(minishell->export_set[k]);
+                minishell->export_set[k] = ft_strdup(minishell->export_set[k + 1]);
+                minishell->export_set[k + 1] = temp;
+            }
+			k++;
+        }
+        i--;
+    }
+   /* while (i >= 0 && minishell->env.variable[i])
     {
         k = 0;
         while (k < (j / 2) && minishell->env.variable[k + 1])
@@ -78,7 +100,7 @@ static void     sort_export(t_minishell *minishell, int j)
 			k++;
         }
         i--;
-    }
+    }*/
     /*while (minishell->env.variable[k] != NULL)
     {
         minishell->env.variable[k] = ft_strdup()
@@ -96,11 +118,36 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 
     i = 0;
     e = 0;
-    //minishell->env.is_added = 0;
     ft_printf("----요기---\n");
 	j = arr_len(minishell->env_set);
     cpy_env(minishell, minishell->env_nb);
+
     if (curr->argc == 1)
+    {
+        sort_export(minishell, minishell->env_nb);
+        while (minishell->export_set[i])
+        {
+            ft_printf("declare -x %d ", i);
+		    ft_printf("%s\n", minishell->export_set[i]);
+		    i++;
+        }
+        ft_printf("\n");
+        return (1);
+    }
+    if (curr->argc == 2 && curr->option != NULL)
+    {
+        if ((ft_strchr(curr->option,'=') == 0))
+        {
+			ft_printf("-------chr: %c 리턴됨------\n", ft_strchr(curr->option,'='));
+			return (0);
+            e = 1;
+		}
+        if (e == 0)
+        {
+            
+        }
+    }
+   /* if (curr->argc == 1)
     {
         sort_export(minishell, minishell->env_nb);
         while (minishell->env.variable[i] && minishell->env.variable[i] != NULL)
@@ -168,6 +215,6 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
             free(str[0]);
     	    free(str[1]);
         }
-	}
+	}*/
     return (1);
 }

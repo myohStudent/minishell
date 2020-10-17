@@ -55,6 +55,7 @@ typedef struct	 	s_minishell
 {
 	pid_t			pid;
 	char			**env_set;
+	char			**export_set;
 	int				env_currnb; // current number 
 	int				env_nb; //initialized number
 	char			*path;

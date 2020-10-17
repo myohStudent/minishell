@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 15:57:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/18 00:53:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ void	cmd_env(t_minishell *minishell)
 
 	i = 0;
 	j = arr_len(minishell->env_set);
-	while (i < minishell->env_nb && minishell->env_set[i+1] != NULL)
+	while (minishell->env_set[i])
+	{
+		ft_printf("%s\n", minishell->env_set[i]);
+		i++;
+	}
+	/*while (i < minishell->env_nb && minishell->env_set[i+1] != NULL)
 	{
 		ft_printf("%s=%s\n", minishell->env_set[i], minishell->env_set[i+1]);
 		i++;
@@ -33,7 +38,7 @@ void	cmd_env(t_minishell *minishell)
 			i++;
 			i++;
 		}
-	}
+	}*/
 	/*while (minishell->env_set[i] != NULL && i < j - 1)
 	{
 		ft_printf("%s=%s\n", minishell->env_set[i], minishell->env_set[i+1]);
