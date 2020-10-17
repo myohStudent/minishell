@@ -37,10 +37,10 @@
 
 typedef struct s_env
 {
-	int				nb;
-	char			**variable;
-	char			**value;
-	struct s_env	*next;
+	int				is_added;
+	char			**variable; // 홀
+	int				val_index;
+	char			**value;  // 짝
 } 					t_env;
 
 typedef struct		s_cmd
@@ -55,6 +55,8 @@ typedef struct	 	s_minishell
 {
 	pid_t			pid;
 	char			**env_set;
+	int				env_currnb; // current number 
+	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
 	t_env			env;

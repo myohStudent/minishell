@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/26 01:55:39 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/17 16:28:02 by myoh             ###   ########.fr       */
+/*   Created: 2020/10/12 16:04:29 by myoh              #+#    #+#             */
+/*   Updated: 2020/10/12 16:46:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				ft_strchr(const char *s, int c)
+char	*ft_strnew(size_t size)
 {
-	unsigned char	s2;
-	int				i;
+	char	*str;
+	int		i;
 
-	s2 = (unsigned char)c;
 	i = 0;
-	while (s[i] != s2 && s && s[i])
+	if (!(str = (char *)malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	while (i <= (int)size)
+	{
+		str[i] = '\0';
 		i++;
-	if (s[i] == s2)
-		return (s[i]);
-	return (0);
+	}
+	return (str);
 }

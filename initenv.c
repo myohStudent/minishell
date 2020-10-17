@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/11 15:12:59 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/17 16:00:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ void init_env(char **env, t_minishell *minishell)
 {
 	int i = 0;
 	minishell->env_set = set_env(env);
+	minishell->env_nb = arr_len(minishell->env_set);
+    minishell->env.is_added = 0;
+	minishell->env_currnb = minishell->env_nb;
 }
 
 int		count_mots(char *str)
@@ -147,9 +150,9 @@ char			**all_split(char *ss)
 		k = 0;
 		if (!(str2[i] = ft_strnew(get_len(&ss[j]) + 1)))
 			str2[i] = NULL;
-		while (IS_SPACE(ss[j]))
+		while (ISSPACE(ss[j]))
 			j++;
-		while (!IS_SPACE(ss[j]) && ss[j])
+		while (!ISSPACE(ss[j]) && ss[j])
 			str2[i][k++] = ss[j++];
 		str2[i][k] = '\0';
 	}

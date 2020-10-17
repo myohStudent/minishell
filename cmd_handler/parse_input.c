@@ -91,7 +91,7 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 		word_end--;
 	word_end++;
 	//printf("(%d %d)\n", word_start, word_end);
-	new->command = ft_substr(data, word_start, word_end - word_start + 1);
+	new->command = ft_substr(data, word_start, word_end - word_start);
 	split_argv(new);
 	//if (new->option != NULL && new->option)
 		//tild_handler(minishell, new);

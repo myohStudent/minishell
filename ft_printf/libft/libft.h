@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/03 16:22:50 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/12 16:46:08 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void			*ft_memcpy(void *dst, const void *src, size_t n);
 int				ft_isspace(int c);
 void			*ft_memalloc(size_t size);
 char                    **ft_split(char const *s, char c);
+char			*ft_strnew(size_t size);
 
 
 #endif
