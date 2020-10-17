@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 20:36:18 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/17 20:51:22 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char	**set_env(char **env)
 	char	*temp;
 
 	i = arr_len(env);
+	ft_printf("<%d>",i);
+
 	if (!(new = (char **)ft_memalloc(sizeof(char *) * (i + 1))))
 		exit(1);
 	new[0] = NULL;

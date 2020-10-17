@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:29 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 20:36:21 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/17 20:50:07 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,11 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 		
 
         ft_printf("[%s]\n %s, %s \n", curr->option, str[0], str[1]);
-        while (minishell->env_set[i])
+		ft_printf("-------------\n");
+
+        while (minishell->env_set[i] != NULL)
         {
+            ft_printf("%d",i);
             if ((ft_strcmp(str[0], minishell->env_set[i]) == 0) && (minishell->env_set[i + 1] != NULL))
             {
                 minishell->env_set[i + 1] = NULL;
@@ -134,6 +137,8 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
             }
             i++;
         }
+		ft_printf("-------------\n");
+
 		free(str[0]);
 		free(str[1]);
 		//
