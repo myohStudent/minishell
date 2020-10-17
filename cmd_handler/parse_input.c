@@ -80,7 +80,7 @@ void split_argv(t_cmd *curr)
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 
 }
-
+/*
 char		*check_copy(char const *s, unsigned int start, size_t len)
 {
 	char	*a;
@@ -102,7 +102,7 @@ char		*check_copy(char const *s, unsigned int start, size_t len)
 	a[i] = '\0';
 	ft_printf("%d, %s))\n",i, a);
 	return (a);
-}
+}*/
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 {
@@ -115,7 +115,7 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 		word_end--;
 	word_end++;
 	printf("(%d %d)\n", word_start, word_end - word_start);
-	new->command = check_copy(data, word_start, word_end - word_start);
+	new->command = ft_substr(data, word_start, word_end - word_start);
 	//ft_printf("---------------------\n");
 	ft_printf(">>%s<<\n", new->command);
 	ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));

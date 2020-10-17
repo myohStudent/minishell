@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:29 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 17:48:04 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/17 20:36:21 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,24 @@ static void     cpy_env(t_minishell *minishell, int j)
 
     i = 0;
     c = 0;
-    //j = arr_len(minishell->env_set);
+    ft_printf("---cpy_env 들어옴--- \n");
+   // j = arr_len(minishell->env_set);
     minishell->env.variable = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
     minishell->env.value = (char **)ft_memalloc(sizeof(char *) * (j / 2 + 1));
-    while (minishell->env_set[i]) 
+    ft_printf("(%d)",j/2);
+    while (minishell->env_set[i] != NULL && minishell->env_set[i + 1] != NULL && c < j/2)
     {
-        minishell->env.variable[c] = ft_strjoin("", "");
-        minishell->env.variable[c] = ft_strdup(minishell->env_set[i++]);
-		minishell->env.value[c] = ft_strjoin("", "");
-        minishell->env.value[c] = ft_strdup(minishell->env_set[i++]);
+        //minishell->env.variable[c] = ft_strjoin("", "");
+        minishell->env.variable[c] = ft_strdup(minishell->env_set[i]);
+	   //minishell->env.value[c] = ft_strjoin("", "");
+        minishell->env.value[c] = ft_strdup(minishell->env_set[i + 1]);
+        i++;
+        i++;
         c++;
+        ft_printf("%d",i);
     }
     minishell->env.val_index = c;
-    ft_printf("cpy_env working\n");
+    ft_printf("cpy_env 나옴\n");
 }
 
 static void     sort_export(t_minishell *minishell, int j)
@@ -55,7 +60,7 @@ static void     sort_export(t_minishell *minishell, int j)
     //cpy_env(minishell, j);
     ft_printf("j : %d\n", j);
     i = (j / 2) - 1;
-    ft_printf("------\n");
+    ft_printf("---이것---\n");
     while (i >= 0 && minishell->env.variable[i])
     {
         k = 0;
@@ -92,9 +97,9 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
     i = 0;
     e = 0;
     //minishell->env.is_added = 0;
-    ft_printf("------\n");
+    ft_printf("----요기---\n");
 	j = arr_len(minishell->env_set);
-    cpy_env(minishell, j);
+    cpy_env(minishell, minishell->env_nb);
     if (curr->argc == 1)
     {
         sort_export(minishell, minishell->env_nb);

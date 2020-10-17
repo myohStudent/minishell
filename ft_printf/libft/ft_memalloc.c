@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 14:11:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 22:55:25 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/17 20:35:05 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_memalloc(size_t size)
 	char	*mem;
 	char	*p;
 
-	mem = (char*)malloc(size);
+	mem = (char *)malloc(size);
 	if (mem == NULL)
 		return (NULL);
 	p = mem;
