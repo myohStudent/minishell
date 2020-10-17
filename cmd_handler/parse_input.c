@@ -68,16 +68,40 @@ void split_argv(t_cmd *curr)
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
+	ft_printf(">>%s<<\n", curr->command);
 	temp = ft_substr(curr->command, 0, i);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
-	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i + 1);
-	ft_printf("%d, %d \n",i + 1,  (ft_strlen(curr->command)- i));
+	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i);
+	ft_printf("%d, %d \n", i + 1, (ft_strlen(curr->command) - i));
 	free(curr->command);
 	curr->command = ft_strdup(temp);
 	free(temp);
 	temp = 0;
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 
+}
+
+char		*check_copy(char const *s, unsigned int start, size_t len)
+{
+	char	*a;
+	int		i;
+
+	i = 0;
+	if (!(a = (char *)malloc(sizeof(char) * ((int)len))))
+	{
+		ft_printf("리턴널 일어남\n");
+		return (NULL);	
+	}
+	ft_printf("((%d, %d, ", start, len);
+	while (i < (int)len)
+	{
+		a[i] = s[(int)start];
+		i++;
+		start++;
+	}
+	a[i] = '\0';
+	ft_printf("%d, %s))\n",i, a);
+	return (a);
 }
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
@@ -90,8 +114,10 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	while (ft_isspace(data[word_end]) || data[word_end] == ';')
 		word_end--;
 	word_end++;
-	//printf("(%d %d)\n", word_start, word_end);
-	new->command = ft_substr(data, word_start, word_end - word_start);
+	printf("(%d %d)\n", word_start, word_end - word_start);
+	new->command = check_copy(data, word_start, word_end - word_start);
+	//ft_printf("---------------------\n");
+	ft_printf(">>%s<<\n", new->command);
 	ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	split_argv(new);
 	//if (new->option != NULL && new->option)

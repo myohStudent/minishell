@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 23:12:29 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/17 16:26:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/17 17:48:04 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void     cpy_env(t_minishell *minishell, int j)
         c++;
     }
     minishell->env.val_index = c;
+    ft_printf("cpy_env working\n");
 }
 
 static void     sort_export(t_minishell *minishell, int j)
@@ -73,10 +74,11 @@ static void     sort_export(t_minishell *minishell, int j)
         }
         i--;
     }
-    while (minishell->env_set[k])
+    /*while (minishell->env.variable[k] != NULL)
     {
+        minishell->env.variable[k] = ft_strdup()
         k++;
-    }
+    }*/
     free(temp);
 }
 
@@ -90,6 +92,7 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
     i = 0;
     e = 0;
     //minishell->env.is_added = 0;
+    ft_printf("------\n");
 	j = arr_len(minishell->env_set);
     cpy_env(minishell, j);
     if (curr->argc == 1)
