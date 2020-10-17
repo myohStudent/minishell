@@ -99,6 +99,10 @@ int        env_index(t_minishell *minishell, char *str);
 */
 int    cmd_export(t_cmd *curr, t_minishell *minishell);
 /*
+** cmd_exit.c
+*/
+int		cmd_exit(t_cmd *curr, t_minishell *minishell);
+/*
 ** parse_input.c
 */
 

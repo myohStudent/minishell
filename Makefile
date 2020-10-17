@@ -16,6 +16,7 @@ OBJ_CMD = $(CMD:%.c=%.o)
 EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
 				cmd_export.c \
+				cmd_exit.c \
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))
 OBJ_EXE = $(EXE:%.c=%.o)

@@ -70,8 +70,8 @@ void split_argv(t_cmd *curr)
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	temp = ft_substr(curr->command, 0, i);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
-	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i);
-	ft_printf("%d, %d, %d \n",i + 1, (ft_strlen(curr->command) - i));
+	curr->option = ft_substr(curr->command, i + 1, ft_strlen(curr->command) - i + 1);
+	ft_printf("%d, %d \n",i + 1,  (ft_strlen(curr->command)- i));
 	free(curr->command);
 	curr->command = ft_strdup(temp);
 	free(temp);
@@ -92,6 +92,7 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	word_end++;
 	//printf("(%d %d)\n", word_start, word_end);
 	new->command = ft_substr(data, word_start, word_end - word_start);
+	ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	split_argv(new);
 	//if (new->option != NULL && new->option)
 		//tild_handler(minishell, new);

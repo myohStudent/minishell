@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/17 16:17:19 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/17 17:24:54 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ int cmd_handler(t_minishell *minishell)
 				}
 			}
 			else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
-			{
-				ft_putstr_fd("\n[Process Completed]\0", 1);
-				exit(1);
-			}
+				cmd_exit(curr, minishell);
 			else if (ft_strncmp(curr->command, "env\0", 4) == 0)
 				cmd_env(minishell);
 			else if (ft_strncmp(curr->command, "export\0", 7) == 0)
