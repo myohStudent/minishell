@@ -51,6 +51,12 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+typedef struct		s_pipe
+{
+	char	**line;
+	char	**argv;
+}					t_pipe;
+
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
@@ -89,7 +95,6 @@ void	cmd_unset(t_minishell *minishell);
 /*
 ** sig_handler.c
 */
-
 int			get_fork(void);
 int			set_fork(int current_fork);
 void		parent_signal_handler(int signo);
