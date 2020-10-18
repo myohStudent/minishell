@@ -82,6 +82,11 @@ void	free_arr(char **arr);
 void	cmd_env(t_minishell *minishell);
 
 /*
+** cmd_unset.c
+*/
+void	cmd_unset(t_minishell *minishell);
+
+/*
 ** sig_handler.c
 */
 
@@ -102,6 +107,8 @@ int        env_index(t_minishell *minishell, char *str);
 */
 int    cmd_export(t_cmd *curr, t_minishell *minishell);
 void    		cpy_env(t_minishell *minishell, int j);
+char	**arr_realloc(t_minishell *minishell, char *line);
+
 /*
 ** cmd_exit.c
 */
