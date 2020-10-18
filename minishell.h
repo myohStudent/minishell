@@ -34,14 +34,14 @@
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
-
+/*
 typedef struct s_env
 {
 	int				is_added;
 	char			**variable; // 홀
 	int				val_index;
 	char			**value;  // 짝
-} 					t_env;
+} 					t_env;*/
 
 typedef struct		s_cmd
 {
@@ -60,7 +60,7 @@ typedef struct	 	s_minishell
 	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
-	t_env			env;
+//	t_env			env;
 	t_cmd			*cmd;
 } 					t_minishell;
 
@@ -74,6 +74,8 @@ void	display_prompt(void);
 */ 
 void init_env(char **env, t_minishell *minishell);
 int	arr_len(char **env);
+int		ft_before_chr(char *s, char c);
+void	free_arr(char **arr);
 /*
 ** cmd_env.c
 */
@@ -99,6 +101,7 @@ int        env_index(t_minishell *minishell, char *str);
 ** cmd_export.c
 */
 int    cmd_export(t_cmd *curr, t_minishell *minishell);
+void    		cpy_env(t_minishell *minishell, int j);
 /*
 ** cmd_exit.c
 */

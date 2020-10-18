@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/18 00:49:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/18 13:18:56 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@
 	write(1, "\n", 1);
 	exit(1);
 }*/
+
+int		ft_before_chr(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (i + 1);
+		i++;
+	}
+	return (0);		
+}
 
 void	free_arr(char **arr)
 {
@@ -38,25 +52,6 @@ int	arr_len(char **env)
 	return (i);
 }
 
-char	**arr_realloc(char **arr, char *line)
-{
-	char	**res;
-	int		i;
-
-	i = 0;
-	res = (char **)malloc(sizeof(char *) * (arr_len(arr) + 2));
-	while (arr[i] != NULL)
-	{
-		res[i] = ft_strdup(arr[i]);
-		i++;
-	}
-	res[i++] = ft_strdup(line);
-	res[i] = NULL;
-	i = 0;
-	free_arr(arr);
-	return (res);
-}
-
 char	**set_env(char **env)
 {
 	int		i;
@@ -75,7 +70,6 @@ char	**set_env(char **env)
 			exit(1);
 		i++;
 	}
-	ft_printf("new : %s %s\n", new[0], new[1]);
 	/*while (env[i])
 	{
 		j = 0;
@@ -101,8 +95,8 @@ void init_env(char **env, t_minishell *minishell)
 	i = 0;
 	minishell->env_set = set_env(env);
 	minishell->env_nb = arr_len(minishell->env_set);
-    minishell->env.is_added = 0;
 	minishell->env_currnb = minishell->env_nb;
+	cpy_env(minishell, minishell->env_nb);
 }
 
 int		count_mots(char *str)
