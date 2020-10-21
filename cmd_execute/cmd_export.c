@@ -22,10 +22,8 @@ void    		cpy_env(t_minishell *minishell, int j)
 	{
 		minishell->export_set[i] = ft_strdup(minishell->env_set[i]);
 		i++;
-		ft_printf("%d ", i);
-		ft_printf("\n");
+		//ft_printf("%d ", i);
 	}
-	//ft_printf("cpy_env 나옴\n");
 }
 
 static void     sort_export(t_minishell *minishell, int j)

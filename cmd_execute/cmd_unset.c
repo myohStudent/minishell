@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_unset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
+/*   Updated: 2020/10/21 23:00:58 by myoh             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	**arr_unset(t_cmd *curr, t_minishell *minishell)
@@ -16,7 +28,7 @@ char	**arr_unset(t_cmd *curr, t_minishell *minishell)
 		i++;
 	}
 	ft_printf("(%d)",i);
-	res[i] = ft_strdup(line);
+	res[i] = ft_strdup(minishell->export_set[i]);
 	res[i + 1] = NULL;
 	ft_printf("(%d)\n", i);
 	free_arr(minishell->export_set);
@@ -24,7 +36,7 @@ char	**arr_unset(t_cmd *curr, t_minishell *minishell)
 	return (res);
 }
 
-void	cmd_unset(t_cmd curr, t_minishell *minishell)
+void	cmd_unset(t_cmd *curr, t_minishell *minishell)
 {
 	int	i;
 	int j;
@@ -37,7 +49,7 @@ void	cmd_unset(t_cmd curr, t_minishell *minishell)
 	if (curr->argc >= 2 && curr->option != NULL)			
 	{
 		if (!(str = ft_split(curr->option, ' ')))
-			return (0);
+			return ;
 		while (str[i])
 		{
 			if (ft_strchr(str[i], '=') != 0)
@@ -50,7 +62,10 @@ void	cmd_unset(t_cmd curr, t_minishell *minishell)
 			{
 				if (ft_strncmp(minishell->export_set[i], curr->option, j + 1) == 0)
 				{
+
 				}
 			i++;
+			}
 		}
+	}
 }

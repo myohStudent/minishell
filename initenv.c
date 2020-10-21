@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/18 13:18:56 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/21 23:04:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,6 @@ char	**set_env(char **env)
 			exit(1);
 		i++;
 	}
-	/*while (env[i])
-	{
-		j = 0;
-		while (env[i][j] != '=')
-			j++;
-		env[i][j] = '\0';
-		temp = ft_strdup(env[i]);
-		new = arr_realloc(new, temp);
-		free(temp);
-		j++;
-		temp = ft_strdup(&env[i][j]);
-		new = arr_realloc(new, temp);
-		free(temp);
-		i++;
-	}*/
 	return (new);
 }
 

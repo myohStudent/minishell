@@ -48,6 +48,8 @@ typedef struct		s_cmd
 	int				argc;
 	char			*command;
 	char			*option;
+	char			**line; // 파이프용
+	char			**argv; // 파이프용
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -90,7 +92,7 @@ void	cmd_env(t_minishell *minishell);
 /*
 ** cmd_unset.c
 */
-void	cmd_unset(t_minishell *minishell);
+void	cmd_unset(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** sig_handler.c
@@ -110,6 +112,7 @@ int        env_index(t_minishell *minishell, char *str);
 /*
 ** cmd_export.c
 */
+int			    ft_strcmp(const char *s1, const char *s2);
 int    cmd_export(t_cmd *curr, t_minishell *minishell);
 void    		cpy_env(t_minishell *minishell, int j);
 char	**arr_realloc(t_minishell *minishell, char *line);

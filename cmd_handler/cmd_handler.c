@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/18 15:27:44 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/21 23:02:22 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ int cmd_handler(t_minishell *minishell)
 		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 		if (curr->command)
 		{
+			//if (curr->option에 |가 있을 시)
+			// 
+			
 			if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 			{
 				if (curr->argc == 1)
