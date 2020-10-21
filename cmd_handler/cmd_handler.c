@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/21 23:02:22 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/21 23:55:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ int cmd_handler(t_minishell *minishell)
 		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 		if (curr->command)
 		{
-			//if (curr->option에 |가 있을 시)
-			// 
+			// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
+			// if (has_pipes(curr->option) != 0)
+			//	exec_pipe(curr, minishell);
+			//
+			// 또한 나중에 redirection도 넣어야 함.
 			
 			if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 			{

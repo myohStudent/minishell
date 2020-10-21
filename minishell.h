@@ -53,12 +53,6 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef struct		s_pipe
-{
-	char	**line;
-	char	**argv;
-}					t_pipe;
-
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
