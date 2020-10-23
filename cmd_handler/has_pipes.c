@@ -6,26 +6,25 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/23 23:35:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/24 00:11:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int			has_pipes(t_cmd *curr, t_minishell *minishell)
+int			has_pipes(char *option)
 {
-	int		i;
 	int		res;
 
-	i = 0;
 	res = 0;
-	while (curr->option[i])
+	while (*option)
 	{
-		if (curr->option[i] == '|')
+		if (*option == '|')
 		{
 			res++;
 		}
-		i++;
+		option++;
 	}
+	ft_printf("pipe개수: %d\n", res);
 	return (res);
 }

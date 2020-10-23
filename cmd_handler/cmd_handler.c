@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/21 23:55:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/24 00:10:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ int cmd_handler(t_minishell *minishell)
 		if (curr->command)
 		{
 			// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
-			// if (has_pipes(curr->option) != 0)
-			//	exec_pipe(curr, minishell);
-			//
+			if (has_pipes(curr->option) != 0)
+			{
+				//	exec_pipe(curr, minishell);
+				ft_printf("pipe if문 안에 들어왔음\n");
+			}
 			// 또한 나중에 redirection도 넣어야 함.
 			
 			if (ft_strncmp(curr->command, "pwd\0", 4) == 0)

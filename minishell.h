@@ -99,6 +99,7 @@ void		parent_signal_handler(int signo);
 */
 
 int cmd_handler(t_minishell *minishell);
+int	has_pipes(char *option);
 /*
 ** 
 */
