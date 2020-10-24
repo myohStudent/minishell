@@ -3,6 +3,7 @@
 int get_argc(t_cmd *curr)
 {
 	int i;
+	int ac;
 
 	i = 0;
 	while (curr->command[i])
@@ -18,7 +19,6 @@ int get_argc(t_cmd *curr)
 		i--;
 	}
 	curr->argc++;
-
 	return (curr->argc);
 }
 
@@ -55,7 +55,6 @@ void				tild_handler(t_minishell *minishell, t_cmd *curr)
 	}
 }
 
-
 void split_argv(t_cmd *curr)
 {
 	int i;
@@ -64,8 +63,12 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	if (!curr || !curr->command || get_argc(curr) == 1)
+	/*if (!curr || !curr->command || get_argc(curr) == 1)
+		return ;*/
+	// 이유도 모르겠는데 여기서 opt: 0일 때 세그폴트가 뜨네요 그래서 +1한 상태예요ㅠㅠㅠ
+	if (!curr || !curr->command || get_argc(curr) + 1 == 1)
 		return ;
+	i = 0;
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
