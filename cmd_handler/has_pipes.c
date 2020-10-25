@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   has_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/24 00:11:29 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/25 15:43:15 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int			has_pipes(char *option)
 	int		res;
 
 	res = 0;
+	if (!option)
+		return (res);
 	while (*option)
 	{
 		if (*option == '|')
-		{
 			res++;
-		}
 		option++;
 	}
 	ft_printf("pipe개수: %d\n", res);

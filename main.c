@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/17 22:42:07 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/25 16:24:24 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "./minishell.h"
-
-/* 프롬프트 만들고 pwd부터 구현하기
-현재 디렉토리 구하는 함수: getcwd (unistd에 있다)*/
 
 void	display_prompt(void)
 {

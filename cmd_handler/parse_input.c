@@ -19,6 +19,7 @@ int get_argc(t_cmd *curr)
 		i--;
 	}
 	curr->argc++;
+	ft_printf("%d\n",curr->argc);
 	return (curr->argc);
 }
 
@@ -63,10 +64,7 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	/*if (!curr || !curr->command || get_argc(curr) == 1)
-		return ;*/
-	// 이유도 모르겠는데 여기서 opt: 0일 때 세그폴트가 뜨네요 그래서 +1한 상태예요ㅠㅠㅠ
-	if (!curr || !curr->command || get_argc(curr) + 1 == 1)
+	if (!curr || !curr->command || get_argc(curr) == 1)
 		return ;
 	i = 0;
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
@@ -96,7 +94,7 @@ char		*check_copy(char const *s, unsigned int start, size_t len)
 	if (!(a = (char *)malloc(sizeof(char) * ((int)len))))
 	{
 		ft_printf("리턴널 일어남\n");
-		return (NULL);	
+		return (NULL);
 	}
 	ft_printf("((%d, %d, ", start, len);
 	while (i < (int)len)
