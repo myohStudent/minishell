@@ -40,7 +40,7 @@ typedef struct s_env
 	char			*variable;
 	char			*value;
 	int				index;
-	t_env			*next;
+	struct s_env	*next;
 } 					t_env;
 
 typedef struct		s_cmd
