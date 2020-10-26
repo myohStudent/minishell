@@ -32,6 +32,7 @@ static void     sort_export(t_minishell *minishell, int j)
 	int c;
 	char *temp;
 	int k;
+	char *str;
 
 	c = 0;
 	ft_printf("j : %d\n", j);
@@ -47,6 +48,9 @@ static void     sort_export(t_minishell *minishell, int j)
 			  */
 	
 	i = 0;
+	/*if () 
+		str = ft_split(curr->option, "=");
+	*/
 	while (i < j - 1 && minishell->export_set[i])
 	{
 		k = 0;
