@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/27 20:20:51 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/28 02:58:47 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,25 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
+int cmd_executor(t_minishell *minishell, t_cmd *curr)
+{
+	// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
+	if (has_pipes(curr->option) != 0)
+	{
+		//exec_pipe(curr, minishell);
+		ft_printf("pipe if문 안에 들어왔음\n");
+	}
+	/*else if (has_redir(curr->option) != 0)
+		exec_redir(curr->option);
+
+	else if (has_quote(curr->option) != 0)
+		exec_quote(curr, minishell);
+	*/
+	else
+		if(!(exec_else(minishell, curr)))
+			return (-1);
+	return (1);
+}
 int cmd_handler(t_minishell *minishell)
 {
 	char buf[2];
@@ -112,31 +131,12 @@ int cmd_handler(t_minishell *minishell)
 	int i = 0;
 	while (curr != NULL && *input != 0)               // 포인터가 NULL이 아닐 때 계속 반복
     {
-        //ft_printf("%d", i);    // 현재 노드의 데이터 출력
 	   	i++;
-		//ft_printf(" : %s|", curr->command);
-		//할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
+		//[해결] 할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
+		//[해결] 할일 : 이 if문을 함수로 따로 빼야만 pipe와 리다의 재귀가 가능합니다. 
 		if (curr->command)
-		{
-			// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
-			if (has_pipes(curr->option) != 0)
-			{
-				//cmd    : asdfafds
-				//option : | asdfasf | dasdfaf
-
-				exec_pipe(curr, minishell);
-				ft_printf("pipe if문 안에 들어왔음\n");
-			}
-			/*else if (has_redir(curr->option) != 0)
-				exec_redir(curr->option);
-
-			else if (has_quote(curr->option) != 0)
-				exec_quote(curr, minishell);
-			*/
-			else
-				if(!(exec_else(minishell, curr)))
-					return (-1);
-		}
+			if (!(cmd_executor(minishell, curr)))
+				return (-1);
 		t_cmd *next;
 		next = curr->next;
 		free(curr);
