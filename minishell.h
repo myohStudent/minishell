@@ -48,9 +48,7 @@ typedef struct		s_cmd
 	int				argc;
 	char			*command;
 	char			*option;
-	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다 
-	char			**line; // 파이프용
-	char			**argv; // 파이프용
+	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
 	struct s_cmd	*next;
 }					t_cmd;
 

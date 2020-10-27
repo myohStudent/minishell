@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/25 16:39:08 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/10/27 20:20:51 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int cmd_handler(t_minishell *minishell)
 				//cmd    : asdfafds
 				//option : | asdfasf | dasdfaf
 
-				//exec_pipe(curr, minishell);
+				exec_pipe(curr, minishell);
 				ft_printf("pipe if문 안에 들어왔음\n");
 			}
 			/*else if (has_redir(curr->option) != 0)
