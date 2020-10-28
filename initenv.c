@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/21 23:04:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/28 23:29:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,41 @@ char	**set_env(char **env)
 	}
 	return (new);
 }
+
+/*
+t_env		new_env(char **str)
+{
+	t_env
+}
+
+void		init_env(char **env, t_minishell *minishell)
+{
+	int		i;
+	char	**str;
+	t_env	*temp;
+	
+	i = 0;
+	temp = (t_env *)malloc(sizeof(t_env)); //초기화 필요 없을 것 같지만?
+	temp->variable = NULL;
+	temp->value = NULL;
+	temp->index = 0;
+	while (env[i])
+	{
+		str = ft_split(env[i], '=')); // split해서 나눠 놓기
+		if (!(temp = new_env(str))) // 나눈 문자열을 따로 따로 temp 임시 구조체에 넣기
+		{
+			//str 프리
+			return ;
+		}
+		ft_lstnew(temp);
+		ft_lstadd_back(minishell->env);
+		//str 프리
+		i++;
+	}
+}
+
+}
+*/
 
 void init_env(char **env, t_minishell *minishell)
 {

@@ -34,6 +34,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
 	int		pipe_fd[2];
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
+	//넵 좋아요! 하나만 쓰죠!
 	int		p1, p2;
 
 	//command -> asdfasdfafs

@@ -27,6 +27,7 @@ SRC		=	ft_hexchanger.c \
 			ft_putstr_fd.c \
 			ft_split.c \
 			ft_strnew.c \
+			ft_lstnew.c \
 
 INC		=	libft.h
 
