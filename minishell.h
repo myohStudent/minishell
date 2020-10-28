@@ -57,7 +57,7 @@ typedef struct	 	s_minishell
 	pid_t			pid;
 	char			**env_set;
 	char			**export_set;
-	int				env_currnb; // current number 
+	int				env_currnb; // current number
 	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
@@ -72,7 +72,7 @@ void	display_prompt(void);
 
 /*
 ** initenv.c
-*/ 
+*/
 void init_env(char **env, t_minishell *minishell);
 int	arr_len(char **env);
 int		ft_before_chr(char *s, char c);
@@ -99,8 +99,10 @@ void		parent_signal_handler(int signo);
 
 int cmd_handler(t_minishell *minishell);
 int	has_pipes(char *option);
+int cmd_executor(t_minishell *minishell, t_cmd *curr);
+
 /*
-** 
+**
 */
 int        env_index(t_minishell *minishell, char *str);
 /*
@@ -124,5 +126,11 @@ void split_argv(t_cmd *curr);
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
 t_cmd *create_node(t_minishell *minishell, char *data, int word_len);
 void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
+
+/*
+pipe_execute.c
+*/
+
+int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 
 #endif
