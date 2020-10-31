@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/31 23:19:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/31 23:30:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void		init_env(char **env, t_minishell *minishell)
 	}
 	// 다 넣은 뒤에 다시 하나의 이중배열에 입력해야 함.어휴...
 	minishell->env_set = set_env(minishell);
+	minishell->export_set = NULL; 
 }
 
 int		ft_before_chr(char *s, char c)
