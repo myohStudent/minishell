@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/28 23:37:26 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/31 22:41:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,9 @@ typedef struct		s_list
 	struct s_list	*next;
 }						t_list;
 
-t_list			*ft_lstnew(void *content);
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_back(t_list **upc, t_list *new);
+void	ft_lstadd_front(t_list **upc, t_list *new);
+int		ft_lstsize(t_list *lst);
+
 #endif

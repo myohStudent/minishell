@@ -36,11 +36,10 @@
 
 typedef struct s_env
 {
-	int				is_added;
+	//int				is_added;
 	char			*variable;
 	char			*value;
-	int				index;
-	struct s_env	*next;
+	//int				index;
 } 					t_env;
 
 typedef struct		s_cmd
@@ -61,6 +60,7 @@ typedef struct	 	s_minishell
 	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
+	t_list			*env_list; // env용 연결 리스트!
 	t_env			env;
 	t_cmd			*cmd;
 } 					t_minishell;

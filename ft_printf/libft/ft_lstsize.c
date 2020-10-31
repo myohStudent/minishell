@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/31 14:11:24 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/31 22:41:38 by myoh             ###   ########.fr       */
+/*   Created: 2020/10/31 21:57:34 by myoh              #+#    #+#             */
+/*   Updated: 2020/10/31 22:00:09 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **upc, t_list *new)
+int		ft_lstsize(t_list *lst)
 {
+	int	i;
 	t_list	*imsi;
 
-	if (!upc || !new)
-		return ;
-	if (*upc)
+	i = 0;
+	imsi = lst;
+	while (imsi)
 	{
-		imsi = *upc;
-		while (imsi->next)
-			imsi = imsi->next;
-		imsi->next = new;
+		imsi = imsi->next;
+		i++;
 	}
-	else
-	{
-		*upc = new;
-	}
+	return (i);
 }
