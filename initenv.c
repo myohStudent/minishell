@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/30 22:25:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/10/31 14:08:05 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,19 @@
 	exit(1);
 }*/
 
-
-/*
-t_env		new_env(char **str)
+t_env		*new_env(char **str)
 {
 	t_env	*new;
 
-	if ( )
+	if (!(new = ft_memalloc(sizeof(t_env))))
+		return (new); // ?????? t_env????어떻게 나가지? 반환 어쩔? 
+	new->variable = ft_strdup(str[0]);
+	// env value값이 있을 때와 없을 때가 있어서 예외 처리를 해야 한다!
+	if (str[1] != NULL)
+		new->value = ft_strdup(str[1]);
+	else
+		new->value = ft_strdup("");
+	return (new);
 }
 
 void		init_env(char **env, t_minishell *minishell)
@@ -40,21 +46,21 @@ void		init_env(char **env, t_minishell *minishell)
 	temp->index = 0;
 	while (env[i])
 	{
-		str = ft_split(env[i], '=')); // split해서 나눠 놓기
+		str = ft_split(env[i], '='); // split해서 나눠 놓기
 		if (!(temp = new_env(str))) // 나눈 문자열을 따로 따로 temp 임시 구조체에 넣기
 		{
-			//str 프리
+			free(str[0]);
+			free(str[1]);
 			return ;
 		}
-		ft_lstnew(temp);
+		ft_lstnew(temp); // 새로이 저장
 		ft_lstadd_back(minishell->env);
-		//str 프리
+		free(str[0]);
+		free(str[1]);
 		i++;
 	}
 }
 
-}
-*/
 int		ft_before_chr(char *s, char c)
 {
 	int	i;
@@ -66,7 +72,7 @@ int		ft_before_chr(char *s, char c)
 			return (i + 1);
 		i++;
 	}
-	return (0);		
+	return (0);	
 }
 
 void	free_arr(char **arr)
