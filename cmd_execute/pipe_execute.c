@@ -98,6 +98,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 */
 }
+
 /*
 void parse_pipe(t_minishell *minishell, t_cmd *cmd, char *input)
 {

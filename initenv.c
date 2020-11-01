@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/01 16:02:29 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/01 17:56:29 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_env		*new_env(char **str)
 	t_env	*new;
 
 	if (!(new = ft_memalloc(sizeof(t_env))))
-		return (new); // ?????? t_env???? 반환 어쩔? 
+		return (new); // ?????? t_env???? 반환 어쩔?
 	new->variable = ft_strdup(str[0]);
 	// env value값이 있을 때와 없을 때가 있어서 예외 처리를 해야 한다
 	if (str[1] != NULL)
@@ -48,8 +48,7 @@ char		**set_env(t_minishell *minishell)
 	t_list	*temp;
 	int		i;
 	char	**env;
-	char	*imsi1;
-	char	*imsi2;
+	char	*tmp1;
 
 	i = 0;
 	if (minishell->env_set)
@@ -57,18 +56,17 @@ char		**set_env(t_minishell *minishell)
 	if (!(env = ft_calloc(1, sizeof(char *) *
 					(ft_lstsize(minishell->env_list) + 1))))
 		return (NULL);
-	temp = minishell->env_list;
-	while (temp)
-	{	
+	temp = (t_list *)minishell->env_list;
+	while (temp && i < ft_lstsize(minishell->env_list))
+	{
 		//ft_strjoin으로 variable과 =를 한 줄로 입력
-		imsi1 = ft_strjoin(((t_env *)(temp->content))->variable, "=");
-		ft_printf("%s", imsi1);
+		tmp1 = ft_strjoin(((t_env *)(temp->content))->variable, "=");
+		ft_printf("%s", tmp1);
 		//그 줄에다 다시 뒷부분 입력
-		imsi2 = ((t_env *)(temp->content))->value;
-		ft_printf("%s \n", imsi2);
-		env[i] = ft_strjoin(imsi1, imsi2);
-		free(imsi1);
-		free(imsi2);
+	//	tmp2 = ((t_env *)(temp->content))->value;
+		//ft_printf("%s \n", tmp1);
+		env[i] = ft_strjoin(tmp1, ((t_env *)(temp->content))->value);
+		free(tmp1);
 		i++; //
 		temp = temp->next; //다음 줄로 가시오!
 	}
@@ -79,10 +77,10 @@ char		**set_env(t_minishell *minishell)
 void		init_env(char **env, t_minishell *minishell)
 {
 	t_list	*templst;
-	t_env	*temp; 
+	t_env	*temp;
 	int		i;
 	char	**str;
-	
+
 	i = 0;
 	temp = (t_env *)malloc(sizeof(t_env)); //초기화 필요 없을 것 같지만?
 	temp->variable = NULL;
@@ -104,7 +102,7 @@ void		init_env(char **env, t_minishell *minishell)
 	}
 	// 다 넣은 뒤에 다시 하나의 이중배열에 입력함... -> 이거 넣고 env 명령어 치면 에러 발생.
 	//minishell->env_set = set_env(minishell);
-	minishell->export_set = NULL; 
+	minishell->export_set = NULL;
 }
 
 int		ft_before_chr(char *s, char c)
@@ -118,7 +116,7 @@ int		ft_before_chr(char *s, char c)
 			return (i + 1);
 		i++;
 	}
-	return (0);	
+	return (0);
 }
 
 

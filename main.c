@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/25 16:24:24 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/01 17:56:27 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int		main(int ac, char **av, char **env)
 	while (1)
 	{
 		display_prompt();
-		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
-		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+D Ctrl+\ 수행하기
+		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
+		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
 	}
 	return (0);
