@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/31 23:30:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/01 15:37:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char		**set_env(t_minishell *minishell)
 		//ft_strjoin으로 variable과 =를 한 줄로 입력
 		imsi1 = ft_strjoin(((t_env *)(temp->content))->variable, "=");
 		ft_printf("%s", imsi1);
-		//그 줄에다 다시 뒷부분 value 입력 strjoin이 안 돼서 free들어간 strjoin을 써야 함
+		//그 줄에다 다시 뒷부분 입력
 		imsi2 = ((t_env *)(temp->content))->value;
 		ft_printf("%s \n", imsi2);
 		env[i] = ft_strjoin(imsi1, imsi2);
@@ -102,8 +102,8 @@ void		init_env(char **env, t_minishell *minishell)
 		free_arr(str);
 		i++;
 	}
-	// 다 넣은 뒤에 다시 하나의 이중배열에 입력해야 함.어휴...
-	minishell->env_set = set_env(minishell);
+	// 다 넣은 뒤에 다시 하나의 이중배열에 입력함... -> 이거 넣고 env 명령어 치면 에러 발생.
+	//minishell->env_set = set_env(minishell);
 	minishell->export_set = NULL; 
 }
 
