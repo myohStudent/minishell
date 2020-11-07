@@ -116,6 +116,7 @@ char	**arr_realloc(t_minishell *minishell, char *line);
 ** export_utils.c
 */
 void	ft_sort(t_list **start, int (*str_cmp)());
+void	env_export_print(t_list **start_lst);
 
 /*
 ** cmd_exit.c

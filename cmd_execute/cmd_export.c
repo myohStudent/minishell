@@ -16,7 +16,7 @@ void	export_basic(t_minishell *minishell)
 		tmp = tmp->next;
 	}
 	//ft_sort(&minishell->env_list, ft_strcmp);
-	//env_export(&minishell->env_list);
+	//env_export_print(&minishell->env_list);
 	ft_lstclear(&minishell->env_list, voidfn);
 }
 

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 22:49:00 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/07 23:08:53 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/07 23:18:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,3 +36,22 @@ void	ft_sort(t_list **start, int (*str_cmp)())  //괄호에 값을 넣지 않는
 		tmp1 = tmp1->next;
 	}
 }
+
+//하고 연결리스트용 함수 env_export_print 만들기 ->  
+void	env_export_print(t_list **start_lst)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = *start_lst;
+	if (!*start_lst)
+		return ;
+	while (tmp)
+	{
+			// declare -x %s=%s \n 출력하는 부분
+	}
+	tmp = tmp->next;
+}
+
+// 연결리스트용 함수 
