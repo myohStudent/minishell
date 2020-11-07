@@ -112,6 +112,10 @@ int			    ft_strcmp(const char *s1, const char *s2);
 int    cmd_export(t_cmd *curr, t_minishell *minishell);
 void    		cpy_env(t_minishell *minishell, int j);
 char	**arr_realloc(t_minishell *minishell, char *line);
+/*
+** export_utils.c
+*/
+void	ft_sort(t_list **start, int (*str_cmp)());
 
 /*
 ** cmd_exit.c
