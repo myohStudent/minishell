@@ -1,5 +1,25 @@
 #include "../minishell.h"
 
+void	voidfn(void *cmd)
+{
+	(void)cmd;
+}
+
+void	export_basic(t_minishell *minishell)
+{
+	t_list	*tmp;
+
+	tmp = minishell->env_list;
+	while (tmp)
+	{
+		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp->content));
+		tmp = tmp->next;
+	}
+	//ft_sort(&minishell->env_list, ft_strcmp);
+	//env_export(&minishell->env_list);
+	ft_lstclear(&minishell->env_list, voidfn);
+}
+
 int			    ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s2 && *s1 == *s2)
@@ -111,6 +131,7 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 
 	if (curr->argc == 1)
 	{
+		//export_basic(minishell);
 		sort_export(minishell, minishell->env_nb);
 		ft_printf("현재 export 갯수 : %d\n",arr_len(minishell->export_set));
 		i = 0;
