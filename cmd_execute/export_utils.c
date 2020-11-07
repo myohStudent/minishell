@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 22:49:00 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/07 23:52:09 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/07 23:57:40 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,10 @@ void	env_export_print(t_list **start_lst)
 	while (tmp)
 	{
 			// declare -x %s=%s \n 출력하는 부분 작동 안 됨ㅋㅋㅋ
-		/*	if (((t_env *)(tmp->content))->value && !((t_env *)(tmp->content))->??) //???
+		/*	if (((t_env *)(tmp->content))->value) //???
 				ft_printf("declare -x %s=\"%s\"\n",
 				((t_env *)(tmp->content))->variable, ((t_env *)(tmp->content))->value);
-			else if (!((t_env *)(tmp->content))->value && 
-								!((t_env *)(tmp->content))->??)
+			else if (!((t_env *)(tmp->content))->value)
 				ft_printf("declare -x %s\n",
 					((t_env *)(tmp->content))->variable);
 					*/
