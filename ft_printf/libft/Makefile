@@ -31,6 +31,9 @@ SRC		=	ft_hexchanger.c \
 			ft_lstadd_front.c \
 			ft_lstadd_back.c \
 			ft_lstsize.c \
+			ft_lstclear.c \
+			ft_lstdel.c \
+			ft_lstdelone.c \
 
 INC		=	libft.h
 

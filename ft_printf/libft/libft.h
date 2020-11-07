@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/10/31 22:41:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/07 21:51:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char			*ft_strnew(size_t size);
 typedef struct		s_list
 {
 	void			*content;
+	size_t			*content_size;
 	struct s_list	*next;
 }						t_list;
 
@@ -55,5 +56,8 @@ t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **upc, t_list *new);
 void	ft_lstadd_front(t_list **upc, t_list *new);
 int		ft_lstsize(t_list *lst);
+void	ft_lstclear(t_list **lst, void (*del)(void*));
+void	ft_lstdel(t_list **alst, void (*del)(void *));
+void	ft_lstdelone(t_list *alst, void (*del)(void *));
 
 #endif
