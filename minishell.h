@@ -34,12 +34,13 @@
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
+int		g_env_max;
+
 typedef struct s_env
 {
 	//int				is_added;
 	char			*variable;
 	char			*value;
-	//int				index;
 } 					t_env;
 
 typedef struct		s_cmd

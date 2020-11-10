@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/07 22:23:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/10 15:07:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void		init_env(char **env, t_minishell *minishell)
 	temp = (t_env *)malloc(sizeof(t_env)); //초기화 필요 없을 것 같지만?
 	temp->variable = NULL;
 	temp->value = NULL;
-//	temp->index = 0;
+	g_env_max = 0;
 	while (env[i])
 	{
 		str = ft_split(env[i], '='); // split해서 나눠 놓기
@@ -99,6 +99,7 @@ void		init_env(char **env, t_minishell *minishell)
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(temp));
 		free_arr(str);
 		i++;
+		g_env_max++;
 	}
 	// 다 넣은 뒤에 다시 하나의 이중배열에 입력함... -> 이거 넣고 env 명령어 치면 에러 발생.
 	//minishell->env_set = set_env(minishell);

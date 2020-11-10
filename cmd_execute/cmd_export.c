@@ -7,17 +7,22 @@ void	voidfn(void *cmd)
 
 void	export_basic(t_minishell *minishell)
 {
+	int 	i;
 	t_list	*tmp;
 
+	i = 0;
 	tmp = minishell->env_list;
-	while (tmp)
+	while (tmp != NULL && i < g_env_max)
 	{
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp->content));
+		ft_printf("tmp->variable : %s\n", ((t_env *)(tmp->content))->variable);
 		tmp = tmp->next;
+		i++;
 	}
-	//ft_sort(&minishell->env_list, ft_strcmp);
-	//env_export_print(&minishell->env_list);
+	ft_sort(&minishell->env_list, ft_strcmp);
+	env_export_print(&minishell->env_list);
 	ft_lstclear(&minishell->env_list, voidfn);
+	ft_printf("????  ");
 }
 
 int			    ft_strcmp(const char *s1, const char *s2)
@@ -55,8 +60,6 @@ static void     sort_export(t_minishell *minishell, int j)
 	char *str;
 
 	c = 0;
-	ft_printf("j : %d\n", j);
-	ft_printf("---sort중---\n");
 	/*
 		{ 
    		
@@ -131,17 +134,17 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 
 	if (curr->argc == 1)
 	{
-		//export_basic(minishell);
-		sort_export(minishell, minishell->env_nb);
-		ft_printf("현재 export 갯수 : %d\n",arr_len(minishell->export_set));
-		i = 0;
-		while (minishell->export_set[i] && i < arr_len(minishell->export_set))
+		
+		export_basic(minishell);
+		//ft_printf("현재 export 갯수 : %d\n",arr_len(minishell->export_set));
+		//sort_export(minishell, minishell->env_nb);
+		/*while (minishell->export_set[i] && i < arr_len(minishell->export_set))
 		{
 			ft_printf("declare -x %d ", i);
 			ft_printf("%s\n", minishell->export_set[i]);
 			i++;
-		}
-		ft_printf("\n");
+		}*/
+		ft_printf("수고하셨습니다\n");
 		return (1);
 	}
 
