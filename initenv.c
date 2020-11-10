@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/10 15:07:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/10 17:18:37 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		init_env(char **env, t_minishell *minishell)
 	}
 	// 다 넣은 뒤에 다시 하나의 이중배열에 입력함... -> 이거 넣고 env 명령어 치면 에러 발생.
 	//minishell->env_set = set_env(minishell);
-	minishell->export_set = NULL;
+	//minishell->export_set = NULL;
 }
 
 int		ft_before_chr(char *s, char c)

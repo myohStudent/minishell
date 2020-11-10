@@ -15,13 +15,13 @@ void	export_basic(t_minishell *minishell)
 	while (tmp != NULL && i < g_env_max)
 	{
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp->content));
-		ft_printf("tmp->variable : %s\n", ((t_env *)(tmp->content))->variable);
+		//ft_printf("tmp->variable : %s\n", ((t_env *)(tmp->content))->variable);
 		tmp = tmp->next;
 		i++;
 	}
-	ft_sort(&minishell->env_list, ft_strcmp);
-	env_export_print(&minishell->env_list);
-	ft_lstclear(&minishell->env_list, voidfn);
+	//ft_sort(&minishell->env_list, ft_strcmp);
+	//env_export_print(minishell->env_list);
+	//ft_lstclear(&minishell->env_list, voidfn);
 	ft_printf("????  ");
 }
 
@@ -33,7 +33,7 @@ int			    ft_strcmp(const char *s1, const char *s2)
 		s2++;
 	}
 	return ((unsigned char)*s1 - (unsigned char)*s2);
-} 
+}
 
 void    		cpy_env(t_minishell *minishell, int j)
 {
@@ -61,17 +61,17 @@ static void     sort_export(t_minishell *minishell, int j)
 
 	c = 0;
 	/*
-		{ 
-   		
-   		for (i = 0; i < n-1; i++)       
-       // Last i elements are already in place    
-       for (j = 0; j < n-i-1; j++)  
-           if (arr[j] > arr[j+1]) 
-              swap(&arr[j], &arr[j+1]); 
+		{
+
+   		for (i = 0; i < n-1; i++)
+       // Last i elements are already in place
+       for (j = 0; j < n-i-1; j++)
+           if (arr[j] > arr[j+1])
+              swap(&arr[j], &arr[j+1]);
 			  */
-	
+
 	i = 0;
-	/*if () 
+	/*if ()
 		str = ft_split(curr->option, "=");
 	*/
 	while (i < j - 1 && minishell->export_set[i])
@@ -134,7 +134,7 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 
 	if (curr->argc == 1)
 	{
-		
+
 		export_basic(minishell);
 		//ft_printf("현재 export 갯수 : %d\n",arr_len(minishell->export_set));
 		//sort_export(minishell, minishell->env_nb);
@@ -177,6 +177,6 @@ int             cmd_export(t_cmd *curr, t_minishell *minishell)
 					return (0);
 			}
 		}
-	}	
+	}
 	return (1);
 }

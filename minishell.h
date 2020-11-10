@@ -55,13 +55,14 @@ typedef struct		s_cmd
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
-	char			**env_set;
-	char			**export_set;
+	//char			**env_set;
+	//char			**export_set;
 	int				env_currnb; // current number
 	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
 	t_list			*env_list; // env용 연결 리스트!
+	t_list			*export_list;
 	t_env			env;
 	t_cmd			*cmd;
 } 					t_minishell;
@@ -117,7 +118,7 @@ char	**arr_realloc(t_minishell *minishell, char *line);
 ** export_utils.c
 */
 void	ft_sort(t_list **start, int (*str_cmp)());
-void	env_export_print(t_list **start_lst);
+void	env_export_print(t_list *start_lst);
 int		is_same(char *s1, char *s2);
 
 /*

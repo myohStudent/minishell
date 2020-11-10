@@ -159,6 +159,7 @@ void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 		if (input[end] == ';' || !input[end])
 		{
 			cmd->next = create_node(minishell, input + start, end - start - 1);
+			ft_printf("argc = %d\n",cmd->argc);
 			cmd = cmd->next;
 		}
 		end++;

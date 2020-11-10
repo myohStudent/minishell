@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 22:49:00 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/10 15:39:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/10 17:18:24 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 int		is_same(char *s1, char *s2)
 {
@@ -51,25 +52,23 @@ void	ft_sort(t_list **start, int (*str_cmp)())  //괄호에 값을 넣지 않는
 	}
 }
 
-//하고 연결리스트용 함수 env_export_print 만들기 ->  
-void	env_export_print(t_list **start_lst)
+//하고 연결리스트용 함수 env_export_print 만들기 ->
+void	env_export_print(t_list *start_lst)
 {
 	int		i;
-	t_list	*tmp;
 
 	i = 0;
-	tmp = *start_lst;
-	if (!*start_lst)
+	if (!start_lst)
 		return ;
-	while (tmp && i < g_env_max)
+	while (start_lst && i < g_env_max)
 	{
-		if (((t_env *)(tmp->content))->value)
+		if (((t_env *)(start_lst->content))->value)
 				ft_printf("declare -x %s=\"%s\"\n",
-				((t_env *)(tmp->content))->variable, ((t_env *)(tmp->content))->value);
-			else if (!((t_env *)(tmp->content))->value)
+				((t_env *)(start_lst->content))->variable, ((t_env *)(start_lst->content))->value);
+			else if (!((t_env *)(start_lst->content))->value)
 				ft_printf("declare -x %s\n",
-					((t_env *)(tmp->content))->variable);
+					((t_env *)(start_lst->content))->variable);
 		i++;
 	}
-	tmp = tmp->next;
+	start_lst = start_lst->next;
 }
