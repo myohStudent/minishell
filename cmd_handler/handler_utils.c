@@ -3,26 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/02 22:03:21 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/13 17:43:14 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int        env_index(t_minishell *minishell, char *str)
+void	free_arr(char **arr)
 {
-    int     i;
-    int     l;
+	int	i;
 
-    l = ft_strlen(str);
-    i = 0;
-    while (minishell->env_set[i] && minishell->env_set[i + 1])
-	{
-		if (ft_strncmp(minishell->env_set[i], str, l) == 0)
-     		return (i + 1);
-    }
-    return (-1);
+	i = 0;
+	while (arr[i] != NULL)
+		free(arr[i++]);
+	free(arr);
+}
+
+int	arr_len(char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i] != NULL)
+		i++;
+	return (i);
 }

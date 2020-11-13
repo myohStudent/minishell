@@ -72,8 +72,8 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			close(pipe_fd[0]);
 		}
 	}
-	if (curr->option && curr->option[0] != '\0')
-		cmd_executor(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
+	//if (curr->option && curr->option[0] != '\0')
+		//cmd_executor(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
 		//현재 재귀가 작동을 안합니다... 해결방법 모색해야함
 	return (1);
 

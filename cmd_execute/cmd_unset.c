@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/24 22:41:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/13 17:25:14 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 void	multi_options(t_cmd *curr)
 {
 	int	i;
@@ -93,10 +93,10 @@ void	cmd_unset(t_cmd *curr, t_minishell *minishell)
 	j = 0;
 	if (curr->argc == 1) //한 개일 때 출력
 		ft_printf("unset: not enough arguments\n");
-	if (curr->argc >= 2 && curr->option != NULL)			
+	if (curr->argc >= 2 && curr->option != NULL)
 	{
 		multi_options(curr); // option 인자가 여러 개면 이중배열에다 순서대로 집어넣기
-		/*if (!(str = ft_split(curr->option, ' ')))
+		if (!(str = ft_split(curr->option, ' ')))
 			return ;
 		while (str[i])
 		{
@@ -114,6 +114,6 @@ void	cmd_unset(t_cmd *curr, t_minishell *minishell)
 				}
 			i++;
 			}
-		}*/
+		}
 	}
-}
+}*/

@@ -34,13 +34,13 @@
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
-int		g_env_max;
+char *home_dir;
 
 typedef struct s_env
 {
-	//int				is_added;
 	char			*variable;
 	char			*value;
+	struct s_env	*next;
 } 					t_env;
 
 typedef struct		s_cmd
@@ -55,15 +55,12 @@ typedef struct		s_cmd
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
-	//char			**env_set;
-	//char			**export_set;
-	int				env_currnb; // current number
-	int				env_nb; //initialized number
 	char			*path;
 	int				cmd_num;
-	t_list			*env_list; // env용 연결 리스트!
-	t_list			*export_list;
-	t_env			env;
+	int				env_currnb; // current number
+	int				env_initnb; //initialized number
+	t_env			*env_list; // env용 연결 리스트!
+	t_env			*export_list;
 	t_cmd			*cmd;
 } 					t_minishell;
 
@@ -72,17 +69,17 @@ void	welcome_shell(void);
 void	*ft_memalloc(size_t size);
 void	display_prompt(void);
 
-/*
-** initenv.c
-*/
-void init_env(char **env, t_minishell *minishell);
-int	arr_len(char **env);
-int		ft_before_chr(char *s, char c);
-void	free_arr(char **arr);
+
 /*
 ** cmd_env.c
 */
-void	cmd_env(t_minishell *minishell);
+int	print_env(t_env *env);
+
+/*
+** handler_utils.c
+*/
+int	arr_len(char **env);
+void	free_arr(char **arr);
 
 /*
 ** cmd_unset.c
@@ -102,24 +99,6 @@ void		parent_signal_handler(int signo);
 int cmd_handler(t_minishell *minishell);
 int	has_pipes(char *option);
 int cmd_executor(t_minishell *minishell, t_cmd *curr);
-
-/*
-**
-*/
-int        env_index(t_minishell *minishell, char *str);
-/*
-** cmd_export.c
-*/
-int			    ft_strcmp(const char *s1, const char *s2);
-int    cmd_export(t_cmd *curr, t_minishell *minishell);
-void    		cpy_env(t_minishell *minishell, int j);
-char	**arr_realloc(t_minishell *minishell, char *line);
-/*
-** export_utils.c
-*/
-void	ft_sort(t_list **start, int (*str_cmp)());
-void	env_export_print(t_list *start_lst);
-int		is_same(char *s1, char *s2);
 
 /*
 ** cmd_exit.c

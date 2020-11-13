@@ -40,19 +40,14 @@ char				*parse_search(char *s, int c)
 void				tild_handler(t_minishell *minishell, t_cmd *curr)
 {
 	int i;
-	char *home;
 
 	if (curr->option[0] == '~' && (ft_isspace(curr->option[1]) || curr->option[1] == '/' || curr->option[1] == 0))
 	{
 		ft_printf("if 1 진입\n");
-		ft_printf("%d\n",env_index(minishell, "home\0"));
-		home = ft_strdup(minishell->env_set[env_index(minishell, "home\0")]);
-		ft_printf("home : %s\n",home);
-		curr->option = ft_strjoin(home, curr->option + 1);
+		curr->option = ft_strjoin(home_dir, curr->option + 1);
 		ft_printf("> %s < \n",curr->option);
 		//new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
 		//curr->option = ft_strdup(new);
-		free (home);
 	}
 }
 

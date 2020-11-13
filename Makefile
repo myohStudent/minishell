@@ -3,7 +3,6 @@ NAME	=	minishell
 SRCS	=	main.c \
 				welcome_shell.c \
 				sig_handler.c \
-				initenv.c \
 
 CMD_DIR	=	./cmd_handler
 CMD_FILE	=	cmd_handler.c \
@@ -16,11 +15,9 @@ OBJ_CMD = $(CMD:%.c=%.o)
 
 EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
-				cmd_export.c \
 				cmd_exit.c \
-				cmd_unset.c \
 				pipe_execute.c \
-				export_utils.c \
+
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))
 OBJ_EXE = $(EXE:%.c=%.o)
