@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/13 17:39:39 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/13 20:34:10 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		cmd_exit(curr, minishell);
 	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
 		print_env(minishell->env_list);
-	/*else if (ft_strncmp(curr->command, "export\0", 7) == 0)
+	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
-	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
+	/*else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
 		*/
 	else
