@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/13 18:04:47 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/14 19:55:03 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 	char	**str;
 
 	i = 0;
-	minishell->env_currnb = 0;
+	minishell->env_initnb = 0;
 	while (env[i])
 	{
 		env_list->next = (t_env *)malloc(sizeof(t_env));
@@ -30,7 +30,7 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 		env_list->value = ft_strdup(str[1]);
 		env_list = env_list->next;
 		free_arr(str);
-		minishell->env_currnb++;
+		minishell->env_initnb++;
 		i++;
 	}
 	ft_printf("%d\n",minishell->env_initnb);

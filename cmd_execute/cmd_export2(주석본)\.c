@@ -6,27 +6,12 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:35:25 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/13 18:05:23 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/14 20:08:21 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 /*
-char	**env_copy(char **env)
-{
-	char	**cpy;
-	size_t	i;
-
-	i = 0;
-	while (env[i] != NULL)
-		i++;
-	cpy = (char **)malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (env[++i] != NULL)
-		cpy[i] = ft_strdup(env[i]);
-	cpy[i] = NULL;
-	return (cpy);
-}
 
 char		*get_env(char **env, const char *variable)
 {
