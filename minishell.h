@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/15 23:26:26 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 00:12:28 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void		parent_signal_handler(int signo);
 int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
 int			cmd_executer(t_minishell *minishell, t_cmd *curr);
+int			exec_else(t_minishell *minishell, t_cmd *curr);
+
 /*
 ** cmd_exit.c
 */
@@ -135,7 +137,7 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 pipe_execute.c
 */
 
-int			exec_pipe(t_cmd *curr, t_minishell *minishell);
+void		exec_pipe(t_cmd *curr, t_minishell *minishell);
 int			parse_pipe(t_cmd *curr, t_minishell *minishell);
 
 #endif

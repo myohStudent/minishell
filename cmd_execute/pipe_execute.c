@@ -47,7 +47,7 @@
 	return (buf);
 }*/
 
-void		parse_pipe3(char **raw_input, char **parsed_input, t_minishell *minishell)
+void		parse_pipe3(char **raw_input, char **parsed_input)
 { // 이중 포인터를 써야 값이 입력된다니!
 	int		i;
 	char	*temp1;
@@ -69,7 +69,7 @@ void		parse_pipe3(char **raw_input, char **parsed_input, t_minishell *minishell)
 			free(temp1);
 			(*raw_input) = temp2; // 그 나머지가 raw_input에 다시 들어온다. 
 			free(temp2);
-			return ; // 재귀 대신 하나씩 처리하고 마지막에 | 없을 때 처리 안 하기
+			return ; // 하나씩 처리하고 마지막에 | 없을 때 처리 안 하기
 		}
 		i++;
 	}
@@ -81,7 +81,7 @@ int			parse_pipe(t_cmd *curr, t_minishell *minishell)
 	char *temp;
 
 	//parsed_input = parse_pipe2(raw_input); //세미콜론마다 잘라서 문자열에 저장해 준다
-	parse_pipe3(&raw_input, &parsed_input, minishell);
+	parse_pipe3(&raw_input, &parsed_input);
 	ft_printf("raw: %s, parsed input : %s\n", raw_input, parsed_input);
 	/*if (!(curr->option))
 		return (-1);
@@ -100,18 +100,18 @@ int			parse_pipe(t_cmd *curr, t_minishell *minishell)
 	return (1);
 }
 
-int			exec_pipe(t_cmd *curr, t_minishell *minishell)
+void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
 	int		pipe_fd[2];
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
-	int		p1, p2;
+	pid_t	p1, p2;
+	int		cond[2];
 
 	//command -> asdfasdfafs
 	//option  -> | asdfadfsa | asdfsdafasf
 		// 잘 안 돼서 input을 전역변수로 가져와서 파이프 전용으로 파싱 처리를 다시 했습니다!   
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
-	return (1);
 	//뒷문자열 생략시키기
 	//if ()
 	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
@@ -126,28 +126,31 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	if (p1 == 0)
 	{
 		//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
+
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
+		exec_else(minishell, curr);
+		exit(1);
 	}
-	else
+	p2 = fork();
+	//그게 아니고, p2가 자식프로세스라면 -
+	if (p2 == 0)
 	{
-		p2 = fork();
-		//그게 아니고, p2가 자식프로세스라면 -
-		if (p2 == 0)
-		{
-			close(pipe_fd[1]);
-			dup2(pipe_fd[0], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
+		close(pipe_fd[1]);
+		dup2(pipe_fd[0], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
 			//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
-			close(pipe_fd[0]);
-		}
+		close(pipe_fd[0]);
+		exec_else(minishell, curr);
+		exit(1);
 	}
 	//if (curr->option && curr->option[0] != '\0')
-		//cmd_executor(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
+		//cmd_executer(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
 		//현재 재귀가 작동을 안합니다... 해결방법 모색해야함
-	return (1);
-
+	waitpid(pipe_fd[1], &cond[1], 0);
+	waitpid(pipe_fd[0], &cond[0], WNOHANG); //WNOHANG : 종료되지 않더라도 리턴하라.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
+	exit(1); // exit를 쓰니 탈출할 수 있네요.
 }
 
 /*
@@ -171,15 +174,4 @@ void parse_pipe(t_minishell *minishell, t_cmd *cmd, char *input)
 		end++;
 	}
 }
-
-int			exec_process_zero(pid_t p1, int pipe_fd[2], t_cmd *curr, t_minishell *minishell)
-{
-	return (1);
-}
-
-int			exec_process_one(pid_t p1, int pipe_fd[2], t_cmd *curr, t_minishell *minishell)
-{
-	return (1);
-}
-
 */
