@@ -34,7 +34,8 @@
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
-char *home_dir;
+char				*home_dir;
+int					nb_pipes;
 
 typedef struct s_env
 {
@@ -46,8 +47,6 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	int				pipe;
-	int				redir;
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
@@ -66,16 +65,16 @@ typedef struct	 	s_minishell
 	t_cmd			*cmd;
 } 					t_minishell;
 
-void	welcome_shell(void);
-//void	ft_exit(void);
-void	*ft_memalloc(size_t size);
-void	display_prompt(void);
+void		welcome_shell(void);
+//void		ft_exit(void);
+void		*ft_memalloc(size_t size);
+void		display_prompt(void);
 
 
 /*
 ** cmd_env.c
 */
-int	print_env(t_env *env);
+int			print_env(t_env *env);
 
 /*
 ** cmd_export.c
@@ -85,13 +84,19 @@ int	print_env(t_env *env);
 /*
 ** handler_utils.c
 */
-int	arr_len(char **env);
-void	free_arr(char **arr);
+int			arr_len(char **env);
+void		free_arr(char **arr);
 
+/*
+** has_utils.c
+*/
+int			has_pipes(char *option);
+int			has_redirs(char *option);
+int			has_quotes(char *option);
 /*
 ** cmd_unset.c
 */
-void	cmd_unset(t_cmd *curr, t_minishell *minishell);
+void		cmd_unset(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** sig_handler.c
@@ -103,23 +108,23 @@ void		parent_signal_handler(int signo);
 ** cmd_handler.c
 */
 
-int cmd_handler(t_minishell *minishell);
-int	has_pipes(char *option);
-int cmd_executor(t_minishell *minishell, t_cmd *curr);
+int			cmd_handler(t_minishell *minishell);
+int			has_pipes(char *option);
+int 		md_executor(t_minishell *minishell, t_cmd *curr);
 
 /*
 ** cmd_exit.c
 */
-int		cmd_exit(t_cmd *curr, t_minishell *minishell);
+int			cmd_exit(t_cmd *curr, t_minishell *minishell);
 /*
 ** parse_input.c
 */
 
-int get_argc(t_cmd *curr);
-void split_argv(t_cmd *curr);
-void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
-t_cmd *create_node(t_minishell *minishell, char *data, int word_len);
-void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
+int			get_argc(t_cmd *curr);
+void		split_argv(t_cmd *curr);
+void		set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
+t_cmd		*create_node(t_minishell *minishell, char *data, int word_len);
+void		parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 
 /*
 pipe_execute.c
