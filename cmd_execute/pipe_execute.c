@@ -12,22 +12,73 @@
 
 #include "../minishell.h"
 
-char		**parse_pipe2(char *input)
+/*char		**parse_pipe2(char *input) // ;쒜미콜론 때문에 만들었지만 쓸모가 없을 것 같은데 일단 놔둠ㅠ
 {
 	int i;
-	char **temp;
+	char	**buf;
+	char	*temp;
+	int	err;
 
 	i = 0;
-	temp = ft_split(input, ';');
-	return (temp);
+	err = 0;
+	buf = ft_split(input, ';');
+	while (buf[i])
+	{
+		if (!(temp = ft_strtrim(buf[i], " ")) || !(temp[0]))
+			err = 1;
+		free(buf[i]);
+		if (err == 0)
+			buf[i] = ft_strdup(temp);
+		else
+			buf[i] = NULL;
+		i++;
+	}
+	if (err == 1) // ;세미콜론 잘못 입력했을 시의 에러처리도 나중에 하기
+	{
+		free(buf);
+		return (NULL);
+	}
+	i = 0;
+	while (buf[i] != NULL)
+	{
+		ft_printf("buf[%d]: %s\n", i, buf[i]); 
+		i++;
+	}
+	return (buf);
+}*/
+
+void		parse_pipe3(char *raw_input, char **parsed_input, t_minishell *minishell)
+{
+	int		i;
+	char	*temp1;
+	char	*temp2;
+
+	i = 0;
+	while (raw_input[i])
+	{
+		if (raw_input[i] == '|')
+		{
+			temp1 = ft_substr(raw_input, 0, i); // | 앞까지 잘라 temp1에 저장한다.
+			parsed_input = ft_strtrim(temp1, " "); // 스페이스를 트림하여 저장
+			free(temp1);
+			temp1 = ft_substr(parsed_input, i + 1, ft_strlen(raw_input) - i);
+			// 그 나머지를 temp1 저장
+			temp2 = ft_strtrim(temp1, " "); // 다시 트림하여 temp2에 저장
+			free(temp1);
+			raw_input = temp2; // 그 나머지가 raw_input에 다시 들어온다. 
+			return ;
+		}
+		i++;
+	}
 }
 
-int			parse_pipe(t_cmd *curr)
+int			parse_pipe(t_cmd *curr, t_minishell *minishell)
 {
 	//할일 : '| ' 만 삭제하는 함수 만들기.
 	char *temp;
 
-	parsed_input = parse_pipe2(raw_input);
+	//parsed_input = parse_pipe2(raw_input); //세미콜론마다 잘라서 문자열에 저장해 준다
+	parse_pipe3(raw_input, parsed_input, minishell);
 	/*if (!(curr->option))
 		return (-1);
 	temp = curr->option;
@@ -40,7 +91,7 @@ int			parse_pipe(t_cmd *curr)
 	else
 		return (-1);*/
 	
-	free(temp);
+	//free(temp);
 	//ft_printf("curr->option: %s\n", curr->option);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/15 17:08:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/15 22:59:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	if (has_pipes(curr->option) != 0)
 	{
 		ft_printf("pipe if문 안에 들어왔음\n");
-		if (!(parse_pipe(curr)))
+		if (!(parse_pipe(curr, minishell)))
 			return (-1);
 		if (!(exec_pipe(curr, minishell)))
 			return (-1);

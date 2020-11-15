@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/15 17:01:11 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/15 23:26:26 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
 char				*home_dir;
-char				**parsed_input;
-char				**raw_input;
+char				*parsed_input; //pipe용
+char				*raw_input;
 
 typedef struct s_env
 {
@@ -48,7 +48,9 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	int				has_pipe;
+	char			*pipe_av;
+	char			*pipe_temp;
+	char			*redir_av;
 	int				has_redir; 
 	char			*command;
 	char			*option;
@@ -90,8 +92,6 @@ int			print_env(t_env *env);
 int			arr_len(char **env);
 void		free_arr(char **arr);
 char	*parse_space(char *s, char *space);
-
-
 
 /*
 ** has_utils.c
@@ -136,6 +136,6 @@ pipe_execute.c
 */
 
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
-int			parse_pipe(t_cmd *curr);
+int			parse_pipe(t_cmd *curr, t_minishell *minishell);
 
 #endif

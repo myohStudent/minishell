@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/15 14:59:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/15 21:43:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int				ft_isbracket(int c);
 void			*ft_memalloc(size_t size);
 char                    **ft_split(char const *s, char c);
 char			*ft_strnew(size_t size);
+char			*ft_strtrim(char *s1, char *set);
 
 typedef struct		s_list
 {
