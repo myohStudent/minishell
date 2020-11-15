@@ -46,6 +46,8 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
+	int				pipe;
+	int				redir;
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
@@ -74,6 +76,11 @@ void	display_prompt(void);
 ** cmd_env.c
 */
 int	print_env(t_env *env);
+
+/*
+** cmd_export.c
+*/ 
+//int cmd_export(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** handler_utils.c

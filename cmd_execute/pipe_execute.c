@@ -12,9 +12,20 @@
 
 #include "../minishell.h"
 
+int			delete_pipe(t_cmd *curr)
+{
+	/*if (curr->command)
+	{
+		if (ft_strncmp())
+		;
+	}*/
+	return (0);
+}
+
 int			parse_pipe(t_cmd *curr)
 {
 	//할일 : '| ' 만 삭제하는 함수 만들기.
+	//delete_pipe(curr);
 	char *temp;
 
 	if (!(curr->option))
@@ -32,6 +43,7 @@ int			parse_pipe(t_cmd *curr)
 
 int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
+
 	int		pipe_fd[2];
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
@@ -78,25 +90,6 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	return (1);
 
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-
-	/*
-	// 1. 문자열을 받았으면 pipe 이중배열() -> curr->argv에다 파싱해서 입력한다.
-	// 4. 만약에 포크로 복사된 프로세스 아이디 p1이 0이다!(자식) 0인 파이프의 경우를 처리하는 함수를 실행시킨다.
-	exec_process_zero(p1, pipe_fd, curr, minishell);
-	// 5. 여기서 프리를 해주네요???????
-	//free();
-	// 6. fork 명령어로 두 번째 프로세스복사!
-	p2 = fork();
-	// 7.포크로 복사된 프로세스 아이디 p2이 1이다! 부모 파이프 경우를 처리하는 함수를 실행시킨다!
-	exec_process_one(p2, pipe_fd, curr, minishell);
-	// 8. 또 나머지도 프리를 한다!
-	//free();
-	// 9. 파일 디스크립터 close한다.
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	//10. pid
-
-*/
 }
 
 /*
