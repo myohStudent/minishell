@@ -47,26 +47,29 @@
 	return (buf);
 }*/
 
-void		parse_pipe3(char *raw_input, char **parsed_input, t_minishell *minishell)
-{
+void		parse_pipe3(char **raw_input, char **parsed_input, t_minishell *minishell)
+{ // 이중 포인터를 써야 값이 입력된다니!
 	int		i;
 	char	*temp1;
 	char	*temp2;
 
 	i = 0;
-	while (raw_input[i])
+	// 앞뒤 공백 없이 파이프 입력일 때의 예외처리가 되지 않았음.
+	while ((*raw_input)[i])
 	{
-		if (raw_input[i] == '|')
+		if ((*raw_input)[i] == '|')
 		{
-			temp1 = ft_substr(raw_input, 0, i); // | 앞까지 잘라 temp1에 저장한다.
-			parsed_input = ft_strtrim(temp1, " "); // 스페이스를 트림하여 저장
+			temp1 = ft_substr((*raw_input), 0, i); // | 앞까지 잘라 temp1에 저장한다.
+			(*parsed_input) = ft_strtrim(temp1, " "); // 스페이스를 트림하여 저장
 			free(temp1);
-			temp1 = ft_substr(parsed_input, i + 1, ft_strlen(raw_input) - i);
+			temp1 = ft_substr((*raw_input), i + 1, ft_strlen(*raw_input) - i);
 			// 그 나머지를 temp1 저장
-			temp2 = ft_strtrim(temp1, " "); // 다시 트림하여 temp2에 저장
+			temp2 = ft_strtrim(temp1, " "); // 다시 space 트림하여 temp2에 저장
+			ft_printf("temp2: %s ", temp2);
 			free(temp1);
-			raw_input = temp2; // 그 나머지가 raw_input에 다시 들어온다. 
-			return ;
+			(*raw_input) = temp2; // 그 나머지가 raw_input에 다시 들어온다. 
+			free(temp2);
+			return ; // 재귀 대신 하나씩 처리하고 마지막에 | 없을 때 처리 안 하기
 		}
 		i++;
 	}
@@ -78,7 +81,8 @@ int			parse_pipe(t_cmd *curr, t_minishell *minishell)
 	char *temp;
 
 	//parsed_input = parse_pipe2(raw_input); //세미콜론마다 잘라서 문자열에 저장해 준다
-	parse_pipe3(raw_input, parsed_input, minishell);
+	parse_pipe3(&raw_input, &parsed_input, minishell);
+	ft_printf("raw: %s, parsed input : %s\n", raw_input, parsed_input);
 	/*if (!(curr->option))
 		return (-1);
 	temp = curr->option;
@@ -105,7 +109,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 	//command -> asdfasdfafs
 	//option  -> | asdfadfsa | asdfsdafasf
-
+		// 잘 안 돼서 input을 전역변수로 가져와서 파이프 전용으로 파싱 처리를 다시 했습니다!   
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
 	return (1);
 	//뒷문자열 생략시키기
