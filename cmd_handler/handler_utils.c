@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/13 17:43:14 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/15 16:11:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-int	arr_len(char **env)
+int		arr_len(char **env)
 {
 	int i;
 
@@ -30,4 +30,22 @@ int	arr_len(char **env)
 	while (env[i] != NULL)
 		i++;
 	return (i);
+}
+
+char	*parse_space(char *s, char *space)
+{
+	int	i;
+
+	i = 0;
+	if (!space || !s)
+		return (NULL);
+	while (ft_strchr(s, space && s[i] != '\0'))
+	{
+		s++;
+		i++;
+	}
+	i = ft_strlen(s);
+	while (ft_strchr(space, s[i]) && s != 0)
+		i--;
+	return (ft_substr(s, 0, i + 1));
 }

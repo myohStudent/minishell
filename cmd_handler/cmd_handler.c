@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/15 11:35:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/15 17:08:55 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,19 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-int cmd_executor(t_minishell *minishell, t_cmd *curr)
+
+int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
 	if (has_pipes(curr->option) != 0)
 	{
 		ft_printf("pipe if문 안에 들어왔음\n");
+		if (!(parse_pipe(curr)))
+			return (-1);
 		if (!(exec_pipe(curr, minishell)))
 			return (-1);
-	}
-	/*else if (has_redir(curr->option) != 0)
+	}/*
+	else if (has_redir(curr->option) != 0)
 		exec_redir(curr->option);
 
 	else if (has_quote(curr->option) != 0)
@@ -138,13 +141,25 @@ int cmd_handler(t_minishell *minishell)
     {
 	   	i++;
 		//[해결] 할일 : 이 if문을 함수로 따로 빼야만 pipe와 리다의 재귀가 가능합니다.
+
 		if (curr->command)
+		{
+			/*if ((has_pipes(curr->option) != 0))
+				exec_pipe(curr, minishell);
 			if (!(cmd_executor(minishell, curr)))
 				return (-1);
-		t_cmd *next;
-		next = curr->next;
-		free(curr);
-		curr = next;
+			else if ((has_redirs(curr->option) != 0))
+				exec_redir(curr, minishell);*/
+			
+			
+				if (!(cmd_executer(minishell, curr)))
+					return (-1);
+				t_cmd *next;
+				next = curr->next;
+				free(curr);
+				curr = next;
+			
+		}
     }
 	free(input);
 	free (minishell->cmd);

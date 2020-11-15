@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoichoi <seohchchoioi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/19 16:58:05 by seohchchoi         ###   ########.fr       */
+/*   Updated: 2020/11/15 17:01:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
 char				*home_dir;
-int					nb_pipes;
+char				**parsed_input;
+char				**raw_input;
 
 typedef struct s_env
 {
@@ -47,11 +48,13 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
+	int				has_pipe;
+	int				has_redir; 
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
 	struct s_cmd	*next;
-}					t_cmd;
+}							t_cmd;
 
 typedef struct	 	s_minishell
 {
@@ -86,6 +89,9 @@ int			print_env(t_env *env);
 */
 int			arr_len(char **env);
 void		free_arr(char **arr);
+char	*parse_space(char *s, char *space);
+
+
 
 /*
 ** has_utils.c
@@ -110,8 +116,7 @@ void		parent_signal_handler(int signo);
 
 int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
-int 		md_executor(t_minishell *minishell, t_cmd *curr);
-
+int			cmd_executer(t_minishell *minishell, t_cmd *curr);
 /*
 ** cmd_exit.c
 */
@@ -124,12 +129,13 @@ int			get_argc(t_cmd *curr);
 void		split_argv(t_cmd *curr);
 void		set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
 t_cmd		*create_node(t_minishell *minishell, char *data, int word_len);
-void		parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
+int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 
 /*
 pipe_execute.c
 */
 
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
+int			parse_pipe(t_cmd *curr);
 
 #endif

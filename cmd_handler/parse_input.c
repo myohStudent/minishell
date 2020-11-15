@@ -79,7 +79,7 @@ void split_argv(t_cmd *curr)
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 
 }
-/*
+
 char		*check_copy(char const *s, unsigned int start, size_t len)
 {
 	char	*a;
@@ -101,7 +101,7 @@ char		*check_copy(char const *s, unsigned int start, size_t len)
 	a[i] = '\0';
 	ft_printf("%d, %s))\n",i, a);
 	return (a);
-}*/
+}
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 {
@@ -139,13 +139,44 @@ t_cmd *create_node(t_minishell *minishell, char *data, int word_len)
     return (new);
 }
 
-void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
+int parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 {
+	raw_input = ft_strdup(input); // 전역변수에 백업해서 파이프 나왔을 때 따로 파싱하려고 함 ㅠ
+	/*int		start;
+	int		i;
+	char	*temp;
+	start = 0;
+	i = 0;
+	raw_input = ft_split(input, ';');
+	while (raw_input[start])
+	{
+		temp = parse_space(raw_input[i], " ");
+		if (!temp || !(*temp))
+		{
+			i = 1;
+			raw_input[i] = 0;
+		}
+		if (i == 0)
+			raw_input[i] = temp;	
+		start++;
+	}
+	if (i)
+	{
+		free(input);
+		return (0);
+	}
+	free(input);
+	i = 0;
+	while (raw_input[i])
+		ft_printf("%s||", raw_input[i++]);
+	ft_printf("\n");
+	return (1);*/
+
 	int start = 0;
 	int end = 0;
 
 	if (!input)
-		return ;
+		return (0);
 	while (input[end] && end < ft_strlen(input))
 	{
 		start = end;
@@ -159,4 +190,5 @@ void parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 		}
 		end++;
 	}
+	return (1);
 }

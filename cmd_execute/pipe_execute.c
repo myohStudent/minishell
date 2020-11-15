@@ -12,38 +12,41 @@
 
 #include "../minishell.h"
 
-int			delete_pipe(t_cmd *curr)
+char		**parse_pipe2(char *input)
 {
-	/*if (curr->command)
-	{
-		if (ft_strncmp())
-		;
-	}*/
-	return (0);
+	int i;
+	char **temp;
+
+	i = 0;
+	temp = ft_split(input, ';');
+	return (temp);
 }
 
 int			parse_pipe(t_cmd *curr)
 {
 	//할일 : '| ' 만 삭제하는 함수 만들기.
-	//delete_pipe(curr);
 	char *temp;
 
-	if (!(curr->option))
+	parsed_input = parse_pipe2(raw_input);
+	/*if (!(curr->option))
 		return (-1);
 	temp = curr->option;
-	if (ft_strncmp(curr->option, " | ", 3) == 0)
+	if ((ft_strncmp(curr->option, " | ", 3) == 0))
 		curr->option = ft_strdup(curr->option + 3);
+	else if ((ft_strncmp(curr->option, " || ", 4) == 0)) //이거 이런 식으로 예외가 많은 듯....ㅠ
+		curr->option = ft_strdup(curr->option + 4);
 	else if (ft_strncmp(curr->option, "| ", 2) == 0)
 		curr->option = ft_strdup(curr->option + 2);
 	else
-		return (-1);
+		return (-1);*/
+	
 	free(temp);
+	//ft_printf("curr->option: %s\n", curr->option);
 	return (1);
 }
 
 int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
-
 	int		pipe_fd[2];
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
@@ -53,9 +56,9 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//option  -> | asdfadfsa | asdfsdafasf
 
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
-
-	if (!(parse_pipe(curr)))
-		return (-1);
+	return (1);
+	//뒷문자열 생략시키기
+	//if ()
 	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
 	//[가설 1] 이 방식을 채택하면 리다이렉션, 쿼트 실행 함수에서도 각자의 문자를 없애는 기능이 내장되어야 합니다.
