@@ -106,7 +106,8 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
 	pid_t	p1, p2;
-	int		cond[2];
+	int		cond1 = 0;
+	int		cond2 = 0;
 
 	//command -> asdfasdfafs
 	//option  -> | asdfadfsa | asdfsdafasf
@@ -121,19 +122,19 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	// 2. 파싱한 뒤 pipe(pipe_fd)로 앞서 수행한 명령의 file descriptions을 받는다. 이 배열의 0번은 read, 1번은 write가 된다.
 	pipe(pipe_fd);
 	// 3. fork 명령어로 새 문자열에다 프로세스를 복사한다.
-	p1 = fork();
+	if ((p1 = fork()) < 0)
+		exit(1258) ; 
 	//p1이 자식프로세스라면(그러니까 지금 복사한 파이프가 부모라면) -
+	//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
 	if (p1 == 0)
-	{
-		//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
-
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-		exec_else(minishell, curr);
-		exit(1);
+	{dup2(pipe_fd[1], STDOUT_FILENO);
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+	exec_else(minishell, curr);
+	exit(1);
 	}
-	p2 = fork();
+	if ((p2 = fork()) < 0)
+		exit(1258) ; //id가 
 	//그게 아니고, p2가 자식프로세스라면 -
 	if (p2 == 0)
 	{
@@ -147,10 +148,11 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//if (curr->option && curr->option[0] != '\0')
 		//cmd_executer(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
 		//현재 재귀가 작동을 안합니다... 해결방법 모색해야함
-	waitpid(pipe_fd[1], &cond[1], 0);
-	waitpid(pipe_fd[0], &cond[0], WNOHANG); //WNOHANG : 종료되지 않더라도 리턴하라.
+	waitpid(pipe_fd[1], &cond1, WNOHANG);
+	waitpid(pipe_fd[0], &cond2, WNOHANG); //WNOHANG : 종료되지 않더라도 리턴하라.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-	exit(1); // exit를 쓰니 탈출할 수 있네요.
+	
+	return ;
 }
 
 /*
