@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   has_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/15 11:51:07 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 20:29:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ int			has_redirs(char *option)
 	return (res);
 }
 
+int		has_dollar(char *str)
+{
+	int	res;
+
+	res = 0;
+	while (str[res])
+	{
+		if (str[res] == '$')
+			return (res);
+		res++;
+	}
+	ft_printf("$있는가: %d\n", res);
+
+	return (0);
+}
 int		has_quotes(char *option)
 {
 	int	res;
