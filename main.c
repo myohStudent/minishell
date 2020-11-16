@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/16 15:43:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 17:49:28 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int		main(int ac, char **av, char **env)
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
 		display_prompt();
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
+		
 	}
 	return (0);
 }

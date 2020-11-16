@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/16 15:34:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 17:56:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,13 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
+int	check_pipe(t_cmd *curr, t_minishell *minishell)
+{
+	if (!(parse_pipe(curr, minishell)))
+					return (-1);
+	exec_pipe(curr, minishell);
+	return (1);
+}
 int cmd_handler(t_minishell *minishell)
 {
 	char buf[2];
@@ -136,27 +143,20 @@ int cmd_handler(t_minishell *minishell)
 
 		if (curr->command)
 		{
+
 			if (has_pipes(curr->option) != 0)
-			{
-				if (!(parse_pipe(curr, minishell)))
-					return (-1);
-				exec_pipe(curr, minishell);
-				free(input);
-				free (minishell->cmd);
-				minishell->cmd = 0;
-				return (1);
-			}
+				check_pipe(curr, minishell);
 			//else if ((has_redirs(curr->option) != 0))
 			//	exec_redir(curr, minishell);
 			if (has_pipes(curr->option) == 0)
 			{
 				if (!(cmd_executer(minishell, curr)))
 					return (-1);
-				t_cmd *next;
-				next = curr->next;
-				free(curr);
-				curr = next;
 			}
+			t_cmd *next;
+			next = curr->next;
+			free(curr);
+			curr = next;
 		}
     }
 	free(input);
