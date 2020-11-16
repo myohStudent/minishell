@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/16 15:13:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 15:34:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,11 +138,13 @@ int cmd_handler(t_minishell *minishell)
 		{
 			if (has_pipes(curr->option) != 0)
 			{
-				ft_printf("pipe if문 안에 들어왔음\n");
 				if (!(parse_pipe(curr, minishell)))
 					return (-1);
 				exec_pipe(curr, minishell);
-				break ;
+				free(input);
+				free (minishell->cmd);
+				minishell->cmd = 0;
+				return (1);
 			}
 			//else if ((has_redirs(curr->option) != 0))
 			//	exec_redir(curr, minishell);

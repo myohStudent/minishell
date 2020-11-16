@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/15 15:34:58 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/16 15:43:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int		main(int ac, char **av, char **env)
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
-		display_prompt();
 		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
+		display_prompt();
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
 	}
 	return (0);
