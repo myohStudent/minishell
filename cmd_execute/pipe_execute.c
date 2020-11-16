@@ -149,7 +149,8 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 	//waitpid(pipe_fd[1], &cond1, WNOHANG); //무조건 리턴됨. 중단되었다가 재개된 자식프로세스의 상태를 받음.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-	wait(2);
+	wait(&cond1);
+	wait(&cond2);
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
