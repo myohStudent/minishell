@@ -125,15 +125,15 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	// 3. fork 명령어로 새 문자열에다 프로세스를 복사한다.
 	if ((p1 = fork()) < 0)
 	{
-		exit(1258) ; 
+		return ;
 	}
 	//p1이 자식프로세스라면(그러니까 지금 복사한 파이프가 부모라면) -
 	//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
 	if (p1 == 0) //0보다 크면 자식 프로세스를 기다림.
 	{
 		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
+		//close(pipe_fd[1]);
+		//close(pipe_fd[0]);
 		exec_else(minishell, curr);
 		ft_printf("\n");
 		ft_printf("p1 수행 ");
@@ -146,15 +146,15 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	}
 
 	if ((p2 = fork()) < 0)
-		exit(1258) ; //id가 
+		return ; //id가 
 	//그게 아니고, p2가 자식프로세스라면 -
 	ft_printf("p2: %d ", p2);
 	if (p2 == 0)
 	{
-		close(pipe_fd[1]);
+		//close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
 			//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
-		close(pipe_fd[0]);
+		//close(pipe_fd[0]);
 		exec_else(minishell, curr);
 		ft_printf("p2 수행 \n");
 		exit(1);
@@ -167,8 +167,15 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		waitpid(pipe_fd[1], &cond1, WNOHANG); //중단되었다가 재개된 자식프로세스의 상태를 받음.
 		if (p1 > 0) //부모 프로세스 
 		{
-			ft_printf("p1: %d ", p1);
+			ft_printf("p1부모프로세스: %d ", p1);
 			waitpid(pipe_fd[0], &cond2, WNOHANG); //WNOHANG : 종료되지 않더라도 리턴하라.
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			exec_else(minishell, curr);
+			ft_printf("\n");
+			ft_printf("p1 수행 ");
+			return ;
 		}
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
 	//WUNTRANCE, WCONTINUED로 하면 1만 되고 2가 안 됨, WNOHANG으로 하면 2가 되고 1이 안 됨 ㅠㅠ
