@@ -9,6 +9,7 @@ CMD_FILE	=	cmd_handler.c \
 				parse_input.c \
 				handler_utils.c \
 				has_utils.c \
+				parse_utils.c \
 
 CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 OBJ_CMD = $(CMD:%.c=%.o)
@@ -17,7 +18,7 @@ EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				pipe_execute.c \
-				#cmd_export.c \
+				cmd_export.c \
 
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))

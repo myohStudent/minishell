@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/13 17:25:14 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/17 22:19:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+//unset : 지우는거
+//여러개 들어오면 다 지운다.
 /*
 void	multi_options(t_cmd *curr)
 {

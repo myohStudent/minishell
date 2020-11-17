@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 15:11:03 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 22:41:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 
 char				*home_dir;
-char				*parsed_input; //pipe용
 char				*raw_input;
-char				*pipe1; // pipe시험용(구조체로 바꾸어야 함)
-char				**pipe_cmdlist;
 
 typedef struct s_env
 {
@@ -50,10 +47,9 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	char			*pipe_av;
-	char			*pipe_temp;
-	char			*redir_av;
-	int				has_redir; 
+	int				has_pipe;
+	int				has_redir;
+	int				has_dollar; 
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
@@ -65,9 +61,7 @@ typedef struct	 	s_minishell
 	pid_t			pid;
 	char			*path;
 	int				cmd_num;
-	int				has_pipe;
-	int				has_redir;
-	int				has_dollar;
+	char			**environ;
 	int				env_currnb; // current number
 	int				env_initnb; //initialized number
 	t_env			*env_list; // env용 연결 리스트!
@@ -80,7 +74,6 @@ void		welcome_shell(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
 
-
 /*
 ** cmd_env.c
 */
@@ -89,7 +82,7 @@ int			print_env(t_env *env);
 /*
 ** cmd_export.c
 */ 
-//int cmd_export(t_cmd *curr, t_minishell *minishell);
+int cmd_export(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** handler_utils.c
@@ -104,6 +97,11 @@ char	*parse_space(char *s, char *space);
 int			has_pipes(char *option);
 int			has_redirs(char *option);
 int			has_quotes(char *option);
+
+/*
+** parse_utils.c
+*/
+int         is_char(char c, char *s);
 /*
 ** cmd_unset.c
 */

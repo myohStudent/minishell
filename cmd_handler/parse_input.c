@@ -126,22 +126,22 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 		tild_handler(minishell, new);
 }
 
-t_cmd *create_node(t_minishell *minishell, char *data, int word_len)
+t_cmd	*create_node(t_minishell *minishell, char *data, int word_len)
 {
     t_cmd *new;
 	int i;
 
 	i = 0;
     if (!(new = (t_cmd *)malloc(sizeof(t_cmd))))
-         return (NULL);
+		return (NULL);
 	set_node(minishell, new, data, word_len);
     new->next = 0;
     return (new);
 }
 
-int parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
+int		parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 {
-	raw_input = ft_strdup(input); // 전역변수에 백업해서 파이프 나왔을 때 따로 파싱하려고 함 ㅠ
+	raw_input = ft_strdup(input);
 	/*int		start;
 	int		i;
 	char	*temp;
@@ -174,7 +174,6 @@ int parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 
 	int start = 0;
 	int end = 0;
-
 	if (!input)
 		return (0);
 	while (input[end] && end < ft_strlen(input))
