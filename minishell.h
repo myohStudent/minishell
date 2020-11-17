@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 11:08:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 15:11:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 char				*home_dir;
 char				*parsed_input; //pipe용
 char				*raw_input;
+char				*pipe1; // pipe시험용(구조체로 바꾸어야 함)
+char				**pipe_cmdlist;
 
 typedef struct s_env
 {
