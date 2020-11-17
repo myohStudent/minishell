@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/16 20:24:21 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 11:10:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	{
 		if (curr->argc == 1)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		else if (curr->argc > 1 && (has_pipes(curr->option) == 0))
+		else if (curr->argc > 1 && minishell->has_pipe == 0)
 			ft_putstr_fd("pwd: too many arguments", 1);
-		else if (has_pipes(curr->option) > 0)
+		else if (curr->argc >1 && minishell->has_pipe == 1)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
+
 		ft_putchar('\n');
 	}
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
@@ -33,14 +34,14 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 			if (chdir(home_dir) < 0)
 				return (-1);
 		}
-		else if (curr->argc == 2 && (has_pipes(curr->option) == 0))
+		else if (curr->argc == 2 && minishell->has_pipe == 0)
 		{
 			if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
 				ft_putstr_fd("cd: no such file or directory\n", 1);
 		}
-		else if (curr->argc > 2 && (has_pipes(curr->option) == 0))
+		else if (curr->argc > 2 && minishell->has_pipe == 0)
 			ft_putstr_fd("cd: too many arguments\n", 1);
-		else if (has_pipes(curr->option) > 0)
+		else if (minishell->has_pipe == 1)
 		{
 			if (chdir(home_dir) < 0)
 				return (-1);
@@ -76,9 +77,12 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
 
 	if (has_pipes(curr->option) != 0)
+	{
+			minishell->has_pipe = 1;
 			exec_pipe(curr, minishell);
 			//else if ((has_redirs(curr->option) != 0))
 		//	exec_redir(curr, minishell);urr, minishell);
+	}
 	if(!(exec_else(minishell, curr)))
 			return (-1);
 	return (1);
@@ -151,5 +155,8 @@ int cmd_handler(t_minishell *minishell)
 	free(input);
 	free (minishell->cmd);
 	minishell->cmd = 0;
+	minishell->has_pipe = 0;
+	minishell->has_redir = 0;
+	minishell->has_dollar = 0;
 	return (1);
 }

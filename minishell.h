@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/16 20:41:01 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 11:08:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ typedef struct	 	s_minishell
 	pid_t			pid;
 	char			*path;
 	int				cmd_num;
+	int				has_pipe;
+	int				has_redir;
+	int				has_dollar;
 	int				env_currnb; // current number
 	int				env_initnb; //initialized number
 	t_env			*env_list; // env용 연결 리스트!
