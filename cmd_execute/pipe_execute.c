@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+extern char **environ;
+
 //파싱 다시 해 보기
 void		parse_pipe3(char **raw_input, char **parsed_input)
 { // 이중 포인터를 써야 값이 입력된다.
@@ -32,6 +34,8 @@ void		parse_pipe3(char **raw_input, char **parsed_input)
 			temp1 = ft_substr((*raw_input), 0, i); // | 앞까지 잘라 temp1에 저장한다.
 			(*parsed_input) = ft_strtrim(temp1, " "); // 스페이스를 트림하여 저장
 			pipe1 = ft_strdup(*parsed_input);
+			pipe_cmdlist[j] = ft_strdup(pipe1);
+			j++;
 			free(temp1);
 			temp1 = ft_substr((*raw_input), i + 1, ft_strlen(*raw_input) - i);
 			// 그 나머지를 temp1 저장
@@ -41,7 +45,8 @@ void		parse_pipe3(char **raw_input, char **parsed_input)
 			pipe_cmdlist[j] = ft_strdup((*raw_input));
 			j++;
 			free(temp2);
-			ft_printf("pipe1: %s pipelist: %s \n", pipe1, pipe_cmdlist[0]);
+			ft_printf("pipe1: %s pipelist: %s \n", pipe1, pipe_cmdlist[1]);
+			pipe_cmdlist[j] = NULL;
 			return ; // 하나씩 처리하고 마지막에 | 없을 때 처리 안 하기
 		}
 		i++;
@@ -51,9 +56,9 @@ void		parse_pipe3(char **raw_input, char **parsed_input)
 void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
 	close(pipe_fd[0]);
-	dup2(pipe_fd[1], STDOUT_FILENO);
-	execvp(pipe1, pipe_cmdlist);
-	exec_else(minishell, curr);
+	//dup2(pipe_fd[1], STDOUT_FILENO);
+	execve(pipe1, &pipe_cmdlist[1], environ);
+	exec_else(minishell, curr); // pipe용 exec_else를 다시 만들어야 함.. ㅠㅠ
 	ft_printf("p1 수행 ");
 	close(pipe_fd[1]);
 	exit(1);
@@ -62,9 +67,9 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
 	close(pipe_fd[1]);
-	dup2(pipe_fd[0], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
+	//dup2(pipe_fd[0], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
 		//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
-	execvp(pipe1, pipe_cmdlist);
+	execve(pipe1, &pipe_cmdlist[0], environ);
 	exec_else(minishell, curr);
 	ft_printf("p2 수행 \n");
 	close(pipe_fd[0]);
@@ -98,12 +103,10 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
 	pid_t	pid;
-	int		cond = 0;
 	//ft_printf("piped_input: %s \n", parsed_input);
 
 	//command -> asdfasdfafs
 	//option  -> | asdfadfsa | asdfsdafasf
-		// 잘 안 돼서 input을 전역변수로 가져와서 파이프 전용으로 파싱 처리를 다시 했습니다!   
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
 	//뒷문자열 생략시키기
 	//parse_pipe2(curr, minishell);
@@ -117,19 +120,20 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	// 3. fork 명령어로 새 문자열에다 프로세스를 복사한다.
 	if ((pid = fork()) < 0)
 		return ;
-	wait(&cond);
 	//p1이 자식프로세스라면(그러니까 지금 복사한 파이프가 부모라면) -
 	//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
 	if (pid == 0) //0보다 크면 자식 프로세스를 기다림.
 		exec_parent(pipe_fd, minishell, curr);
+	else
+		wait(NULL);
 	ft_printf("p1: %d ", pid);
-	//waitpid(pipe_fd[0], &cond2, WNOHANG);
-	wait(&cond);
 	if ((pid = fork()) < 0)
 		return ; 
 	ft_printf("p2: %d ", pid);
 	if (pid == 0)
 		exec_child(pipe_fd, minishell, curr);
+	else
+		wait(NULL);
 	//if (curr->option && curr->option[0] != '\0')
 		//cmd_executer(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
 		//현재 재귀가 작동을 안합니다... 해결방법 모색해야함 
@@ -137,7 +141,6 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 	//waitpid(pipe_fd[1], &cond1, WNOHANG); //무조건 리턴됨. 중단되었다가 재개된 자식프로세스의 상태를 받음.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-	wait(&cond);
 	free(parsed_input);
 	free(pipe1);
 	free(pipe_cmdlist);
