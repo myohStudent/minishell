@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/17 11:10:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 14:43:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,11 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 			//else if ((has_redirs(curr->option) != 0))
 		//	exec_redir(curr, minishell);urr, minishell);
 	}
-	if(!(exec_else(minishell, curr)))
+	else 
+	{
+		if (!(exec_else(minishell, curr)))
 			return (-1);
+	}
 	return (1);
 }
 int cmd_handler(t_minishell *minishell)
@@ -145,7 +148,6 @@ int cmd_handler(t_minishell *minishell)
 		{
 			if (!(cmd_executer(minishell, curr)))
 				return (-1);
-		
 			t_cmd *next;
 			next = curr->next;
 			free(curr);

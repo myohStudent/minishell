@@ -109,10 +109,8 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	int		pipe_fd[2];
 	//[궁금증] pid는 지역변수이므로, p1과 p2 구분할 필요 없이 돌려쓰기 해도 될 것 같은데 어떻습니까?
 	//넵 좋아요! 하나만 쓰죠!
-	pid_t	p1, p2;
-	int		cond1 = 0;
-	int		cond2 = 0;
-	//parse_pipe3(&raw_input, &parsed_input);
+	pid_t	pid;
+	int		cond = 0;
 	//ft_printf("piped_input: %s \n", parsed_input);
 
 	//command -> asdfasdfafs
@@ -120,7 +118,8 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		// 잘 안 돼서 input을 전역변수로 가져와서 파이프 전용으로 파싱 처리를 다시 했습니다!   
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
 	//뒷문자열 생략시키기
-	parse_pipe2(curr, minishell);
+	//parse_pipe2(curr, minishell);
+	parse_pipe3(&raw_input, &parsed_input);
 	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
 	//[가설 1] 이 방식을 채택하면 리다이렉션, 쿼트 실행 함수에서도 각자의 문자를 없애는 기능이 내장되어야 합니다.
@@ -129,20 +128,21 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	if (pipe(pipe_fd) < 0)
 		return ;
 	// 3. fork 명령어로 새 문자열에다 프로세스를 복사한다.
-	if ((p1 = fork()) < 0)
+	if ((pid = fork()) < 0)
 		return ;
-	wait(&cond1);
+	wait(&cond);
 	//p1이 자식프로세스라면(그러니까 지금 복사한 파이프가 부모라면) -
 	//p1(pipe1)이 자식이라는 뜻이므로 파이프의 1번구멍을 stdout으로 내뱉는다
-	if (p1 == 0) //0보다 크면 자식 프로세스를 기다림.
+	if (pid == 0) //0보다 크면 자식 프로세스를 기다림.
 		exec_parent(pipe_fd, minishell, curr);
-	ft_printf("p1: %d ", p1);
+	ft_printf("p1: %d ", pid);
 	//waitpid(pipe_fd[0], &cond2, WNOHANG);
-	if ((p2 = fork()) < 0)
+	wait(&cond);
+	if ((pid = fork()) < 0)
 		return ; 
 	//그게 아니고, p2가 자식프로세스라면 -
-	ft_printf("p2: %d ", p2);
-	if (p2 == 0)
+	ft_printf("p2: %d ", pid);
+	if (pid == 0)
 		exec_child(pipe_fd, minishell, curr);
 	//if (curr->option && curr->option[0] != '\0')
 		//cmd_executer(minishell, curr->option);//재귀. trim한 line을 상위함수에 넣어서 파이프/리다이렉션/따옴표/달러 그외 순으로 검사한다.
@@ -151,7 +151,7 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 	//waitpid(pipe_fd[1], &cond1, WNOHANG); //무조건 리턴됨. 중단되었다가 재개된 자식프로세스의 상태를 받음.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-	wait(&cond2);
+	wait(&cond);
 	free(parsed_input);
 	return ;
 }
