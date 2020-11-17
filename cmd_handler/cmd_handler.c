@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/17 22:49:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 23:42:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 int exec_else(t_minishell *minishell, t_cmd *curr)
 {
-		// 할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
-
+	// 할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 	{
-		if (curr->argc == 1)
+		if (curr->argc == 1 || curr->option == NULL)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
 		else if (curr->argc > 1 && curr->option)
 			ft_putstr_fd("pwd: too many arguments", 1);
 		else if (curr->argc > 1)
-			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		else if (curr->argc > 1 && !curr->option)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
 		ft_putchar('\n');
 	}
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
 		if (curr->argc == 1)
+		{
+			if (chdir(home_dir) < 0)
+				return (-1);
+		}
+		else if (!curr->option)
 		{
 			if (chdir(home_dir) < 0)
 				return (-1);
@@ -42,11 +44,6 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		}
 		else if (curr->argc > 2)
 			ft_putstr_fd("cd: too many arguments\n", 1);
-		else if (!curr->option)
-		{
-			if (chdir(home_dir) < 0)
-				return (-1);
-		}
 	}
 	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
 	{
@@ -75,27 +72,31 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	// curr->option에 |가 들어가 있을 시 파이프 함수를 발동시킨다
-
-	if (has_pipes(curr->option) != 0)
+	// curr->option의 첫 번째 sep이 보이면 멈추고 sep 입력한다.
+	check_separator(minishell, curr); 
+	// sep의 종류에 따라 exec 함수로 보낸다.
+	if (curr->pipe == 1)
 	{
-			curr->has_pipe = 1;
 			exec_pipe(curr, minishell);
 			//else if ((has_redirs(curr->option) != 0))
 		//	exec_redir(curr, minishell);urr, minishell);
 	}
-	else 
+	else if (curr->redir == 1)
+			ft_printf("curr->redir = 1");
+	else if (curr->pipe == 0 && curr->redir == 0)
 	{
 		if (!(exec_else(minishell, curr)))
 			return (-1);
 	}
 	return (1);
 }
+
 int cmd_handler(t_minishell *minishell)
 {
 	char buf[2];
 	char *input;
 	t_cmd *curr;
+	t_cmd *next;
 
 	//init
 	minishell->cmd_num = 0;
@@ -136,20 +137,18 @@ int cmd_handler(t_minishell *minishell)
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드
-
+	init_curr(curr);
 	//[해결]할일 : 이하 내용을 담을 함수 만들기 (명령어 처리기)
-
 	int i = 0;
 	while (curr != NULL && *input != 0)               // 포인터가 NULL이 아닐 때 계속 반복
     {
 	   	i++;
-		//[해결] 할일 : 이 if문을 함수로 따로 빼야만 pipe와 리다의 재귀가 가능합니다.
-
 		if (curr->command)
 		{
 			if (!(cmd_executer(minishell, curr)))
 				return (-1);
-			t_cmd *next;
+			next = malloc(sizeof(t_cmd));
+			//t_cmd *next; 였는데 바꿨어요 
 			next = curr->next;
 			free(curr);
 			curr = next;

@@ -18,7 +18,7 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 	//dup2(pipe_fd[1], STDOUT_FILENO);
 	execve(curr->command, &curr->command, minishell->environ);
 	//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
-	exec_else(minishell, curr); // pipe용 exec_else를 다시 만들어야 함.. ㅠㅠ
+	//exec_else(minishell, curr); // pipe용 exec_else를 다시 만들어야 함.. ㅠㅠ
 	ft_printf("p1 : ");
 	close(pipe_fd[1]);
 	exit(1);
@@ -38,21 +38,26 @@ void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 	
 }
 
-int			parse_pipe(t_cmd *curr, t_minishell *minishell)
+void		parse_pipe(t_cmd *curr)
 {
-	int		i;
-	char	*temp;
-	t_cmd	*next = malloc(sizeof(t_cmd));
-	i = 0;
-	temp = curr->option;
 	if ((ft_strncmp(curr->option, " | ", 3) == 0))
 		curr->option = ft_strdup(curr->option + 3);
 	else if ((ft_strncmp(curr->option, " || ", 4) == 0)) 
 		curr->option = ft_strdup(curr->option + 4);
 	else if (ft_strncmp(curr->option, "| ", 2) == 0)
 		curr->option = ft_strdup(curr->option + 2);
-	else
-		return (-1);
+}
+
+int			parse_global(t_cmd *curr, t_minishell *minishell)
+{
+	int		i;
+	char	*temp;
+	t_cmd	*next = malloc(sizeof(t_cmd));
+	
+	i = 0;
+	temp = curr->option;
+	
+	parse_pipe(curr);
 	curr->next = next;
 	next->command = curr->option;
 	curr->option = NULL;
@@ -72,7 +77,7 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//option  -> | asdfadfsa | asdfsdafasf
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
 	//뒷문자열 생략시키기
-	parse_pipe(curr, minishell);
+	parse_global(curr, minishell);
 	//parse_pipe3(&raw_input, &parsed_input);
 	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
@@ -103,6 +108,7 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 
 	//waitpid(pipe_fd[1], &cond1, WNOHANG); //무조건 리턴됨. 중단되었다가 재개된 자식프로세스의 상태를 받음.
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
+	curr->pipe = 0;
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 22:41:21 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/17 23:26:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	int				has_pipe;
-	int				has_redir;
-	int				has_dollar; 
+	int				pipe;
+	int				redir;
+	int				dredir;
+	int				dollar; 
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
@@ -90,7 +91,8 @@ int cmd_export(t_cmd *curr, t_minishell *minishell);
 int			arr_len(char **env);
 void		free_arr(char **arr);
 char	*parse_space(char *s, char *space);
-
+void	check_separator(t_minishell *minishell, t_cmd *curr);
+void	init_curr(t_cmd *curr);
 /*
 ** has_utils.c
 */
@@ -141,6 +143,5 @@ pipe_execute.c
 */
 
 void		exec_pipe(t_cmd *curr, t_minishell *minishell);
-int			parse_pipe(t_cmd *curr, t_minishell *minishell);
-
+void		parse_pipe(t_cmd *curr);
 #endif
