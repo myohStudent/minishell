@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 22:11:26 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 11:03:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 int         is_char(char c, char *s)
 {
-    while (*s)
+    int     i;
+
+    i = 0;
+    while (s[i])
     {
-        if (c == *s)
-            return (1);
+        if (c == s[i])
+            return (i);
         s++;
     }
-    return (0);
+    return (-1);
 }

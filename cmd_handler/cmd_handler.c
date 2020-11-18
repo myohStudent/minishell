@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/17 23:42:48 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 11:15:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	// sep의 종류에 따라 exec 함수로 보낸다.
 	if (curr->pipe == 1)
 	{
-			exec_pipe(curr, minishell);
+		exec_pipe(curr, minishell);
 			//else if ((has_redirs(curr->option) != 0))
 		//	exec_redir(curr, minishell);urr, minishell);
 	}
@@ -150,7 +150,7 @@ int cmd_handler(t_minishell *minishell)
 			next = malloc(sizeof(t_cmd));
 			//t_cmd *next; 였는데 바꿨어요 
 			next = curr->next;
-			free(curr);
+			free(curr->next);
 			curr = next;
 		}
     }

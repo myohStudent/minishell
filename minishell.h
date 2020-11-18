@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 23:26:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 11:21:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@
 # define STDOUT 1
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
+# define SYMBOLS ";|<>"
 
 char				*home_dir;
 char				*raw_input;
+int					flags[10];
+// | 1, > 2, < 3, >> 4, ' 5, " 6, /' 7, ; 8, redirs 9, mixed 10개
 
 typedef struct s_env
 {
@@ -143,5 +146,6 @@ pipe_execute.c
 */
 
 void		exec_pipe(t_cmd *curr, t_minishell *minishell);
-void		parse_pipe(t_cmd *curr);
+void		parse_pipe(char *s);
+
 #endif

@@ -38,14 +38,49 @@ void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 	
 }
 
-void		parse_pipe(t_cmd *curr)
+void		parse_pipe(char *s)
 {
-	if ((ft_strncmp(curr->option, " | ", 3) == 0))
-		curr->option = ft_strdup(curr->option + 3);
-	else if ((ft_strncmp(curr->option, " || ", 4) == 0)) 
-		curr->option = ft_strdup(curr->option + 4);
-	else if (ft_strncmp(curr->option, "| ", 2) == 0)
-		curr->option = ft_strdup(curr->option + 2);
+	if ((ft_strncmp(s, " | ", 3) == 0))
+		s = ft_strdup(s + 3);
+	else if ((ft_strncmp(s, " || ", 4) == 0)) 
+		s = ft_strdup(s + 4);
+	else if (ft_strncmp(s, "| ", 2) == 0)
+		s = ft_strdup(s + 2);
+	else if ((ft_strncmp(s, "|", 1) == 0))
+		s = ft_strdup(s + 1);
+}
+
+int			parse_global2(t_cmd *curr, t_minishell *minishell)
+{ //curr->option을 모두 연결리스트화하기
+	int		i;
+	char	*temp;
+	char	*temp2;
+	t_cmd	*next = malloc(sizeof(t_cmd));
+	int		j;
+
+	j = 0;
+	i = 0;
+	temp = ft_strdup(curr->option);
+	curr->option = NULL;
+	while (temp && temp != NULL)
+	{
+		parse_pipe(temp);
+		j = is_char('|', temp);
+		printf("temp: %s, j: %d\n", temp, j);
+		curr->next = next;
+		next->command = ft_substr(temp, 0, j);
+		if (j != 0)	
+		{
+			temp2 = ft_substr(temp, j, ft_strlen(temp));
+			temp = ft_strdup(temp2);
+			free(temp2);
+		}
+		else if (j == -1)
+			free(temp);
+		ft_printf("parse ");
+		return ;
+	}
+	return (1);
 }
 
 int			parse_global(t_cmd *curr, t_minishell *minishell)
@@ -57,7 +92,7 @@ int			parse_global(t_cmd *curr, t_minishell *minishell)
 	i = 0;
 	temp = curr->option;
 	
-	parse_pipe(curr);
+	parse_pipe(temp);
 	curr->next = next;
 	next->command = curr->option;
 	curr->option = NULL;
@@ -77,7 +112,9 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	//option  -> | asdfadfsa | asdfsdafasf
 	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
 	//뒷문자열 생략시키기
-	parse_global(curr, minishell);
+	//parse_global(curr, minishell);
+	parse_global2(curr, minishell);
+
 	//parse_pipe3(&raw_input, &parsed_input);
 	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
 	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
