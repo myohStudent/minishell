@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/18 11:15:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 16:50:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	// curr->option의 첫 번째 sep이 보이면 멈추고 sep 입력한다.
+	// curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
 	check_separator(minishell, curr); 
-	// sep의 종류에 따라 exec 함수로 보낸다.
-	if (curr->pipe == 1)
+	// flag의 종류에 따라 exec 함수로 보낸다.
+	if (pipe_num >= 1)
 	{
 		exec_pipe(curr, minishell);
 			//else if ((has_redirs(curr->option) != 0))
@@ -83,7 +83,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	}
 	else if (curr->redir == 1)
 			ft_printf("curr->redir = 1");
-	else if (curr->pipe == 0 && curr->redir == 0)
+	else if (pipe_num == 0 && curr->redir == 0)
 	{
 		if (!(exec_else(minishell, curr)))
 			return (-1);
@@ -137,7 +137,7 @@ int cmd_handler(t_minishell *minishell)
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드
-	init_curr(curr);
+	//init_curr(curr);
 	//[해결]할일 : 이하 내용을 담을 함수 만들기 (명령어 처리기)
 	int i = 0;
 	while (curr != NULL && *input != 0)               // 포인터가 NULL이 아닐 때 계속 반복

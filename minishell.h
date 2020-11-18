@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/18 11:21:39 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 16:49:41 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char				*home_dir;
 char				*raw_input;
 int					flags[10];
 // | 1, > 2, < 3, >> 4, ' 5, " 6, /' 7, ; 8, redirs 9, mixed 10개
+int					pipe_num;
 
 typedef struct s_env
 {
@@ -65,6 +66,7 @@ typedef struct	 	s_minishell
 	pid_t			pid;
 	char			*path;
 	int				cmd_num;
+	int				pipe_num;
 	char			**environ;
 	int				env_currnb; // current number
 	int				env_initnb; //initialized number
@@ -95,7 +97,7 @@ int			arr_len(char **env);
 void		free_arr(char **arr);
 char	*parse_space(char *s, char *space);
 void	check_separator(t_minishell *minishell, t_cmd *curr);
-void	init_curr(t_cmd *curr);
+//void	init_curr(t_cmd *curr);
 /*
 ** has_utils.c
 */
@@ -146,6 +148,6 @@ pipe_execute.c
 */
 
 void		exec_pipe(t_cmd *curr, t_minishell *minishell);
-void		parse_pipe(char *s);
+void		parse_pipe(char **s);
 
 #endif

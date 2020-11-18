@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/17 23:39:22 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/18 16:49:58 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,26 @@ void	check_separator(t_minishell *minishell, t_cmd *curr)
 	int		i;
 	char	*temp;
 
+	pipe_num = 0;
+	curr->redir = 0;
 	temp = ft_strdup(curr->option);
 	i = 0;
 	while (temp[i])
 	{
 		if (temp[i] == '|')
-			curr->pipe = 1;
+			pipe_num++;
 		if (temp[i] == '>')
-			curr->redir = 1;
+			curr->redir++;
 		i++;
 	}
+	ft_printf("pipe: %d ", pipe_num);
 	free(temp);
 }
 
-void	init_curr(t_cmd *curr)
+/*void	init_curr(t_cmd *curr)
 {
-	curr->pipe = 0;
+	minishell->pipe_num = 0;
 	curr->redir = 0;
 	curr->dollar = 0;
 	curr->dredir = 0;
-}
+}*/
