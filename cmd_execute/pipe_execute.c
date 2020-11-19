@@ -67,122 +67,115 @@ void		parse_pipe(char **temp)
 		s = ft_strdup(s + 1);
 	*/
 	}
+	ft_printf("pipe_parse ");
 }
 
-int			parse_global2(t_cmd *curr, t_minishell *minishell)
-{ //curr->option을 모두 연결리스트화하기
+int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
+{ 
+	//해야 할 것 : curr->option의 커맨드들을 curr 다음 연결리스트인 env->variable에 하나하나 넣기
+	//문제점 : curr 다음에 env 연결리스트가 오면 execve 인자에 넣을 수가 없게 됨 
+	//그래서 일단 env에 curr 커맨드부터 집어넣어 봄
 	int		i;
-	char	*temp;
-	char	*temp2;
-	t_cmd	*next = malloc(sizeof(t_cmd));
 	int		j;
-
+	char		*temp;
+	char		*temp2;
+	t_env	*next;
+	
 	j = 0;
 	i = 0;
+	next = (t_env *)malloc(sizeof(t_env));
+	pipe_cmd->variable = ft_strdup(curr->command);
+	curr->command = NULL;
+	parse_pipe(&curr->option);
 	temp = ft_strdup(curr->option);
 	curr->option = NULL;
-	while (temp && temp != NULL)
+	while (temp != NULL)
 	{
+		ft_printf("temp : /%s/ \n", temp);
 		parse_pipe(&temp);
-		
-		j = is_char('|', temp);
-		minishell->pipe_num = j + 1;
-		ft_printf("temp: /%s/ j: %d\n", temp, j);
-		curr->next = next;
-		next->command = ft_substr(temp, 0, j);
+		next = NULL;
+		pipe_cmd->next = next;
+		if ((j = is_char('|', temp)) > 0)
+		{		
+			ft_printf(" j : %d ", j);
+			next->variable = ft_substr(temp, 0, j);
+			ft_printf(" ghghgh ");
+			next->variable = ft_strtrim(next->variable, " ");
+			
+			ft_printf("next->variable: /%s/\n", next->variable);
+		}
+		else if (j == 0)
+			next->variable = ft_strtrim(next->variable, " ");
+		else if (j == -1)
+		{
+			ft_printf("??? ");
+			//next->variable = ft_strtrim(next->variable, " ");
+			temp = NULL;
+		}
+		ft_printf("--- ");
 		if (j > 0)	
 		{
 			temp2 = ft_substr(temp, j, ft_strlen(temp));
 			temp = ft_strdup(temp2);
 			free(temp2);
+			ft_printf(" 되나  ");
 		}
-		else if (j == -1)
-			temp = NULL;
+		t_env *next;
+		next = pipe_cmd->next;
 		ft_printf("temp나머지: %s ", temp);
 	}
-	free(temp);
-	return (1);
-}
-
-int			parse_global(t_cmd *curr, t_minishell *minishell)
-{
-	int		i;
-	char	*temp;
-	t_cmd	*next = malloc(sizeof(t_cmd));
-	
-	i = 0;
-	temp = curr->option;
-	
-	parse_pipe(&temp);
-	curr->next = next;
-	next->command = curr->option;
-	curr->option = NULL;
-	free(temp);
+	next->variable = ft_strdup("");
+	ft_printf("ttttt");
+	next->variable = NULL;
+	ft_printf("next->variable: /%s/\n", next->variable);
 	return (1);
 }
 
 void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
-	int i;
-	int j;
-	i = 0;
-	j = 0;
-	int		pipe_fd[pipe_num * 2];
-	pid_t	pid;
-	ft_printf("pipe_num: %d ", pipe_num);
+	int			i;
+	int			pipe_fd[2];
+	pid_t		pid;
+	t_env		*pipe_cmd;
+	int			fdd;
 
-	// parse_pipe3(&raw_input, &parsed_input);
-	//command -> asdfasdfafs
-	//option  -> | asdfadfsa | asdfsdafasf
-	//[검증 필요] 만약 asadfa | 만 들어왔을 경우 haspipe와 parsepipe는 어떻게 검열합니까?
-	//뒷문자열 생략시키기
-	//parse_global(curr, minishell);
-	//할일 : 파싱 구현 (option의 '| ' 을 없애고 뒷 문자열만 백업하기.)
-	//[검증 필요] 이 방식을 채택할 경우 생길 수 있는 문제가 무엇인가요?
-	//[가설 1] 이 방식을 채택하면 리다이렉션, 쿼트 실행 함수에서도 각자의 문자를 없애는 기능이 내장되어야 합니다.
-	// 2. 파싱한 뒤 pipe(pipe_fd)로 앞서 수행한 명령의 file descriptions을 받는다. 이 배열의 0번은 read, 1번은 write가 된다.
-	parse_global2(curr, minishell);
-	ft_printf("pipe_num: %d ", pipe_num);
-	while (i < pipe_num)
-	{
-		if (pipe(pipe_fd + i * 2) < 0)
-			return ;
-		ft_printf("pipe_fd[%d]: %d \n", i, pipe_fd[i]);
-		i++;
-	}
 	i = 0;
-	while (curr->command != NULL && i < pipe_num)
+	fdd = 0;
+	pipe_cmd = (t_env *)malloc(sizeof(t_env));
+	ft_printf("curr->option: %s ", curr->option);
+
+	parse_global2(curr, pipe_cmd, minishell);
+	ft_printf("pipe_cmd->variable: %s ", pipe_cmd->variable);
+	
+	while (pipe_cmd->variable != NULL)
 	{
-		if ((pid = fork()) < 0)
-			return ;
-		if (pid == 0)
+		if (pipe(pipe_fd) < 0)
+			return ;				
+		if ((pid = fork()) == -1) 
 		{
-			exec_parent(pipe_fd, minishell, curr, i);
-			/*if (j != 0)
-				dup2(pipe_fd[j - 2], 0);
-			if ((curr->next)->command != NULL)
-				dup2(pipe_fd[j + 1], 1);
-			while (i < minishell->pipe_num)
-				close(pipe_fd[i++]);
-			if (execve(curr->command, &curr->command, minishell->environ))
-				exit(1);*/
+			perror("fork");
+			exit(1);
 		}
-		else
-			wait(NULL);
-		if ((pid = fork()) < 0)
-			return ; 
-		if (pid == 0)
-			exec_child(pipe_fd, minishell, curr, i);
-		else
-			wait(NULL);
-		if ((curr->next)->command != NULL)
+		else if (pid == 0) 
 		{
-			curr->command = (curr->next)->command;
+			dup2(fdd, 0);
+			if (curr->next->command != NULL) 
+				dup2(pipe_fd[1], 1);
+			close(pipe_fd[0]);
+			execve(pipe_cmd->variable, &pipe_cmd->variable, minishell->environ);
+			//exec_else(minishell, curr);
+			exit(1);
 		}
-		while (i < minishell->pipe_num)
-				close(pipe_fd[i++]);
-		i++;
+		else 
+		{
+			wait(NULL); 		
+			close(pipe_fd[1]);
+			fdd = pipe_fd[0];
+			pipe_cmd = pipe_cmd->next;
+		}
 	}
+	ft_printf("나간다 ");
+}
 		/*else
 		{
 			if (curr->command != NULL)
@@ -219,7 +212,6 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	minishell->pipe_num--;
 	return ;
 	*/
-}
 
 
 //파싱 redirection용이랑 통합해서 하기
@@ -270,3 +262,23 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		i++;
 	}
 }*/
+
+/* 
+
+int			parse_global(t_cmd *curr, t_minishell *minishell)
+{
+	int		i;
+	char	*temp;
+	t_cmd	*next = malloc(sizeof(t_cmd));
+	
+	i = 0;
+	temp = curr->option;
+	
+	parse_pipe(&temp);
+	curr->next = next;
+	next->command = curr->option;
+	curr->option = NULL;
+	free(temp);
+	return (1);
+}
+*/
