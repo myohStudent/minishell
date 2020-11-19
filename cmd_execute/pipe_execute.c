@@ -39,6 +39,14 @@ void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr, int i)
 	
 }
 
+void		add_node(t_env *target, char *s)
+{
+	t_env *new = (t_env *)malloc(sizeof(t_env));  
+    new->next = target->next;
+    new->variable = s;
+    target->next = new;
+}
+
 void		parse_pipe(char **temp)
 {
 	int		i;
@@ -74,45 +82,69 @@ int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
 { 
 	//해야 할 것 : curr->option의 커맨드들을 curr 다음 연결리스트인 env->variable에 하나하나 넣기
 	//문제점 : curr 다음에 env 연결리스트가 오면 execve 인자에 넣을 수가 없게 됨 
-	//그래서 일단 env에 curr 커맨드부터 집어넣어 봄
+	//그래서 일단 env에 curr 커맨드부터 같이 집어넣어 봄
 	int		i;
-	int		j;
 	char		*temp;
 	char		*temp2;
 	t_env	*next;
 	
-	j = 0;
 	i = 0;
-	next = (t_env *)malloc(sizeof(t_env));
 	pipe_cmd->variable = ft_strdup(curr->command);
 	curr->command = NULL;
 	parse_pipe(&curr->option);
 	temp = ft_strdup(curr->option);
 	curr->option = NULL;
-	while (temp != NULL)
+	if (temp != NULL)
+	{
+		parse_pipe(&temp);
+		ft_printf("*temp : /%s/ \n", temp);
+		i = -1;
+		if (temp != NULL)
+		{
+						//character parsing
+			while (temp[++i])
+			{
+				//t_env *next;
+				//next = (t_env *)malloc(sizeof(t_env));
+				if (temp[i] == '|')
+				{
+					temp2 = ft_substr(temp, 0, i);
+					add_node(pipe_cmd, ft_strtrim(temp2, " "));
+					free(temp2);
+					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
+					temp2 = ft_strtrim(temp, " ");
+					temp = NULL;
+					temp = temp2;
+					temp2 = NULL;
+				}
+				pipe_cmd->next = next;
+			}	
+			if (temp[i] == '\0')
+				(pipe_cmd->next)->variable = NULL;
+			free(temp);
+			free(temp2);				
+		}
+	}
+	/*while (temp != NULL)
 	{
 		ft_printf("temp : /%s/ \n", temp);
 		parse_pipe(&temp);
-		next = NULL;
-		pipe_cmd->next = next;
+		next->variable = ft_strdup("");
+		if (temp[i])
 		if ((j = is_char('|', temp)) > 0)
 		{		
 			ft_printf(" j : %d ", j);
 			next->variable = ft_substr(temp, 0, j);
-			ft_printf(" ghghgh ");
 			next->variable = ft_strtrim(next->variable, " ");
-			
 			ft_printf("next->variable: /%s/\n", next->variable);
 		}
 		else if (j == 0)
 			next->variable = ft_strtrim(next->variable, " ");
 		else if (j == -1)
 		{
-			ft_printf("??? ");
 			//next->variable = ft_strtrim(next->variable, " ");
 			temp = NULL;
 		}
-		ft_printf("--- ");
 		if (j > 0)	
 		{
 			temp2 = ft_substr(temp, j, ft_strlen(temp));
@@ -120,14 +152,11 @@ int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
 			free(temp2);
 			ft_printf(" 되나  ");
 		}
-		t_env *next;
-		next = pipe_cmd->next;
+		pipe_cmd->next = next;
 		ft_printf("temp나머지: %s ", temp);
-	}
-	next->variable = ft_strdup("");
-	ft_printf("ttttt");
-	next->variable = NULL;
-	ft_printf("next->variable: /%s/\n", next->variable);
+	}*/
+//	(pipe_cmd->next)->variable = NULL;
+	//ft_printf("(pipe_cmd->variable: /%s/", (pipe_cmd->variable));
 	return (1);
 }
 
@@ -136,19 +165,26 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	int			i;
 	int			pipe_fd[2];
 	pid_t		pid;
+	t_env		*pipe_cmd_head;
 	t_env		*pipe_cmd;
 	int			fdd;
 
 	i = 0;
 	fdd = 0;
-	pipe_cmd = (t_env *)malloc(sizeof(t_env));
+	pipe_cmd_head = (t_env *)malloc(sizeof(t_env));
 	ft_printf("curr->option: %s ", curr->option);
 
-	parse_global2(curr, pipe_cmd, minishell);
-	ft_printf("pipe_cmd->variable: %s ", pipe_cmd->variable);
-	
+	parse_global2(curr, pipe_cmd_head, minishell);
+	pipe_cmd = pipe_cmd_head->next;
+
+	while (pipe_cmd != NULL)
+	{
+		ft_printf("pipe_cmd->variable: %s ", pipe_cmd->variable);
+		pipe_cmd = pipe_cmd->next;
+	}
 	while (pipe_cmd->variable != NULL)
 	{
+		ft_printf(" 들어왔나요? ");
 		if (pipe(pipe_fd) < 0)
 			return ;				
 		if ((pid = fork()) == -1) 
