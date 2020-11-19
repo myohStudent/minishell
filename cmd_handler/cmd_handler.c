@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/18 16:50:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/19 18:17:01 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,7 @@ int cmd_handler(t_minishell *minishell)
 		{
 			if (!(cmd_executer(minishell, curr)))
 				return (-1);
-			next = malloc(sizeof(t_cmd));
-			//t_cmd *next; 였는데 바꿨어요 
+			t_cmd *next;
 			next = curr->next;
 			free(curr->next);
 			curr = next;
