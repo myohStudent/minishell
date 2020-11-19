@@ -41,10 +41,13 @@ void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr, int i)
 
 void		add_node(t_env *target, char *s)
 {
+	ft_printf(" node \n");
 	t_env *new = (t_env *)malloc(sizeof(t_env));  
     new->next = target->next;
     new->variable = s;
     target->next = new;
+	ft_printf(" new node \n");
+
 }
 
 void		parse_pipe(char **temp)
@@ -101,27 +104,29 @@ int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
 		i = -1;
 		if (temp != NULL)
 		{
-						//character parsing
 			while (temp[++i])
 			{
-				//t_env *next;
-				//next = (t_env *)malloc(sizeof(t_env));
 				if (temp[i] == '|')
 				{
+					ft_printf(" *** \n");
 					temp2 = ft_substr(temp, 0, i);
 					add_node(pipe_cmd, ft_strtrim(temp2, " "));
 					free(temp2);
+					ft_printf(" ??? \n");
 					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
 					temp2 = ft_strtrim(temp, " ");
-					temp = NULL;
 					temp = temp2;
 					temp2 = NULL;
 				}
-				pipe_cmd->next = next;
+				ft_printf(" one ");
 			}	
-			if (temp[i] == '\0')
-				(pipe_cmd->next)->variable = NULL;
-			free(temp);
+			if (temp) // 마지막 cmd
+			{
+				add_node(pipe_cmd, ft_strtrim(temp, " "));
+				ft_printf("last cmd ");
+				temp = NULL;
+				free(temp);
+			}
 			free(temp2);				
 		}
 	}
@@ -175,7 +180,7 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	ft_printf("curr->option: %s ", curr->option);
 
 	parse_global2(curr, pipe_cmd_head, minishell);
-	pipe_cmd = pipe_cmd_head->next;
+	pipe_cmd = pipe_cmd_head;
 
 	while (pipe_cmd != NULL)
 	{
