@@ -39,11 +39,11 @@ void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr, int i)
 	
 }
 
-void		add_node(t_env *target, char *s)
+void		add_node(t_cmd *target, char *s)
 {
-	t_env *new = (t_env *)malloc(sizeof(t_env));  
+	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
     new->next = target->next;
-    new->variable = ft_strdup(s);
+    new->command = ft_strdup(s);
     target->next = new;
 }
 
@@ -101,8 +101,6 @@ char		*space_trim(char *s)
         end--;
     *(end + 1) = '\0';
     s = ft_strdup(t);
-	
-	ft_printf("trimmed: /%s/ ", s);
     return (s);
 	/*j = 0;
 	i = ft_strlen(s);
@@ -116,7 +114,7 @@ char		*space_trim(char *s)
 	return (new);*/
 }
 
-int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
+int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 { 
 	//해야 할 것 : curr->option의 커맨드들을 curr 다음 연결리스트인 env->variable에 하나하나 넣기
 	//문제점 : curr 다음에 env 연결리스트가 오면 execve 인자에 넣을 수가 없게 됨 
@@ -126,7 +124,7 @@ int			parse_global2(t_cmd *curr, t_env *pipe_cmd, t_minishell *minishell)
 	char		*temp;
 	char		*temp2;
 	char		*temp3;
-	t_env	*next;
+	t_cmd	*next;
 	
 	i = 0;
 	ft_printf("%s\n", (temp = ft_strjoin(curr->command, curr->option)));
@@ -176,23 +174,23 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	int			i;
 	int			pipe_fd[2];
 	pid_t		pid;
-	t_env		*head;
-	t_env		*pipe_cmd;
+	t_cmd		*head;
+	t_cmd		*pipe_cmd;
 	int			fdd;
 
 	i = 0;
 	fdd = 0;
-	head = (t_env *)malloc(sizeof(t_env));
-	pipe_cmd = (t_env *)malloc(sizeof(t_env));
+	head = (t_cmd *)malloc(sizeof(t_cmd));
+	pipe_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_global2(curr, head, minishell);
 	pipe_cmd = head->next;
 	while (pipe_cmd != NULL)
 	{
-		ft_printf("pipe_cmd: /%s/ ", pipe_cmd->variable);
+		ft_printf("pipe_cmd: /%s/ ", pipe_cmd->command);
 		pipe_cmd = pipe_cmd->next;
 	}
 	pipe_cmd = head->next;
-	while (pipe_cmd->variable != NULL)
+	while (pipe_cmd->command != NULL)
 	{
 		ft_printf(" 들어왔나요? ");
 		if (pipe(pipe_fd) < 0)
@@ -204,13 +202,13 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		}
 		else if (pid == 0) 
 		{
-			ft_printf("당근 ");
 			dup2(fdd, 0);
-			if (pipe_cmd->next->variable != NULL) 
+			if (pipe_cmd->next->command != NULL) 
 				dup2(pipe_fd[1], 1);
 			close(pipe_fd[0]);
-			//execve(pipe_cmd->variable, &(pipe_cmd->variable)->next, minishell->environ);
-			//exec_else_cmd(minishell, curr);
+			execve(pipe_cmd->command, &(pipe_cmd->command), minishell->environ);
+			exec_else(minishell, pipe_cmd);
+			ft_printf(" ??? ");
 			exit(1);
 		}
 		else 
