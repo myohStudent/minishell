@@ -14,6 +14,7 @@ void copy_env(t_minishell *minishell, t_env *export_list, t_env *env)
 		export_list = export_list->next;
 		env = env->next;
 	}
+	export_list->next = NULL;
 }
 
 int			    ft_strcmp(const char *s1, const char *s2)
@@ -30,26 +31,36 @@ void sort_env(t_minishell *minishell, t_env *export_list)
 {
 	int i;
 	int j;
+	t_env 	*prev_node;
+	t_env 	*curr_node;
 	t_env	*next_node;
 
 	i = minishell->env_initnb;
 	while (i)
 	{
 		j = 0;
-		while (j < i && export_list->next)
+		curr_node = export_list;
+		prev_node = NULL;
+		while (j < i && curr_node)
 		{
-			if (ft_strcmp(export_list->variable, export_list->next->variable) > 0)
-			{ //여기에다 가져온 함수에 원하는 인자를 넣어서 실행한다. ft_strcmp와 동일한 형태로 생각하고 결과값은 int가 된다.
-				next_node = export_list;
-				export_list = export_list->next;
-				export_list->next = next_node;
+		// ft_printf("%d %d %s\n",i,j,curr_node->variable);
+			if (ft_strcmp(curr_node->variable, curr_node->next->variable) > 0)
+			{
+				next_node = curr_node;
+				curr_node = curr_node->next;
+				next_node->next = curr_node->next;
+				curr_node->next = next_node;
+				if (prev_node != NULL)
+					prev_node->next = curr_node;
 			}
-			export_list = export_list->next;
+			prev_node = curr_node;
+			curr_node = curr_node->next;
 			j++;
 		}
-		ft_printf("%d",i);
-		i++;
+		i--;
 	}
+	//print_export(minishell->export_list);
+
 }
 
 void envadd_back(t_env *list, char **newenv)
@@ -68,15 +79,11 @@ int cmd_export(t_cmd *curr, t_minishell *minishell)
 		minishell->export_list = (t_env *)malloc(sizeof(t_env));
 		copy_env(minishell, minishell->export_list, minishell->env_list);
 		ft_printf("----------------------------절취선1 \n");
-		print_export(minishell->export_list);
-		ft_printf("----------------------------절취선2 \n");
 		sort_env(minishell, minishell->export_list);
-		print_export(minishell->export_list);
-		ft_printf("----------------------------절취선3 \n");
+		ft_printf("----------------------------절취선2 \n");
 	}
-
-	if (curr->argc == 0)
-		print_export(minishell->export_list);
+	if (curr->argc == 1)
+		//print_export(minishell->export_list);
 	/*if (curr->argc > 1)
 	{
 		new_env = ft_split(curr->option, ' ');

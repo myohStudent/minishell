@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/21 20:37:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/22 03:01:47 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	print_env(t_env *env)
 	while (env)
 	{
 		if (env->variable && env->value)
-			ft_printf("declare -x %s=%s\n",env->variable,env->value);
+			ft_printf("%s=%s\n",env->variable,env->value);
 		env = env->next;
 	}
 	return (1);
