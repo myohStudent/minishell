@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/21 10:41:58 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/21 18:13:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 pipe_execute.c
 */
 
-void		exec_pipe(t_cmd *curr, t_minishell *minishell);
+int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 void		parse_pipe(char **s);
 
 #endif

@@ -181,11 +181,11 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 	return (1);
 }
 
-void			exec_pipe(t_cmd *curr, t_minishell *minishell)
+int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
 	int			i;
 	int			pipe_fd[2];
-	int			stat[2];
+	int			stat;
 	pid_t		pid;
 	t_cmd		*head;
 	t_cmd		*pipe_cmd;
@@ -209,12 +209,13 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	while (pipe_cmd->command != NULL)
 	{
 		if (pipe(pipe_fd) < 0)
-			return ;				
+			return (-1);				
 		if ((pid = fork()) == -1) 
 		{
 			perror("fork");
 			exit(1);
 		}
+		////////////////// pipe 수정할 부분 ////////////////////
 		if (pid == 0) 
 		{
 			dup2(fdd, 0);
@@ -239,8 +240,10 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 				pipe_cmd = pipe_cmd->next;
 			}
 			else
-				return ;
+				return (1);
+		//////////////////////////////////////////////
 	}
+	return (0);
 }
 		/*else
 		{
