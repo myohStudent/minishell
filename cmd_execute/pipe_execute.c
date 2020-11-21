@@ -219,7 +219,7 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		{
 			dup2(fdd, 0);
 			ft_printf("p1\n");
-			if (pipe_cmd->next->command != NULL) 
+			if (pipe_cmd->next != NULL) 
 			{
 				dup2(pipe_fd[1], 1);
 				ft_printf("p2\n");
