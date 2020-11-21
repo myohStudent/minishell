@@ -218,8 +218,12 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		if (pid == 0) 
 		{
 			dup2(fdd, 0);
+			ft_printf("p1\n");
 			if (pipe_cmd->next->command != NULL) 
+			{
 				dup2(pipe_fd[1], 1);
+				ft_printf("p2\n");
+			}
 			exec_else(minishell, pipe_cmd);
 			close(pipe_fd[0]);
 			exit(1);
@@ -229,11 +233,13 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			wait(NULL); 		
 			close(pipe_fd[1]);
 			fdd = pipe_fd[0];
+		}
 			if (pipe_cmd->next)
+			{
 				pipe_cmd = pipe_cmd->next;
+			}
 			else
 				return ;
-		}
 	}
 }
 		/*else
