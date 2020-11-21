@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/17 23:24:28 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/21 20:32:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 		i++;
 	}
 	ft_printf("%d\n",minishell->env_initnb);
+	minishell->env_currnb = minishell->env_initnb;
 }
 
 void	display_prompt(void)

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/21 18:13:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/21 20:31:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void		display_prompt(void);
 ** cmd_env.c
 */
 int			print_env(t_env *env);
+int	print_export(t_env *env);
 
 /*
 ** cmd_export.c

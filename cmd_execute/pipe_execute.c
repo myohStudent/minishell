@@ -12,26 +12,29 @@
 
 #include "../minishell.h"
 
-void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr, int i)
+void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
-	//close(pipe_fd[i]);
-	dup2(pipe_fd[(i * 2) + 1], STDOUT_FILENO);
+	close(pipe_fd[0]);
+	dup2(pipe_fd[1], 0);
+	//dup2(pipe_fd[(i * 2) + 1], STDOUT_FILENO);
 	ft_printf("p1 : ");
-	execve(curr->command, &curr->command, minishell->environ);
+	//execve(curr->command, &curr->command, minishell->environ);
 	//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
-	//exec_else(minishell, curr); // pipe용 exec_else를 다시 만들어야 함.. ㅠㅠ
+	exec_else(minishell, curr); 
 	//close(pipe_fd[i + 1]);
 	exit(1);
 }
 
-void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr, int i)
+void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
-	//close(pipe_fd[i + 1]);
-	dup2(pipe_fd[(i - 1) * 2], STDIN_FILENO); //파이프의 0번구멍을 stdinn으로 읽어들인다.
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], 1); //파이프의 0번구멍을 stdinn으로 읽어들인다.
 	//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
 	ft_printf("p2 : ");
-	if (curr->next->command)
-		execve(curr->command, &curr->next->command, minishell->environ);
+	//execve(curr->command, &curr->command, minishell->environ);
+
+	/*if (curr->next->command)
+		execve(curr->command, &curr->next->command, minishell->environ);*/
 	// execve(pipe1, &pipe_cmdlist[0], minishell->environ);
 	exec_else(minishell, curr);
 	//close(pipe_fd[i]);
@@ -219,11 +222,9 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		if (pid == 0) 
 		{
 			dup2(fdd, 0);
-			ft_printf("p1\n");
 			if (pipe_cmd->next != NULL) 
 			{
 				dup2(pipe_fd[1], 1);
-				ft_printf("p2\n");
 			}
 			exec_else(minishell, pipe_cmd);
 			close(pipe_fd[0]);
@@ -235,14 +236,39 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			close(pipe_fd[1]);
 			fdd = pipe_fd[0];
 		}
-			if (pipe_cmd->next)
-			{
-				pipe_cmd = pipe_cmd->next;
+		if (pipe_cmd->next)
+		{
+			ft_printf("else ");
+			exec_else(minishell, pipe_cmd);
+			pipe_cmd = pipe_cmd->next;
 			}
-			else
-				return (1);
+		else
+			return (1);/*
+		if (pid == 0) 
+			exec_parent(pipe_fd, minishell, pipe_cmd);
+		else
+			wait(NULL);
+		if ((pid = fork()) < 0)
+			return (-1); 
+		if (pid == 0)
+			exec_child(pipe_fd, minishell, curr);
+		else
+			wait(NULL);
+		if (pipe_cmd->next)
+			pipe_cmd = pipe_cmd->next;
+		else
+		{
+			//execve(pipe_cmd->command, &pipe_cmd->command, minishell->environ);
+			exec_else(minishell, pipe_cmd); 
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			return (1);
+		}
+	//if (curr->option && curr->option[0] != '\0')
+		//cmd_executer(minishell, curr->option);
+	
 		//////////////////////////////////////////////
-	}
+	}*/
 	return (0);
 }
 		/*else
@@ -281,7 +307,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	minishell->pipe_num--;
 	return ;
 	*/
-
+}
 
 //파싱 redirection용이랑 통합해서 하기
 /*void		parse_pipe3(char **raw_input, char **parsed_input)
