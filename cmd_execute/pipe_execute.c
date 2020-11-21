@@ -47,6 +47,25 @@ void		add_node(t_cmd *target, char *s)
     target->next = new;
 }
 
+t_cmd		*reverse_node(t_cmd *head) {
+    t_cmd *p;
+	t_cmd *q;
+	t_cmd *r;
+
+    p = head->next;
+	q = NULL;
+	r = NULL;
+    //q = (t_cmd *)malloc(sizeof(t_cmd));
+    while (p != NULL)
+	{
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
+		head->next = q;
+    }
+    return (q);
+}
 void		parse_pipe(char **temp)
 {
 	int		i;
@@ -102,16 +121,7 @@ char		*space_trim(char *s)
     *(end + 1) = '\0';
     s = ft_strdup(t);
     return (s);
-	/*j = 0;
-	i = ft_strlen(s);
-	if (!s)
-		return (NULL);
-	while (ft_isspace(s[j]))
-		j++;
-	while (ft_isspace(s[i]))
-		i--;
-	new = ft_substr(s, j, i);
-	return (new);*/
+
 }
 
 int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
@@ -127,7 +137,9 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 	t_cmd	*next;
 	
 	i = 0;
-	ft_printf("%s\n", (temp = ft_strjoin(curr->command, curr->option)));
+	temp = ft_strjoin(curr->command, " ");
+	temp = ft_strjoin(temp, curr->option);
+	ft_printf("%s\n", temp);
 	curr->command = NULL;
 	curr->option = NULL;
 	pipe_cmd->next = NULL;
@@ -141,7 +153,7 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 			{ 
 				while (temp[i] == '|' && temp[i + 1] != '\0')
 				{
-					temp2 = ft_substr(temp, 0, i - 1);
+					temp2 = ft_substr(temp, 0, i);
 					add_node(pipe_cmd, space_trim(temp2));
 					free(temp2);
 					free(temp);
@@ -173,26 +185,29 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 {
 	int			i;
 	int			pipe_fd[2];
+	int			stat[2];
 	pid_t		pid;
 	t_cmd		*head;
 	t_cmd		*pipe_cmd;
 	int			fdd;
 
-	i = 0;
 	fdd = 0;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	pipe_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_global2(curr, head, minishell);
+	i = 0;
 	pipe_cmd = head->next;
+	pipe_cmd = reverse_node(head);
 	while (pipe_cmd != NULL)
 	{
-		ft_printf("pipe_cmd: /%s/ ", pipe_cmd->command);
-		pipe_cmd = pipe_cmd->next;
+		ft_printf(" /%s/ ", pipe_cmd->command);
+		if (pipe_cmd->next)
+			pipe_cmd = pipe_cmd->next;
+		else
+			break ;
 	}
-	pipe_cmd = head->next;
 	while (pipe_cmd->command != NULL)
 	{
-		ft_printf(" 들어왔나요? ");
 		if (pipe(pipe_fd) < 0)
 			return ;				
 		if ((pid = fork()) == -1) 
@@ -200,15 +215,13 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			perror("fork");
 			exit(1);
 		}
-		else if (pid == 0) 
+		if (pid == 0) 
 		{
 			dup2(fdd, 0);
 			if (pipe_cmd->next->command != NULL) 
 				dup2(pipe_fd[1], 1);
-			close(pipe_fd[0]);
-			execve(pipe_cmd->command, &(pipe_cmd->command), minishell->environ);
 			exec_else(minishell, pipe_cmd);
-			ft_printf(" ??? ");
+			close(pipe_fd[0]);
 			exit(1);
 		}
 		else 
@@ -216,7 +229,6 @@ void			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			wait(NULL); 		
 			close(pipe_fd[1]);
 			fdd = pipe_fd[0];
-			ft_printf("가야 한다 \n");
 			if (pipe_cmd->next)
 				pipe_cmd = pipe_cmd->next;
 			else

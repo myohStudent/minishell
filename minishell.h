@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/19 16:11:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/21 10:41:58 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 
 char				*home_dir;
 char				*raw_input;
+char				**pipe_list;
+
 int					flags[10];
 // | 1, > 2, < 3, >> 4, ' 5, " 6, /' 7, ; 8, redirs 9, mixed 10개 
 int					pipe_num;
@@ -51,7 +53,6 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	int				pipe;
 	int				redir;
 	int				dredir;
 	int				dollar; 
