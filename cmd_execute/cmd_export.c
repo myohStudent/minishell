@@ -62,23 +62,66 @@ void sort_env(t_minishell *minishell)
 	}
 }
 
-void envadd_back(t_env *list, char **newenv)
+void envadd_back(t_env *list, char **newenv, t_minishell *minishell)
 {
-
-
+	t_env *new_node;
+	int i;
+	i = 0;
+	new_node = (t_env *)malloc(sizeof(t_env));
+	new_node->variable = ft_strdup(newenv[0]);
+	if (newenv[1])
+		new_node->value = ft_strdup(newenv[1]);
+	else
+		new_node->value = NULL;
+	while(list->next && i < minishell->env_currnb)
+	{
+		list = list->next;
+		i++;
+	}
+	ft_printf("[%s %s]\n",list->variable,list->value);
+	new_node->next = NULL;
+	list->next = new_node;
 }
 
-int ft_exportcmp(t_minishell *minishell, char **split_new_env)
+int ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
 {
-	// export_list에 curr->option의 앞부분과 일치하는 변수가 있는지 판별하고 치환하는 함수
-
+	int i = 0;
+	while(list && i < minishell->env_currnb)
+	{
+		// ft_printf("%d < %d ",i,minishell->env_currnb);
+		i++;
+		// ft_printf("%s, %s\n", list->variable, list->value);
+		if (ft_strcmp(list->variable, split_new_env[0]) == 0)
+		{
+			ft_printf("%s\n", list->variable);
+			if (list->value)
+				free(list->value);
+			list->value = ft_strdup(split_new_env[1]);
+			return (1);
+		}
+		list = list->next;
+	}
+	return (0);
 }
-
+int ft_update_env(t_minishell *minishell, char **split_new_env)
+{
+	t_env *env;
+	t_env *export;
+	env = minishell->env_list;
+	export = minishell->export_list;
+	if (ft_cmp_to_update(env, split_new_env, minishell) == 1)
+	{
+		ft_cmp_to_update(export, split_new_env, minishell);	
+		return (1);
+	}
+	return (0);
+}
 int cmd_export(t_cmd *curr, t_minishell *minishell)
 {
 	char **new_env;
 	char **split_new_env;
-
+	int i;
+	i = 0;
 	if(!minishell->export_list)
 	{	
 		minishell->export_list = (t_env *)malloc(sizeof(t_env));
@@ -89,23 +132,28 @@ int cmd_export(t_cmd *curr, t_minishell *minishell)
 		print_export(minishell->export_list);
 	if (curr->argc > 1)
 	{
-		//export
-		//a=a b=b c=c
 		new_env = ft_split(curr->option, ' ');
-		while(new_env)
+		while(new_env[i] != NULL)
 		{
-			//a=a
-			split_new_env = ft_split(*new_env, '=');
-			if (!(ft_exportcmp(minishell, split_new_env)))
+			ft_printf("\n[%s]\n",new_env[i]);
+			split_new_env = ft_split(new_env[i], '=');
+			if (ft_update_env(minishell, split_new_env) == 0)
 			{
-				envadd_back(minishell->export_list, split_new_env);
-				envadd_back(minishell->env_list, split_new_env);
+				envadd_back(minishell->export_list, split_new_env, minishell);
+				envadd_back(minishell->env_list, split_new_env, minishell);
 				minishell->env_currnb++;
 			}
-			new_env++;
+			i++;
 			free_arr(split_new_env);
 		}
 		free_arr(new_env);
 	}
-	return (1);
 }
+
+
+
+
+
+
+
+
