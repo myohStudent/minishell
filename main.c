@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/22 18:03:58 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:52:07 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,17 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 	minishell->env_initnb = 0;
 	while (env[i])
 	{
-		env_list->next = (t_env *)malloc(sizeof(t_env));
 		str = ft_split(env[i], '='); // split해서 나눠 놓기
 		if (ft_strncmp(str[0], "HOME\0", 5) == 0)
 			home_dir = ft_strdup(str[1]);
 		env_list->variable = ft_strdup(str[0]);
 		env_list->value = ft_strdup(str[1]);
-		env_list = env_list->next;
+
+		if (env[i + 1])
+		{
+			env_list->next = (t_env *)malloc(sizeof(t_env));
+			env_list = env_list->next;	
+		}
 		free_arr(str);
 		minishell->env_initnb++;
 		i++;

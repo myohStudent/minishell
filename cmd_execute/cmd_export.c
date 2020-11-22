@@ -5,13 +5,16 @@ void copy_env(t_minishell *minishell, t_env *export_list, t_env *env)
 	if (env == NULL)
 		return ;
 	minishell->env_currnb = 0;
-	while (env)
+	while (env && minishell->env_currnb < minishell->env_initnb)
 	{
-		export_list->next = (t_env *)malloc(sizeof(t_env));
 		export_list->variable = ft_strdup(env->variable);
 		export_list->value = ft_strdup(env->value);
 		minishell->env_currnb++;
-		export_list = export_list->next;
+		if (env->next)
+		{
+			export_list->next = (t_env *)malloc(sizeof(t_env));
+			export_list = export_list->next;
+		}
 		env = env->next;
 	}
 	export_list->next = NULL;
@@ -35,14 +38,16 @@ void sort_env(t_minishell *minishell)
 	t_env 	*curr_node;
 	t_env	*next_node;
 
+	ft_printf(">%d %d<",minishell->env_initnb, minishell->env_currnb);
 	i = minishell->env_currnb;
 	while (i)
 	{
 		j = 0;
 		curr_node = minishell->export_list;
 		prev_node = NULL;
-		while (j < i && curr_node)
+		while (j < i && curr_node->next)
 		{
+			ft_printf("> %d, %d< ",i, j);
 			if (ft_strcmp(curr_node->variable, curr_node->next->variable) > 0)
 			{
 				next_node = curr_node;

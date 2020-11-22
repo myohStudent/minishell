@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 18:25:25 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:58:48 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	print_env(t_env *env)
 
 int	print_export(t_env *env)
 {
-	int	i;
+	int	i = 1;
 	//t_env *env;
 
 	if (env == NULL)
@@ -39,7 +39,8 @@ int	print_export(t_env *env)
 	while (env)
 	{
 		if (env->variable)
-		{	ft_printf("declare -x %s",env->variable);
+		{
+			ft_printf("declare -x %s",env->variable);
 			if (env->value)
 				ft_printf("=\"%s\"",env->value);
 			ft_printf("\n");
