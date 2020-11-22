@@ -18,9 +18,9 @@ EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				pipe_execute.c \
+				dollar_exec.c \
 				cmd_export.c \
 				cmd_unset.c \
-
 
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))

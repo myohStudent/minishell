@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 21:22:01 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 22:33:46 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define SYMBOLS ";|<>"
 
 char				*home_dir;
+int					g_command_nb;
 char				*raw_input;
 char				**pipe_list;
 
@@ -55,7 +56,6 @@ typedef struct		s_cmd
 	int				argc;
 	int				redir;
 	int				dredir;
-	int				dollar; 
 	char			*command;
 	char			*option;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
@@ -79,6 +79,7 @@ void		welcome_shell(void);
 //void		ft_exit(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
+int		dollar_exec(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** cmd_env.c

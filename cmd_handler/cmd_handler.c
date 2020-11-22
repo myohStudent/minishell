@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/22 21:19:04 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 22:33:57 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	}
 	else if (curr->redir == 1)
 			ft_printf("curr->redir = 1");
-	else if (pipe_num == 0 && curr->redir == 0)
+	else if (pipe_num == 0 && curr->redir == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))
 			return (-1);
