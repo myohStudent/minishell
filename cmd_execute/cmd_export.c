@@ -35,7 +35,7 @@ void sort_env(t_minishell *minishell)
 	t_env 	*curr_node;
 	t_env	*next_node;
 
-	i = minishell->env_initnb;
+	i = minishell->env_currnb;
 	while (i)
 	{
 		j = 0;
@@ -103,10 +103,12 @@ int ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
 	}
 	return (0);
 }
+
 int ft_update_env(t_minishell *minishell, char **split_new_env)
 {
 	t_env *env;
 	t_env *export;
+
 	env = minishell->env_list;
 	export = minishell->export_list;
 	if (ft_cmp_to_update(env, split_new_env, minishell) == 1)
@@ -116,18 +118,20 @@ int ft_update_env(t_minishell *minishell, char **split_new_env)
 	}
 	return (0);
 }
+
 int cmd_export(t_cmd *curr, t_minishell *minishell)
 {
 	char **new_env;
 	char **split_new_env;
 	int i;
+
 	i = 0;
 	if(!minishell->export_list)
 	{	
 		minishell->export_list = (t_env *)malloc(sizeof(t_env));
 		copy_env(minishell, minishell->export_list, minishell->env_list);
-		sort_env(minishell);
 	}
+	sort_env(minishell);
 	if (curr->argc == 1)
 		print_export(minishell->export_list);
 	if (curr->argc > 1)
