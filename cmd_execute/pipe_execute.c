@@ -43,33 +43,6 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 		exit(1);
 }
 
-void		add_node(t_cmd *target, char *s)
-{
-	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
-    new->next = target->next;
-    new->command = ft_strdup(s);
-    target->next = new;
-}
-
-t_cmd		*reverse_node(t_cmd *head) {
-    t_cmd *p;
-	t_cmd *q;
-	t_cmd *r;
-
-    p = head->next;
-	q = NULL;
-	r = NULL;
-    //q = (t_cmd *)malloc(sizeof(t_cmd));
-    while (p != NULL)
-	{
-        r = q;
-        q = p;
-        p = p->next;
-        q->next = r;
-		head->next = q;
-    }
-    return (q);
-}
 void		parse_pipe(char **temp)
 {
 	int		i;
@@ -99,40 +72,8 @@ void		parse_pipe(char **temp)
 	}
 }
 
-char		*space_trim(char *s)
-{
-	int		len;
-	char	*t;
-	char	*end;
-	char	*begin;
-
-	begin = ft_strdup(s);
-    while (*begin != '\0')
-    {
-        if (ft_isspace(*begin))
-          	begin++;
-        else
-        {  
-          s = ft_strdup(begin);
-          break;
-        }  
-    }
-	t = ft_strdup(s);
-	len = ft_strlen(s);
-	end = t + len - 1;
-	while (end != t && ft_isspace(*end))
-        end--;
-    *(end + 1) = '\0';
-    s = ft_strdup(t);
-    return (s);
-
-}
-
 int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 { 
-	//해야 할 것 : curr->option의 커맨드들을 curr 다음 연결리스트인 env->variable에 하나하나 넣기
-	//문제점 : curr 다음에 env 연결리스트가 오면 execve 인자에 넣을 수가 없게 됨 
-	//그래서 일단 env에 curr 커맨드부터 같이 집어넣어 봄
 	int		i;
 	int		j;
 	char		*temp;
@@ -158,6 +99,7 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 				while (temp[i] == '|' && temp[i + 1] != '\0')
 				{
 					temp2 = ft_substr(temp, 0, i);
+					//option 넣는 거랑 redir 파싱이 여기 들어가야 함.
 					add_node(pipe_cmd, space_trim(temp2));
 					free(temp2);
 					free(temp);
@@ -194,7 +136,6 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	t_cmd		*head;
 	t_cmd		*pipe_cmd;
 	int			ffd;
-	int			parent;
 
 	ffd = 0;
 	head = (t_cmd *)malloc(sizeof(t_cmd));

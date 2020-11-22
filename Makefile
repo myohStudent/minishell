@@ -18,6 +18,7 @@ EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				pipe_execute.c \
+				pipe_utils.c \
 				redir_execute.c \
 				dollar_exec.c \
 				cmd_export.c \
