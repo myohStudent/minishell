@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/22 22:33:57 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 22:49:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,27 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
 	else
-		ft_printf("command not found: %s|\n", curr->command);
+		ft_printf("%s: command not found\n", curr->command);
 	return (1);
 }
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	// curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
-	check_separator(minishell, curr); 
+	if (check_separator(minishell, curr) < 0)
+		return (-1); 
 	// flag의 종류에 따라 exec 함수로 보낸다.
-	if (pipe_num >= 1)
+	if (minishell->pipe_num >= 1)
 	{
-		exec_pipe(curr, minishell);
-			//else if ((has_redirs(curr->option) != 0))
-		//	exec_redir(curr, minishell);urr, minishell);
+		if ((exec_pipe(curr, minishell)) < 0)
+			return (-1);
 	}
-	else if (curr->redir == 1)
-			ft_printf("curr->redir = 1");
+	else if (minishell->redir_num > 0)
+	{
+		if ((exec_redir(curr, minishell)) < 0)
+			return (-1);
+		ft_printf("redir passby\n");
+	}
 	else if (pipe_num == 0 && curr->redir == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))

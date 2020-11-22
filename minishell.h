@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 22:33:46 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 22:44:55 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct	 	s_minishell
 	char			*path;
 	int				cmd_num;
 	int				pipe_num;
+	int				redir_num;
 	char			**environ;
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
@@ -99,7 +100,7 @@ int cmd_export(t_cmd *curr, t_minishell *minishell);
 int			arr_len(char **env);
 void		free_arr(char **arr);
 char	*parse_space(char *s, char *space);
-void	check_separator(t_minishell *minishell, t_cmd *curr);
+int		check_separator(t_minishell *minishell, t_cmd *curr);
 //void	init_curr(t_cmd *curr);
 /*
 ** has_utils.c
@@ -152,5 +153,10 @@ pipe_execute.c
 
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 void		parse_pipe(char **s);
+
+/*
+** redir_execute.c
+*/
+int			exec_redir(t_cmd *curr, t_minishell *minishell);
 
 #endif

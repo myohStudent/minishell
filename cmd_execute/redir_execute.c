@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_execute.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 17:16:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/21 20:46:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/22 22:45:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 //
 //
 
-int exec_redirs_out(t_cmd *curr, t_minishell *minishell) 
+
+int exec_redir(t_cmd *curr, t_minishell *minishell) 
 {
     int     i;
     int     fd;
@@ -30,7 +31,7 @@ int exec_redirs_out(t_cmd *curr, t_minishell *minishell)
     i = 0;
     // 1. 인풋 파싱하기 '>'이 있나 
     // 2. 파싱한 뒤 
-    if (curr->command)
+   /* if (curr->command)
     {
         if (!curr->next)
             return (-1);
@@ -49,9 +50,50 @@ int exec_redirs_out(t_cmd *curr, t_minishell *minishell)
             curr = curr->next;
         }
     curr->command = NULL;
-    }
+    }*/
     return (1);
 }
+
+/* 깃헙에 있는 거 가져옴!
+int redirect(char * input, char * output, char * error){
+	int fd;
+	
+	//Redirección de entrada.
+	if(input != NULL){
+		fd = open(input,O_RDONLY);
+		if(fd == -1){
+			printf("%s, Error: fallo en apertura de fichero.\n",input);
+			exit(1);
+		}else{
+			dup2(fd,0);
+			close(fd);
+		}
+	}
+	//Redireccion de salida
+	if(output != NULL){
+		fd = creat(output,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		if(fd == -1){
+			printf("%s, Error: fallo en apertura o creacion de fichero.\n",output);
+			exit(1);
+		}else{
+			dup2(fd,1);
+			close(fd);
+		}
+	}
+	//Redireccion de error
+	if(error != NULL){
+		fd = creat(error,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		if(fd == -1){
+			printf("%s, Error: fallo en apertura o creacion de fichero.\n",error);
+			exit(1);
+		}else{
+			dup2(fd,2);
+			close(fd);
+		}
+	}
+	return EXIT_SUCCESS;
+}
+*/
 
 /* 깃헙에 있는 거 가져옴!
 int redirect(char * input, char * output, char * error){

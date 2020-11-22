@@ -12,34 +12,35 @@
 
 #include "../minishell.h"
 
-void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
-{
-	close(pipe_fd[0]);
-	dup2(pipe_fd[1], 0);
-	//dup2(pipe_fd[(i * 2) + 1], STDOUT_FILENO);
-	ft_printf("p1 : ");
-	//execve(curr->command, &curr->command, minishell->environ);
-	//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
-	exec_else(minishell, curr); 
-	//close(pipe_fd[i + 1]);
-	exit(1);
-}
-
 void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
+	//ft_printf("p2 : ");
+
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], 1); //파이프의 0번구멍을 stdinn으로 읽어들인다.
 	//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
-	ft_printf("p2 : ");
 	//execve(curr->command, &curr->command, minishell->environ);
 
 	/*if (curr->next->command)
 		execve(curr->command, &curr->next->command, minishell->environ);*/
-	// execve(pipe1, &pipe_cmdlist[0], minishell->environ);
+	//execve(pipe1, &pipe_cmdlist[0], minishell->environ);
 	exec_else(minishell, curr);
-	//close(pipe_fd[i]);
-	exit(1);
-	
+	close(pipe_fd[0]);
+	exit(1);	
+}
+
+void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
+{
+		//ft_printf("p1 : ");
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], 0);
+		//dup2(pipe_fd[(i * 2) + 1], STDOUT_FILENO);
+		//execve(curr->command, &curr->command, minishell->environ);
+			//execve(curr->command, &curr->command, minishell->environ);
+			//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
+		exec_else(minishell, curr); 
+		close(pipe_fd[1]);
+		exit(1);
 }
 
 void		add_node(t_cmd *target, char *s)
@@ -192,16 +193,17 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	pid_t		pid;
 	t_cmd		*head;
 	t_cmd		*pipe_cmd;
-	int			fdd;
+	int			ffd;
+	int			parent;
 
-	fdd = 0;
+	ffd = 0;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	pipe_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_global2(curr, head, minishell);
 	i = 0;
 	pipe_cmd = head->next;
 	pipe_cmd = reverse_node(head);
-	while (pipe_cmd != NULL)
+	/*while (pipe_cmd != NULL)
 	{
 		ft_printf(" /%s/ ", pipe_cmd->command);
 		if (pipe_cmd->next)
@@ -209,10 +211,12 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		else
 			break ;
 	}
-	while (pipe_cmd->command != NULL)
+	ft_printf("\n");*/
+	while (pipe_cmd != NULL)
 	{
 		if (pipe(pipe_fd) < 0)
-			return (-1);				
+			return (-1);	
+		//ft_printf("fd0: %d, fd1: %d ", pipe_fd[0], pipe_fd[1]);			
 		if ((pid = fork()) == -1) 
 		{
 			perror("fork");
@@ -220,8 +224,28 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		}
 		////////////////// pipe 수정할 부분 ////////////////////
 		if (pid == 0) 
+			exec_parent(pipe_fd, minishell, pipe_cmd);
+		else
+			wait(NULL);
+		if ((pid = fork()) < 0)
+			return (-1); 
+		if (pid == 0)
+			exec_child(pipe_fd, minishell, curr);
+		else
+			wait(NULL);
+		if (pipe_cmd->next)
+			pipe_cmd = pipe_cmd->next;
+		else
 		{
-			dup2(fdd, 0);
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			//여기서 ; 처리한 다음 curr을 받아와야 한다.
+			return (1);
+		}
+	}
+		/*if (pid == 0) 
+		{
+			dup2(ffd, 0);
 			if (pipe_cmd->next != NULL) 
 			{
 				dup2(pipe_fd[1], 1);
@@ -234,7 +258,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		{
 			wait(NULL); 		
 			close(pipe_fd[1]);
-			fdd = pipe_fd[0];
+			ffd = pipe_fd[0];
 		}
 		if (pipe_cmd->next)
 		{
@@ -243,7 +267,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 			pipe_cmd = pipe_cmd->next;
 			}
 		else
-			return (1);/*
+			return (1);
 		if (pid == 0) 
 			exec_parent(pipe_fd, minishell, pipe_cmd);
 		else
@@ -266,11 +290,12 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		}
 	//if (curr->option && curr->option[0] != '\0')
 		//cmd_executer(minishell, curr->option);
-	
+
 		//////////////////////////////////////////////
 	}*/
-	return (0);
-}
+	return (-1);
+	}
+
 		/*else
 		{
 			if (curr->command != NULL)
@@ -307,9 +332,6 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	minishell->pipe_num--;
 	return ;
 	*/
-}
-
-//파싱 redirection용이랑 통합해서 하기
 /*void		parse_pipe3(char **raw_input, char **parsed_input)
 { // 이중 포인터를 써야 값이 입력된다.
 	int		i;
@@ -357,23 +379,3 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		i++;
 	}
 }*/
-
-/* 
-
-int			parse_global(t_cmd *curr, t_minishell *minishell)
-{
-	int		i;
-	char	*temp;
-	t_cmd	*next = malloc(sizeof(t_cmd));
-	
-	i = 0;
-	temp = curr->option;
-	
-	parse_pipe(&temp);
-	curr->next = next;
-	next->command = curr->option;
-	curr->option = NULL;
-	free(temp);
-	return (1);
-}
-*/
