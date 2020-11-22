@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 17:16:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 00:05:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 01:22:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,82 @@
 //  
 //
 //
-void	parse_redir(t_cmd *redir_cmd, t_cmd *pipe_head, t_minishell *minishell)
-{
-return ;
 
-	
+void	delete_space_redir(char **temp)
+{
+	int		i;
+
+	i = 0;
+	if (*temp)
+	{
+		while ((*temp)[i] == ' ')
+			i++;
+		(*temp) = ft_strdup((*temp) + i);
+		if ((*temp)[i] == '>')
+			i++;
+		(*temp) = ft_strdup((*temp) + i);
+		while ((*temp)[i] == ' ')
+			i++;
+		(*temp) = ft_strdup((*temp) + i);
+	}
 }
 
+int		parse_redir(t_cmd *curr, t_cmd *head, t_minishell *minishell)
+{
+	int		i;
+	int		j;
+	char		*temp;
+	char		*temp2;
+	char		*temp3;
+	t_cmd	*next;
+	
+	i = 0;
+	temp = ft_strjoin(curr->command, " ");
+	temp = ft_strjoin(temp, curr->option);
+	ft_printf("%s\n", temp);
+	curr = curr->next;
+	head->next = NULL;
 
-int exec_redir(t_cmd *curr, t_minishell *minishell) 
+	if (temp != NULL)
+	{
+		delete_space_redir(&temp);
+		i = 0;
+		if (temp != NULL)
+		{
+			while (temp[i])
+			{ 
+				while (temp[i] == '>' && temp[i + 1] != '\0')
+				{
+					temp2 = ft_substr(temp, 0, i);
+					//option 넣는 거랑 다른 부호 파싱이 여기 들어가야 함.
+					add_node(head, space_trim(temp2));
+					free(temp2);
+					free(temp);
+					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
+					temp2 = NULL;
+					i = -1;
+				}
+				i++;
+			}
+			if (temp) // 마지막 cmd
+			{
+				add_node(head, space_trim(temp));
+				temp = NULL;
+				free(temp);
+			}
+			free(temp2);				
+		}
+	}
+	return (1);
+}
+
+int		exec_redir(t_cmd *curr, t_minishell *minishell) 
 {
     int     i;
     int     fd;
 	t_cmd		*head;
 	t_cmd		*redir_cmd;
 	
-	i = 0;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	redir_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	parse_redir(curr, head, minishell);
@@ -53,29 +113,40 @@ int exec_redir(t_cmd *curr, t_minishell *minishell)
 			break ;
 	}
 	ft_printf("\n");
-	//while (redir_cmd != NULL)
-    // 1. 인풋 파싱하기 '>'이 있나 
-    // 2. 파싱한 뒤 
-   /* if (curr->command)
+	free(redir_cmd);
+	redir_cmd = head->next;
+	redir_cmd = reverse_node(head);
+	if (redir_cmd)
     {
-        if (!curr->next)
+        if (!redir_cmd->next)
             return (-1);
-        else // 리다이렉션 파일 생성하기
+        else // 리다이렉션 파일 생성하기 (다음 명령어를 상대로 열기 수행)
         {
-            if ((fd = open(curr->next->command, O_RDWR | O_CREAT | S_IROTH, 0644)) == -1)
+            if ((fd = open(redir_cmd->next->command, O_WRONLY | O_CREAT | O_TRUNC, 0744)) == -1)
                 return (-1); //perror 
+			ft_printf("file created. \n");
         }
-        dup2(fd, STDOUT_FILENO);
-        close(fd);
-        curr->command = NULL;
-        curr->next->command = NULL;
-        if (curr->command != NULL)
+		if (fd < 0)
+		{
+			ft_printf("No such file or directory");
+			return (-1);
+		}
+		ft_printf("??? ");
+        dup2(fd, STDOUT_FILENO); //(fd 복사)
+		close(fd);
+		ft_printf("*** ");
+		exec_else(minishell, redir_cmd); 
+		ft_printf("--- ");
+
+        redir_cmd->command = NULL;
+        redir_cmd->next->command = NULL;
+        if (redir_cmd != NULL)
         {
-            curr->next = curr->next->next;
-            curr = curr->next;
+            redir_cmd->next = redir_cmd->next->next;
+            redir_cmd = redir_cmd->next;
         }
-    curr->command = NULL;
-    }*/
+    	redir_cmd->command = NULL;
+    }
     return (1);
 }
 

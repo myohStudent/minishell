@@ -38,7 +38,7 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 		//execve(curr->command, &curr->command, minishell->environ);
 			//execve(curr->command, &curr->command, minishell->environ);
 			//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
-		exec_else(minishell, curr); 
+		exec_else(minishell, curr);
 		close(pipe_fd[1]);
 		exit(1);
 }
@@ -84,9 +84,8 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 	i = 0;
 	temp = ft_strjoin(curr->command, " ");
 	temp = ft_strjoin(temp, curr->option);
-	ft_printf("%s\n", temp);
-	curr->command = NULL;
-	curr->option = NULL;
+	//ft_printf("%s\n", temp);
+	curr = curr->next;
 	pipe_cmd->next = NULL;
 	if (temp != NULL)
 	{

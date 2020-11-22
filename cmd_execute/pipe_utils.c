@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 23:39:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 00:18:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void		add_node(t_cmd *target, char *s)
     target->next = new;
 }
 
-t_cmd		*reverse_node(t_cmd *head) {
+t_cmd		*reverse_node(t_cmd *head)
+{
     t_cmd *p;
 	t_cmd *q;
 	t_cmd *r;

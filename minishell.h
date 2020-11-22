@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 23:40:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 00:20:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,6 @@ char		*space_trim(char *s);
 ** redir_execute.c
 */
 int			exec_redir(t_cmd *curr, t_minishell *minishell);
+int		parse_redir(t_cmd *curr, t_cmd *head, t_minishell *minishell);
 
 #endif
