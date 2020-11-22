@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/22 20:52:07 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/11/22 21:12:22 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 	char	**str;
 
 	i = 0;
-	minishell->env_initnb = 0;
+	minishell->env_currnb = 0;
 	while (env[i])
 	{
 		str = ft_split(env[i], '='); // split해서 나눠 놓기
@@ -34,12 +34,11 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 			env_list = env_list->next;	
 		}
 		free_arr(str);
-		minishell->env_initnb++;
+		minishell->env_currnb++;
 		i++;
 	}
 	env_list->next = NULL;
-	ft_printf("%d\n",minishell->env_initnb);
-	minishell->env_currnb = minishell->env_initnb;
+	ft_printf("%d\n",minishell->env_currnb);
 }
 
 void	display_prompt(void)

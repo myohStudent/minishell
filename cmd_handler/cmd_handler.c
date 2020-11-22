@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/19 18:22:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/22 21:19:04 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		print_env(minishell->env_list);
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
-	/*else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
+	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-		*/
 	else
 		ft_printf("command not found: %s|\n", curr->command);
 	return (1);

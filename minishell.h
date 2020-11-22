@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/21 20:31:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/22 21:22:01 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	char			**environ;
 	int				env_currnb; // current number
-	int				env_initnb; //initialized number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
 	t_cmd			*cmd;
@@ -90,6 +89,7 @@ int	print_export(t_env *env);
 /*
 ** cmd_export.c
 */ 
+int			    ft_strcmp(const char *s1, const char *s2);
 int cmd_export(t_cmd *curr, t_minishell *minishell);
 
 /*

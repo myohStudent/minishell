@@ -5,7 +5,7 @@ void copy_env(t_minishell *minishell, t_env *export_list, t_env *env)
 	if (env == NULL)
 		return ;
 	minishell->env_currnb = 0;
-	while (env && minishell->env_currnb < minishell->env_initnb)
+	while (env)
 	{
 		export_list->variable = ft_strdup(env->variable);
 		export_list->value = ft_strdup(env->value);
