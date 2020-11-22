@@ -38,7 +38,6 @@ void sort_env(t_minishell *minishell)
 	t_env 	*curr_node;
 	t_env	*next_node;
 
-	ft_printf(">%d %d<",minishell->env_initnb, minishell->env_currnb);
 	i = minishell->env_currnb;
 	while (i)
 	{
@@ -47,7 +46,6 @@ void sort_env(t_minishell *minishell)
 		prev_node = NULL;
 		while (j < i && curr_node->next)
 		{
-			ft_printf("> %d, %d< ",i, j);
 			if (ft_strcmp(curr_node->variable, curr_node->next->variable) > 0)
 			{
 				next_node = curr_node;
