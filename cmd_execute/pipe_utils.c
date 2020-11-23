@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 11:50:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 15:59:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,23 @@ void	delete_space_flag(char **temp, char flag)
 	}
 }
 
-int		parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag)
+void	flag_checker(char flag)
+{
+	if (flag)
+	{
+		if (flag == '>')
+			flags[1] = 1;
+		else if (flag == '|')
+			flags[0] = 1;
+		else if (flag == '<')
+			flags[2] = 1;
+		else if (flag == 3) // >>
+			flags[3] = 1; 
+	}
+}
+
+int		parse_flag(t_cmd *curr, t_cmd *head,
+				t_minishell *minishell, char flag)
 {
 	int		i;
 	int		j;
@@ -96,7 +112,8 @@ int		parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag)
 	char		*temp2;
 	char		*temp3;
 	t_cmd	*next;
-	
+
+	flag_checker(flag);
 	i = 0;
 	temp = ft_strjoin(curr->command, " ");
 	temp = ft_strjoin(temp, curr->option);

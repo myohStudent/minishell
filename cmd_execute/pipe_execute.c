@@ -110,12 +110,6 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 			}
 			if (temp) // 마지막 cmd
 			{
-				/*while (temp[ft_strlen(temp) - 1] == '|')
-				{
-					temp2 = ft_substr(temp, 0, (ft_strlen(temp) - 1));
-					temp = ft_strdup(temp2);
-					temp2 = NULL;
-				}*/
 				add_node(pipe_cmd, space_trim(temp));
 				temp = NULL;
 				free(temp);
@@ -180,7 +174,6 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		{
 			close(pipe_fd[1]);
 			close(pipe_fd[0]);
-			//여기서 ; 처리한 다음 curr을 받아와야 한다.
 			return (1);
 		}
 	}
@@ -235,7 +228,7 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 		//////////////////////////////////////////////
 	}*/
 	return (-1);
-	}
+}
 
 		/*else
 		{

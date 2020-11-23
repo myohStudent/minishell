@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   redir_execute.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 17:16:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 11:58:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 15:48:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//'>'out에 대한 함수랑 '<' in에 대한 함수 '>>' 따로 만들어야 함(3개).
 // 파싱 방법 구상해 보기 : 
 // asdf | sdf > sdfl  => 이런 경우, 파이프 안의 플래그로 작용.
 // pwd > sdfkl | sdfkl => 역시 파이프 안의 플래그로 작용
 // sdpf > sdklf => 단독 리다이렉션 플래그로 작용.         
 // 그래서 파싱을 1) 파이프 안에서 옵션 넣고서 한다 2) 단독으로도 한다 3) 세미콜론으로 혹은 다음 파이프로 돌아가는 flag 처리도 파이프와 같이 해야 함 
-//  
-//
-//
 
 int		exec_redir(t_cmd *curr, t_minishell *minishell) 
 {
@@ -35,7 +31,7 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
 	parse_flag(curr, head, minishell, '>');
 //	parse_global(curr, head, minishell);
 	i = 0;
-	redir_cmd = head->next;
+/*	redir_cmd = head->next;
 	redir_cmd = reverse_node(head);
 	while (redir_cmd != NULL)
 	{
@@ -46,31 +42,60 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
 			break ;
 	}
 	ft_printf("\n");
-	free(redir_cmd);
+	free(redir_cmd);*/
 	redir_cmd = head->next;
 	redir_cmd = reverse_node(head);
-	if (redir_cmd)
+	while (redir_cmd && redir_cmd->next)
     {
-        if (!redir_cmd->next)
-            return (-1);
-        else // 리다이렉션 파일 생성하기 (다음 명령어를 상대로 열기 수행)
+        if (!flags[1] && !flags[2] && !flags[3])
+			return (-1);
+        if (flags[1]) // '>' 수행
         {
+			ft_printf("'>' 들어왔다 ");
+			flags[1] = 0;
+
             if ((fd = open(redir_cmd->next->command, O_WRONLY | O_CREAT | O_TRUNC, 0744)) == -1)
                 return (-1); //perror 
 			ft_printf("file created. \n");
-        }
-		if (fd < 0)
-		{
-			ft_printf("No such file or directory");
-			return (-1);
+			if (fd < 0)
+			{
+				ft_printf("No such file or directory");
+				return (-1);
+			}
+			ft_printf("??? ");
+        	dup2(fd, 1); //(fd 복사) - 여기서 에러 왜? 
+			close(fd);
+			ft_printf("*** ");
+			exec_else(minishell, redir_cmd); 
+			ft_printf("--- ");
 		}
-		ft_printf("??? ");
-        dup2(fd, STDOUT_FILENO); //(fd 복사)
-		close(fd);
-		ft_printf("*** ");
-		exec_else(minishell, redir_cmd); 
-		ft_printf("--- ");
+		else if (flags[2]) // '<' 수행
+		{
+			ft_printf("> 들어왔다 ");
+			flags[2] = 0;
+			
 
+
+		}
+		else if (flags[3]) // '>>' 수행
+		{
+			ft_printf(">> 들어왔다 ");
+			flags[3] = 0;
+			if ((fd = open(redir_cmd->next->command, O_RDWR | O_CREAT | O_APPEND, 0744)) == -1)
+                return (-1); //perror 
+			ft_printf("file created. \n");
+			if (fd < 0)
+			{
+				ft_printf("No such file or directory");
+				return (-1);
+			}
+			ft_printf("??? ");
+        	dup2(fd, 1); //(fd 복사) - 여기서 에러 왜? 
+			close(fd);
+			ft_printf("*** ");
+			exec_else(minishell, redir_cmd); 
+			ft_printf("--- ");
+		}
         redir_cmd->command = NULL;
         redir_cmd->next->command = NULL;
         if (redir_cmd != NULL)
@@ -92,7 +117,7 @@ int		exec_dredir(t_cmd *curr, t_minishell *minishell)
 	
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	redir_cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	parse_flag(curr, head, minishell, '<');
+	parse_flag(curr, head, minishell, '>');
 //	parse_global(curr, head, minishell);
 	i = 0;
 	redir_cmd = head->next;

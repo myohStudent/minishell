@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 22:48:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 16:04:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 	char	*temp;
 	int		i;
 
+	token = NULL;
 	minishell->pipe_num = 0;
 	minishell->redir_num = 0;
 	temp = ft_strdup(curr->option);
@@ -82,14 +83,26 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 		{
 			minishell->pipe_num++;
 			i++;
+			token = strdup("|");
 			free(temp);
 			return (1);
 		}
 		else if (temp[i] == '>' || temp[i] == '<')
+		{	
 			minishell->redir_num++;
+			if (temp[i] == '>')
+			{
+				if (temp[i] == '>' && temp[i + 1 ]== '>')
+					token = strdup(">>");
+				token = strdup(">");
+			}
+			else
+				token = strdup("<");
+			free(temp);
+			return (1);
+		}
 		i++;
 	}
-	ft_printf("pipe: %d, redir: %d\n", minishell->pipe_num, minishell->redir_num);
 	free(temp);
 	return (1);
 }
