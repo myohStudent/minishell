@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/22 22:49:46 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 09:12:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,8 @@ int cmd_handler(t_minishell *minishell)
 				return (-1);
 			t_cmd *next;
 			next = curr->next;
-			free(curr->next);
+			if (curr->next)  // ; | ; 수행시 여기서 pointer being freed was not allocated 에러 뜸
+				free(curr->next);
 			curr = next;
 		}
     }
