@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 17:16:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 11:50:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 11:58:55 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
 	
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	redir_cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	//a glabalized parser needed! >, <, >> 모두 한 번에 파싱? 
 	parse_flag(curr, head, minishell, '>');
 //	parse_global(curr, head, minishell);
 	i = 0;
@@ -82,6 +83,63 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
     return (1);
 }
 
+int		exec_dredir(t_cmd *curr, t_minishell *minishell) 
+{
+    int     i;
+    int     fd;
+	t_cmd		*head;
+	t_cmd		*redir_cmd;
+	
+	head = (t_cmd *)malloc(sizeof(t_cmd));
+	redir_cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	parse_flag(curr, head, minishell, '<');
+//	parse_global(curr, head, minishell);
+	i = 0;
+	redir_cmd = head->next;
+	redir_cmd = reverse_node(head);
+	while (redir_cmd != NULL)
+	{
+		ft_printf(" /%s/ ", redir_cmd->command);
+		if (redir_cmd->next)
+			redir_cmd = redir_cmd->next;
+		else
+			break ;
+	}
+	ft_printf("\n");
+	free(redir_cmd);
+	redir_cmd = head->next;
+	redir_cmd = reverse_node(head);
+	if (redir_cmd)
+    {
+        if (!redir_cmd->next)
+            return (-1);
+        else // 리다이렉션 파일 생성하기 (다음 명령어를 상대로 열기 수행)
+        {
+            if ((fd = open(redir_cmd->command, O_WRONLY | O_CREAT | O_TRUNC, 0744)) == -1)
+                return (-1); //perror 
+			ft_printf("file created. \n");
+        }
+		if (fd < 0)
+		{
+			ft_printf("No such file or directory");
+			return (-1);
+		}
+		ft_printf("??? ");
+        dup2(fd, STDOUT_FILENO); //(fd 복사)
+		close(fd);
+		exec_else(minishell, redir_cmd); 
+
+        redir_cmd->command = NULL;
+        redir_cmd->next->command = NULL;
+        if (redir_cmd != NULL)
+        {
+            redir_cmd->next = redir_cmd->next->next;
+            redir_cmd = redir_cmd->next;
+        }
+    	redir_cmd->command = NULL;
+    }
+    return (1);
+}
 /* 깃헙에 있는 거 가져옴!
 int redirect(char * input, char * output, char * error){
 	int fd;
