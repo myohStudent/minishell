@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 00:20:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 11:51:19 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,11 +160,12 @@ void		parse_pipe(char **s);
 void		add_node(t_cmd *target, char *s);
 t_cmd		*reverse_node(t_cmd *head);
 char		*space_trim(char *s);
+int		parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
+void	delete_space_flag(char **temp, char flag);
 
 /*
 ** redir_execute.c
 */
 int			exec_redir(t_cmd *curr, t_minishell *minishell);
-int		parse_redir(t_cmd *curr, t_cmd *head, t_minishell *minishell);
 
 #endif

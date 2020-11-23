@@ -89,7 +89,7 @@ int			parse_global2(t_cmd *curr, t_cmd *pipe_cmd, t_minishell *minishell)
 	pipe_cmd->next = NULL;
 	if (temp != NULL)
 	{
-		parse_pipe(&temp);
+		delete_space_flag(&temp, '|');
 		i = 0;
 		if (temp != NULL)
 		{
@@ -139,7 +139,8 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	ffd = 0;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	pipe_cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	parse_global2(curr, head, minishell);
+	//parse_global2(curr, head, minishell);
+	parse_flag(curr, head, minishell, '|');
 	i = 0;
 	pipe_cmd = head->next;
 	pipe_cmd = reverse_node(head);
