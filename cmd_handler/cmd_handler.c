@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/23 16:06:39 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 19:28:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		else if (curr->argc > 1)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
 		ft_putchar('\n');
+
 	}
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
@@ -71,10 +72,12 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	// curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
+	//curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
 	if (check_separator(minishell, curr) < 0)
 		return (-1); 
-	// flag의 종류에 따라 exec 함수로 보낸다.
+	//flag의 종류에 따라 exec 함수로 보낸다.
+	//minishell->pipe_num = 0;
+	//minishell->redir_num = 0;
 	if (minishell->pipe_num >= 1)
 	{
 		if ((exec_pipe(curr, minishell)) < 0)
@@ -152,8 +155,8 @@ int cmd_handler(t_minishell *minishell)
 				return (-1);
 			t_cmd *next;
 			next = curr->next;
-			if (curr->next)  // ; | ; 수행시 여기서 pointer being freed was not allocated 에러 뜸
-				free(curr->next);
+			if (curr->next)  // ; | ; 수행시 여기서 pointer// being freed was not allocated 에러 뜸
+				free(curr);
 			curr = next;
 		}
     }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 16:04:53 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 19:26:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,24 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 		free(temp);
 		return (-1);
 	}
-	if (!(ft_strcmp(temp, ">>")))
-	{
-		minishell->redir_num++;
-		i += 2;
-	}
 	if (!(ft_strcmp(temp, ">>>")))
 	{
 		ft_printf("syntax error near unexpected token `>'\n");
 		free(temp);
 		return (-1);
 	}
+	if (!(ft_strcmp(temp, ">>")))
+	{
+		minishell->redir_num++;
+		free(temp);
+		i += 2;
+		return (1);
+	}
 	while (temp[i])
 	{
 		if (temp[i] == '|')
 		{
 			minishell->pipe_num++;
-			i++;
 			token = strdup("|");
 			free(temp);
 			return (1);
@@ -103,6 +104,7 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 		}
 		i++;
 	}
+
 	free(temp);
 	return (1);
 }
