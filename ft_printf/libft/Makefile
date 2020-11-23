@@ -2,6 +2,7 @@ NAME	=	libft.a
 CC		=	gcc
 FLAG	=	-Wall -Wextra -Werror
 SRC		=	ft_hexchanger.c \
+			ft_compare.c \
 			ft_isdigit.c \
 			ft_isspace.c \
 			ft_itoa.c \

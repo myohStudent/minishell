@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 15:59:14 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 20:41:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@
 # define STDERROR 2
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 # define SYMBOLS ";|<>"
-# define REDIR ">"
-# define DREDIR "<"
-# define FREDIR ">>"
+
+# define WORD 1
+# define SEMICOLON 2
+# define PIPE 3
+# define REDIR 4
+# define DREDIR 5
+# define FREDIR 6
 
 char				*home_dir;
 int					g_command_nb;
@@ -65,6 +69,15 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }							t_cmd;
 
+typedef struct		s_symbol
+{
+		int			pipe_num;
+		char		*type;
+		int			redir_num;
+		char		*sym;
+		
+}							t_symbol;
+
 typedef struct	 	s_minishell
 {
 	pid_t			pid;
@@ -73,9 +86,11 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	int				redir_num;
 	char			**environ;
+	int				fork;
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
+	t_symbol		*symbol;
 	t_cmd			*cmd;
 } 					t_minishell;
 

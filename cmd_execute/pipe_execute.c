@@ -15,15 +15,8 @@
 void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 {
 	//ft_printf("p2 : ");
-
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], 1); //파이프의 0번구멍을 stdinn으로 읽어들인다.
-	//pipe_fd는 지역변수이고, pipe는 fork로 계속 살아있는 상태이므로 이것이 가능하다.
-	//execve(curr->command, &curr->command, minishell->environ);
-
-	/*if (curr->next->command)
-		execve(curr->command, &curr->next->command, minishell->environ);*/
-	//execve(pipe1, &pipe_cmdlist[0], minishell->environ);
 	exec_else(minishell, curr);
 	close(pipe_fd[0]);
 	exit(1);	
@@ -34,10 +27,8 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 		//ft_printf("p1 : ");
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], 0);
-		//dup2(pipe_fd[(i * 2) + 1], STDOUT_FILENO);
 		//execve(curr->command, &curr->command, minishell->environ);
-			//execve(curr->command, &curr->command, minishell->environ);
-			//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
+		//execve(pipe1, &pipe_cmdlist[1], minishell->environ);
 		exec_else(minishell, curr);
 		close(pipe_fd[1]);
 		exit(1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/15 21:43:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/23 20:13:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 char			*ft_utoa(long long n);
 int				ft_tolower(int c);
+int	ft_compare(char *s1, char *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strtolower(char *str);
 size_t			ft_strlen(const char *str);
