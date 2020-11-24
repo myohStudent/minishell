@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 20:41:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/25 00:46:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char				**pipe_list;
 int					flags[10];
 // | 0, > 1, < 2, >> 3
 int					pipe_num;
-char				*token; // 기호 저장하는 곳
+char				*token; // 기호 저장하는 곳 | < > >> 
+
 typedef struct s_env
 {
 	char			*variable;
@@ -72,6 +73,7 @@ typedef struct		s_cmd
 typedef struct		s_symbol
 {
 		int			pipe_num;
+		char		*str;
 		char		*type;
 		int			redir_num;
 		char		*sym;
