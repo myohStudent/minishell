@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 21:57:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/27 00:16:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,40 @@ int		has_quotes(char *option)
 			return (1);
 	}
 	ft_printf("quote있는가: %d\n", res);
+	return (0);
+}
+
+int		ft_is_alnum(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+	|| ft_isdigit(c))
+		return (1);
+	return (0);
+}
+
+int		has_env(char *str)
+{
+	int		i;
+	int		cnt;
+
+	i = 0;
+	cnt = 0;
+	while (str[i])
+	{
+		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
+			return (0);
+		if (!ft_is_alnum(str[i]) && str[i] != '_' && str[i] != '='
+			&& str[i] != '+' && str[i] != '\'' && str[i] != '\"')
+			return (0);
+		if ((str[i] == '\'' || str[i] == '\"') && cnt < 1)
+			return (0);
+		if (cnt == 0 && str[i] == '+' && str[i + 1] != '=')
+			return (0);
+		if (str[i] == '=')
+			cnt++;
+		i++;
+	}
+	if (cnt)
+		return (1);
 	return (0);
 }
