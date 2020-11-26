@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 09:35:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 10:08:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	int				redir_num;
 	char			**environ;
-	int				fork;
+	int				forked;
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
-	t_symbol		*symbol;
+	t_sym			*sym;
 	t_cmd			*cmd;
 } 					t_minishell;
 
