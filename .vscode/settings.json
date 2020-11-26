@@ -19,6 +19,10 @@
         "ratio": "c",
         "system_error": "c",
         "tuple": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "__hash_table": "c",
+        "__split_buffer": "c",
+        "initializer_list": "c",
+        "unordered_map": "c"
     }
 }

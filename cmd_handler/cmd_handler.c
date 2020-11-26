@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/26 11:54:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 17:31:05 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,8 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	//curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
 	if (check_separator(minishell, curr) < 0)
 		return (-1); 
-	//flag의 종류에 따라 exec 함수로 보낸다.
-	//minishell->pipe_num = 0;
-	//minishell->redir_num = 0;
+	//if (minishell->pipe_num >= 0 || minishell->redir_num > 0) -> 기호가 있다면, 다른 루트로 파싱을 맡긴다.
+	//	parse_symbols(minishell, curr);
 	if (minishell->pipe_num >= 1)
 	{
 		if ((exec_pipe(curr, minishell)) < 0)
