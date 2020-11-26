@@ -19,11 +19,11 @@ EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				pipe_execute.c \
 				pipe_utils.c \
+				quote_utils.c \
 				redir_execute.c \
 				dollar_exec.c \
 				cmd_export.c \
 				cmd_unset.c \
-
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))
 OBJ_EXE = $(EXE:%.c=%.o)
