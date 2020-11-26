@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 10:08:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 11:55:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,11 @@ void	flag_checker(char flag);
 ** redir_execute.c
 */
 int			exec_redir(t_cmd *curr, t_minishell *minishell);
+
+/*
+** quote_utils.c
+*/
+int		which_quote(char *input);
+void	prompt_quote(t_minishell *minishell);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/26 10:09:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 11:55:27 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 		i++;
 	}
 	env_list->next = NULL;
-	minishell->forked = 0;
 	ft_printf("%d\n",minishell->env_currnb);
 }
 
