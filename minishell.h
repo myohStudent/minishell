@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/25 00:46:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 10:08:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,16 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }							t_cmd;
 
-typedef struct		s_symbol
+typedef struct		s_sym
 {
-		int			pipe_num;
-		char		*str;
-		char		*type;
-		int			redir_num;
-		char		*sym;
-		
-}							t_symbol;
+		int				pipe_num;
+		char			*str;
+		char			*type;
+		int				redir_num;
+		char			*sym;
+		struct s_sym	*prev;
+		struct s_sym	*next;
+}							t_sym;
 
 typedef struct	 	s_minishell
 {
@@ -88,11 +89,11 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	int				redir_num;
 	char			**environ;
-	int				fork;
+	int				forked;
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
-	t_symbol		*symbol;
+	t_sym			*sym;
 	t_cmd			*cmd;
 } 					t_minishell;
 

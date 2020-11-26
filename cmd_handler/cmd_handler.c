@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/23 19:28:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 10:12:37 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int cmd_handler(t_minishell *minishell)
 
 	//init
 	minishell->cmd_num = 0;
+	minishell->forked = 0;
 	//
 
 	buf[0] = ' ';
@@ -141,6 +142,7 @@ int cmd_handler(t_minishell *minishell)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
 
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	// 할일 : >, <를 여기에서 파싱한다
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드
 	//init_curr(curr);
