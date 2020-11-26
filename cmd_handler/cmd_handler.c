@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/27 00:19:56 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/27 00:26:34 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
+	t_sym	*sym;
+
 	//curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
 	if (check_separator(minishell, curr) < 0)
 		return (-1); 
@@ -81,10 +83,9 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		ft_printf(" enter the parser \n");
 		parse_symbols(minishell, curr);
 		symbol = update_sym(minishell);
-		//while (minishell->sym_cmd)
-		//	parse2_symbols(minishell, &minishell->sym_cmd);
+		//while (sym)
+		//	parse2_symbols(minishell, &sym);
 	}
-
 	if (minishell->pipe_num >= 1)
 	{
 		if ((exec_pipe(curr, minishell)) < 0)
