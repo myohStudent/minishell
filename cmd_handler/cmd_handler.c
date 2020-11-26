@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/26 23:45:16 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/27 00:19:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	{
 		ft_printf(" enter the parser \n");
 		parse_symbols(minishell, curr);
+		symbol = update_sym(minishell);
+		//while (minishell->sym_cmd)
+		//	parse2_symbols(minishell, &minishell->sym_cmd);
 	}
 
 	if (minishell->pipe_num >= 1)

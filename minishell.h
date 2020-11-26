@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 23:20:53 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/27 00:19:28 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char				*home_dir;
 int					g_command_nb;
 char				*raw_input;
 char				**pipe_list;
-char				*token;
+char				*symbol; //parsing용
 int					flags[10];
 // | 0, > 1, < 2, >> 3
 
@@ -78,9 +78,9 @@ typedef struct		s_cmd
 
 typedef struct		s_sym
 {
-		char			*str;
+		char			*str; //얘 쓸 것
 		int				type;
-		char			*sym;
+		char			*sym; 
 		struct s_sym	*prev;
 		struct s_sym	*next;
 }							t_sym;
@@ -136,11 +136,14 @@ int			has_redirs(char *option);
 int			has_quotes(char *option);
 int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
-
+int			has_env(char *str);
 /*
 ** parse_utils.c
 */
 int         is_char(char c, char *s);
+void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
+int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
+char		*update_sym(t_minishell *minishell);
 /*
 ** cmd_unset.c
 */
