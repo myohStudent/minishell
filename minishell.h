@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 18:09:11 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 23:20:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,28 @@
 # define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
 # define SYMBOLS ";|<>"
 
-# define WORD 1
+# define CHARACTERS 1
 # define SEMICOLON 2
 # define PIPE 3
 # define REDIR 4
 # define DREDIR 5
 # define FREDIR 6
+# define NEW_LINE 7
+# define ENVIRON 8
+# define AND 9
+# define OR 10
+# define PAR_OPEN 11   // >
+# define PAR_CLOSE 12 // <
 
 char				*home_dir;
 int					g_command_nb;
 char				*raw_input;
 char				**pipe_list;
-
+char				*token;
 int					flags[10];
 // | 0, > 1, < 2, >> 3
+
 int					pipe_num;
-char				*token; // 기호 저장하는 곳 | < > >> 
 
 typedef struct s_env
 {
@@ -73,7 +79,7 @@ typedef struct		s_cmd
 typedef struct		s_sym
 {
 		char			*str;
-		char			*type;
+		int				type;
 		char			*sym;
 		struct s_sym	*prev;
 		struct s_sym	*next;
@@ -83,6 +89,7 @@ typedef struct	 	s_minishell
 {
 	int				symbols_nb;
 	char			*path;
+	int				cnt;
 	int				cmd_num;
 	int				pipe_num;
 	int				redir_num;
@@ -91,7 +98,7 @@ typedef struct	 	s_minishell
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
-	t_sym			*sym_cmd;
+	t_sym			*sym_cmd; //parsing
 	t_cmd			*cmd;
 } 					t_minishell;
 
@@ -127,7 +134,7 @@ int		check_separator(t_minishell *minishell, t_cmd *curr);
 int			has_pipes(char *option);
 int			has_redirs(char *option);
 int			has_quotes(char *option);
-int			find_char(char c, char *str);
+int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
 
 /*
@@ -190,9 +197,15 @@ void	flag_checker(char flag);
 int			exec_redir(t_cmd *curr, t_minishell *minishell);
 
 /*
+**	redir_utils.c
+*/
+void		parse_symbols(t_minishell *minishell, t_cmd *curr);
+/*
 ** quote_utils.c
 */
 int		which_quote(char *input);
 void	prompt_quote(t_minishell *minishell);
+int		in_quotes(char *s, int p);
+int		line_escape(char *input, int i);
 
 #endif

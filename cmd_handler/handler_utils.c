@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/23 19:26:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 23:47:06 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,59 +53,61 @@ char	*parse_space(char *s, char *space)
 int	check_separator(t_minishell *minishell, t_cmd *curr)
 {
 	char	*temp;
+	char	*input;
 	int		i;
 
-	token = NULL;
 	minishell->pipe_num = 0;
 	minishell->redir_num = 0;
-	temp = ft_strdup(curr->option);
+	temp = ft_strjoin(curr->command, " ");
+	if (curr->option)
+		input = ft_strjoin(temp, curr->option);
+	else
+		input = ft_strdup(temp);
+	if (temp)
+		free(temp);
+
 	i = 0;
-	if (!(ft_strcmp(temp, "|||")))
+	if (!input)
+	{
+		return (1);
+	}
+	if (!(ft_strcmp(input, "|||")))
 	{
 		ft_printf("syntax error near unexpected token `|'\n");
-		free(temp);
+		free(input);
 		return (-1);
 	}
-	if (!(ft_strcmp(temp, ">>>")))
+	if (!(ft_strcmp(input, ">>>")))
 	{
 		ft_printf("syntax error near unexpected token `>'\n");
-		free(temp);
+		free(input);
 		return (-1);
 	}
-	if (!(ft_strcmp(temp, ">>")))
+	if (!(ft_strcmp(input, ">>")))
 	{
 		minishell->redir_num++;
-		free(temp);
+		free(input);
 		i += 2;
 		return (1);
 	}
-	while (temp[i])
+	while (input[i])
 	{
-		if (temp[i] == '|')
+		if (input[i] == '|')
 		{
 			minishell->pipe_num++;
-			token = strdup("|");
-			free(temp);
+			free(input);
 			return (1);
 		}
-		else if (temp[i] == '>' || temp[i] == '<')
+		else if (input[i] == '>' || input[i] == '<')
 		{	
 			minishell->redir_num++;
-			if (temp[i] == '>')
-			{
-				if (temp[i] == '>' && temp[i + 1 ]== '>')
-					token = strdup(">>");
-				token = strdup(">");
-			}
-			else
-				token = strdup("<");
-			free(temp);
+			free(input);
 			return (1);
 		}
 		i++;
 	}
-
-	free(temp);
+	if (input)
+		free(input);
 	return (1);
 }
 

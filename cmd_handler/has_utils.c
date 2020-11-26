@@ -6,14 +6,14 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 18:09:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/26 21:57:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 
-int		find_char(char c, char *str)
+int		is_char_here(char c, char *str)
 {
 	int		i;
 
@@ -29,7 +29,7 @@ int		find_char(char c, char *str)
 
 int		is_instr(char c, char *str)
 {
-	if (find_char(c, str) >= 0)
+	if (is_char_here(c, str) >= 0)
 		return (1);
 	return (0);
 }
