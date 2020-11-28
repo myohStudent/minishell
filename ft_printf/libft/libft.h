@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/23 20:13:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 16:59:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void			*ft_memalloc(size_t size);
 char                    **ft_split(char const *s, char c);
 char			*ft_strnew(size_t size);
 char			*ft_strtrim(char *s1, char *set);
+void			ft_strdel(char **as);
+void			ft_splitdel(char ***s);
 
 typedef struct		s_list
 {

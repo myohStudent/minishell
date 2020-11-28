@@ -156,11 +156,3 @@ int cmd_export(t_cmd *curr, t_minishell *minishell)
 		free_arr(new_env);
 	}
 }
-
-
-
-
-
-
-
-

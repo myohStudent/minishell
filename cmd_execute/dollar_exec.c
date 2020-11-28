@@ -39,4 +39,3 @@ int		dollar_exec(t_cmd *curr, t_minishell *minishell)
 	}
 	return (0);
 }
-

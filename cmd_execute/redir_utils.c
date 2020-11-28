@@ -6,11 +6,26 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 17:29:54 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/26 23:07:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 17:34:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int			sym_list_size(t_sym **start)
+{
+	t_sym	*temp;
+	int		i;
+
+	i = 0;
+	temp = *start;
+	while (temp)
+	{
+		temp = temp->next;
+		i++;
+	}
+	return (i);
+}
 
 t_sym		*create_symcmd(t_minishell *minishell, int i)
 {
@@ -88,7 +103,6 @@ int		parse_sym(int i, char *str, char *splt, int sign)
 	return (0);
 }
 
-//split_token
 void	parse_symbols(t_minishell *minishell, t_cmd *curr)
 {
 	int		i;
