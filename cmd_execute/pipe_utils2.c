@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 16:33:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:51:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 22:11:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,24 @@ void	clear_cmd_list(t_cmd **start, void (*del)(void *))
 			del(args);
 			args = args2;
 		}
+		temp2 = temp->next;
+		free(temp);
+		temp = temp2;
+	}
+	*start = NULL;
+}
+
+void		clear_symcmd(t_sym **start, void (*del)(void *))
+{
+	t_sym	*temp;
+	t_sym *temp2;
+
+	if (!start || !del)
+		return ;
+	temp = *start;
+	while (temp)
+	{
+		ft_strdel(&temp->str);
 		temp2 = temp->next;
 		free(temp);
 		temp = temp2;
