@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/27 00:19:31 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 17:59:33 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,56 +68,4 @@ char		*update_sym(t_minishell *minishell)
 		sym = sym->next;
 	}
 	return (NULL);
-}
-
-int		parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd)
-{
-/*if ((*sym)->type == T_WORD && (cmd->cmd || ((*sym)->prev
-		&& (*sym)->prev->type == T_REDIRECT)))
-		add_sym_list(&cmd->args,
-			create_arg_sym((*sym)->str, (*sym)->type));
-	if ((*sym)->type == T_WORD && !cmd->cmd && (((*sym)->prev
-		&& (*sym)->prev->type != T_REDIRECT) || !(*sym)->prev))
-		cmd->cmd = ft_strdup((*sym)->str);
-	if ((*sym)->type == T_REDIRECT)
-		add_sym_list(&cmd->args,
-			create_arg_sym((*sym)->str, (*sym)->type));
-	if ((*sym)->type == T_ENV && !cmd->cmd)
-		ft_lstadd_back(&cmd->env_list, ft_lstnew(ft_strdup((*sym)->str)));
-	if ((*sym)->type == T_PIPE)
-	{
-		cmd->type = T_PIPE;
-		*sym = (*sym)->next;
-		return (0);
-	}
-	if ((*sym)->type == T_SEP)
-	{
-		cmd->type = T_SEP;
-		*sym = (*sym)->next;
-		return (0);
-	}*/
-	return (1);
-}
-
-void	parse2_symbols(t_minishell *minishell, t_sym **sym_cmd)
-{/*
-	t_cmd	*cmd;
-
-	if ((*sym)->type == T_NEWLINE)
-	{
-		*sym = (*sym)->next;
-		return ;
-	}
-	if (!(cmd = ft_calloc(1, sizeof(t_cmd))))
-		return ;
-	while (*sym)
-	{
-		if (!parse_syms2(sym, cmd))
-			break ;
-		if ((*sym)->type == T_ENV && cmd->cmd)
-			add_sym_list(&cmd->args,
-				create_arg_sym((*sym)->str, (*sym)->type));
-		*sym = (*sym)->next;
-	}
-	add_cmd_list(&minishell->cmd_list, cmd);*/
 }

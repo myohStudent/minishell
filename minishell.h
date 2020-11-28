@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/27 00:19:28 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 17:57:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,8 @@
 char				*home_dir;
 int					g_command_nb;
 char				*raw_input;
-char				**pipe_list;
 char				*symbol; //parsing용
 int					flags[10];
-// | 0, > 1, < 2, >> 3
-
 int					pipe_num;
 
 typedef struct s_env
@@ -68,11 +65,15 @@ typedef struct s_env
 typedef struct		s_cmd
 {
 	int				argc;
-	int				redir;
-	int				dredir;
+	int				type;
+	char			*bin;
 	char			*command;
 	char			*option;
+	char			**argv;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
+	struct s_list	*env_list;
+	struct s_sym	*sym_cmd;
+	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }							t_cmd;
 
@@ -100,6 +101,7 @@ typedef struct	 	s_minishell
 	t_env			*export_list;
 	t_sym			*sym_cmd; //parsing
 	t_cmd			*cmd;
+	t_cmd			*scmd;
 } 					t_minishell;
 
 void		welcome_shell(void);
@@ -183,6 +185,8 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 */
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 void		parse_pipe(char **s);
+int			parse_sym2(t_sym **temp, t_cmd *curr);
+
 
 /*
 ** pipe_utils.c
@@ -190,9 +194,14 @@ void		parse_pipe(char **s);
 void		add_node(t_cmd *target, char *s);
 t_cmd		*reverse_node(t_cmd *head);
 char		*space_trim(char *s);
-int		parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
-void	delete_space_flag(char **temp, char flag);
-void	flag_checker(char flag);
+int			parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
+void		delete_space_flag(char **temp, char flag);
+void		flag_checker(char flag);
+void		add_next_cmd(t_cmd **start, t_cmd *new);
+char		*newline_copy(char *src);
+void	clear_cmd_list_free(t_cmd *curr);
+void	clear_cmd_list(t_cmd **start, void (*del)(void *));
+char	**args_to_str(t_minishell *minishell, t_cmd *curr);
 
 /*
 ** redir_execute.c
@@ -203,6 +212,15 @@ int			exec_redir(t_cmd *curr, t_minishell *minishell);
 **	redir_utils.c
 */
 void		parse_symbols(t_minishell *minishell, t_cmd *curr);
+int			error_check(t_sym *sym);
+t_sym		*create_symcmd(t_minishell *minishell, int i);
+t_sym		*create_arg_sym(char *str, int type);
+void		add_next_sym(t_sym **start, t_sym *new);
+
+int			line_split(t_minishell *minishell, char *str, t_sym **start, int *i);
+int			parse_sym(int i, char *str, char *splt, int sign);
+int			sym_list_size(t_sym **start);
+
 /*
 ** quote_utils.c
 */

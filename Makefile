@@ -19,6 +19,7 @@ EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				pipe_execute.c \
 				pipe_utils.c \
+				pipe_utils2.c \
 				quote_utils.c \
 				redir_execute.c \
 				redir_utils.c \

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/27 00:26:34 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 16:31:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,30 +74,30 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	t_sym	*sym;
 
-	//curr->option의 첫 번째 flag이 보이면 멈추고 flag 입력한다.
+	// symbol이 있다면 다른 루트로 파싱.
 	if (check_separator(minishell, curr) < 0)
 		return (-1); 
-	// -> 기호가 있다면, 다른 루트로 파싱을 맡긴다.
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
-		ft_printf(" enter the parser \n");
+		ft_printf(" entered the parser \n");
 		parse_symbols(minishell, curr);
-		symbol = update_sym(minishell);
-		//while (sym)
-		//	parse2_symbols(minishell, &sym);
+		update_sym(minishell); //symbol = update_sym(minishell);
+		sym = minishell->sym_cmd;
+		while (sym)
+			parse2_symbols(minishell, &sym); // 두 번째 파싱 
 	}
 	if (minishell->pipe_num >= 1)
 	{
 		if ((exec_pipe(curr, minishell)) < 0)
 			return (-1);
 	}
-	else if (minishell->redir_num > 0)
+	/*else if (minishell->redir_num > 0)
 	{
 		if ((exec_redir(curr, minishell)) < 0)
 			return (-1);
 		ft_printf("redir passby\n");
-	}
-	else if (pipe_num == 0 && curr->redir == 0 && dollar_exec(curr, minishell) == 0)
+	}*/
+	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))
 			return (-1);
@@ -150,9 +150,10 @@ int cmd_handler(t_minishell *minishell)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
 
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	// 할일 : ", '를 여기에서 실행.
+	// ", '를 여기에서 실행.
 	while (which_quote(input))
 		prompt_quote(minishell);
+	// 파싱
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드
 	//init_curr(curr);

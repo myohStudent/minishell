@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   ft_strdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:38:09 by myoh             ###   ########.fr       */
+/*   Created: 2020/11/28 16:56:41 by myoh              #+#    #+#             */
+/*   Updated: 2020/11/28 16:57:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int		cmd_exit(t_cmd *curr, t_minishell *minishell)
+void	ft_strdel(char **as)
 {
-	if (curr->argc == 1 || curr->argc == 2)
-	{	ft_putstr_fd("\n[Process Completed]\0", 1);
-		exit(1);
-	}
-	else
-	{
-		ft_putstr_fd("\nexit: too many arguments\0", 1);
-		ft_putstr_fd("\n", 1);
-		return (-1);
-	}
-
+	free(*as);
+	*as = NULL;
 }

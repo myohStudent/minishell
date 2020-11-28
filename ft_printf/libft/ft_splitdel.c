@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   ft_splitdel.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:38:09 by myoh             ###   ########.fr       */
+/*   Created: 2020/11/28 16:58:42 by myoh              #+#    #+#             */
+/*   Updated: 2020/11/28 16:59:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int		cmd_exit(t_cmd *curr, t_minishell *minishell)
+void	ft_splitdel(char ***s)
 {
-	if (curr->argc == 1 || curr->argc == 2)
-	{	ft_putstr_fd("\n[Process Completed]\0", 1);
-		exit(1);
-	}
-	else
-	{
-		ft_putstr_fd("\nexit: too many arguments\0", 1);
-		ft_putstr_fd("\n", 1);
-		return (-1);
-	}
+	int		i;
 
+	i = 0;
+	while (*s && (*s)[i])
+	{
+		ft_strdel(&(*s)[i]);
+		i++;
+	}
+	free(*s);
+	*s = NULL;
 }
