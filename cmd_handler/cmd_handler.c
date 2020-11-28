@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/28 16:31:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 22:37:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,11 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		sym = minishell->sym_cmd;
 		while (sym)
 			parse2_symbols(minishell, &sym); // 두 번째 파싱 
+		if (minishell->scmd)
+			exec_scmd(minishell);
+		if (minishell->sym_cmd)
+		clear_symcmd(&minishell->sym_cmd, free);
 	}
-	if (minishell->pipe_num >= 1)
-	{
-		if ((exec_pipe(curr, minishell)) < 0)
-			return (-1);
-	}
-	/*else if (minishell->redir_num > 0)
-	{
-		if ((exec_redir(curr, minishell)) < 0)
-			return (-1);
-		ft_printf("redir passby\n");
-	}*/
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))
@@ -168,7 +161,7 @@ int cmd_handler(t_minishell *minishell)
 				return (-1);
 			t_cmd *next;
 			next = curr->next;
-			if (curr->next)  // ; | ; 수행시 여기서 pointer// being freed was not allocated 에러 뜸
+			if (curr->next)
 				free(curr);
 			curr = next;
 		}

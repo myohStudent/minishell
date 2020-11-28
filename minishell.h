@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:57:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/28 22:33:37 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct		s_cmd
 	int				argc;
 	int				type;
 	char			*bin;
+	int				fdin;
+	int				fdout;
 	char			*command;
 	char			*option;
 	char			**argv;
@@ -160,11 +162,16 @@ void		parent_signal_handler(int signo);
 /*
 ** cmd_handler.c
 */
-
 int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
 int			cmd_executer(t_minishell *minishell, t_cmd *curr);
 int			exec_else(t_minishell *minishell, t_cmd *curr);
+/*
+** cmd_handler2.c
+*/
+void		exec_piperedir(t_minishell *minishell);
+void		exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
+void		exec_scmd(t_minishell *minishell);
 
 /*
 ** cmd_exit.c
@@ -199,9 +206,10 @@ void		delete_space_flag(char **temp, char flag);
 void		flag_checker(char flag);
 void		add_next_cmd(t_cmd **start, t_cmd *new);
 char		*newline_copy(char *src);
-void	clear_cmd_list_free(t_cmd *curr);
-void	clear_cmd_list(t_cmd **start, void (*del)(void *));
-char	**args_to_str(t_minishell *minishell, t_cmd *curr);
+void		clear_cmd_list_free(t_cmd *curr);
+void		clear_cmd_list(t_cmd **start, void (*del)(void *));
+void		clear_symcmd(t_sym **start, void (*del)(void *));
+char		**args_to_str(t_minishell *minishell, t_cmd *curr);
 
 /*
 ** redir_execute.c
