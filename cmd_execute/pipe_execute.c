@@ -34,22 +34,22 @@ void		exec_parent(int *pipe_fd, t_minishell *minishell, t_cmd *curr)
 		exit(1);
 }
 
-void		parse_pipe(char **temp)
+void		parse_pipe(char **str)
 {
 	int		i;
 
 	i = 0;
-	if (*temp)
+	if (*str)
 	{
-		while ((*temp)[i] == ' ')
+		while ((*str)[i] == ' ')
 			i++;
-		(*temp) = ft_strdup((*temp) + i);
-		if ((*temp)[i] == '|')
+		(*str) = ft_strdup((*str) + i);
+		if ((*str)[i] == '|')
 			i++;
-		(*temp) = ft_strdup((*temp) + i);
-		while ((*temp)[i] == ' ')
+		(*str) = ft_strdup((*str) + i);
+		while ((*str)[i] == ' ')
 			i++;
-		(*temp) = ft_strdup((*temp) + i);
+		(*str) = ft_strdup((*str) + i);
 		/*
 		if ((ft_strncmp(s, " | ", 3) == 0))
 		s = ft_strdup(s + 3);
@@ -249,25 +249,24 @@ int		parse_sym2(t_sym **temp, t_cmd *curr)
 	return (1);
 }
 
-void	parse2_symbols(t_minishell *minishell, t_sym **temp)
+void	parse2_symbols(t_minishell *minishell, t_sym **sym)
 {
 	t_cmd	*curr;
 
-	if ((*temp)->type == NEW_LINE)
+	if ((*sym)->type == NEW_LINE)
 	{
-		*temp = (*temp)->next;
+		*sym = (*sym)->next;
 		return ;
 	}
 	if (!(curr = ft_calloc(1, sizeof(t_cmd))))
 		return ;
-	while (*temp)
+	while (*sym)
 	{
-		if (!parse_sym2(temp, curr))
+		if (!parse_sym2(sym, curr))
 			break ;
-		ft_printf("curr %s\n", curr->command);
-		if ((*temp)->type == ENVIRON && curr->command)
-			add_next_sym(&curr->sym_cmd, create_arg_sym((*temp)->str, (*temp)->type));
-		*temp = (*temp)->next;
+		if ((*sym)->type == ENVIRON && curr->command)
+			add_next_sym(&curr->sym_cmd, create_arg_sym((*sym)->str, (*sym)->type));
+		*sym = (*sym)->next;
 	}
 	add_next_cmd(&minishell->scmd, curr);
 }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 18:02:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 00:41:51 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char		*update_sym(t_minishell *minishell)
 			sym->type = CHARACTERS;
 		if (!error_check(sym))
 			return (sym->str);
+		ft_printf("sym->type: %d\n", sym->type);
 		sym = sym->next;
 	}
 	return (NULL);

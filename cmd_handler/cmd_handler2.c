@@ -6,31 +6,45 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 22:37:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 17:54:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
+
 void	exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2])
 {
 	if (ft_strncmp(scmd->command, "echo\0", 5) == 0 && scmd->type != PIPE
 		&& (!scmd->prev || scmd->prev->type != PIPE))
-		exit(1); //exit_cmd2(minishell, scmd, 0);
+	{
+		ft_printf("echo\n");//exit(1); //exit_cmd2(minishell, scmd, 0);
+	}
 	else if (ft_strncmp(scmd->command, "export\0", 7) == 0 && scmd->argv)
-		export_cmd(minishell, scmd, 0);
+	{
+		ft_printf("export\n");//export_cmd(minishell, scmd, 0);
+	}
 	else if (ft_strncmp(scmd->command, "cd\0", 3) == 0 && scmd->type != PIPE &&
 		(!scmd->prev || scmd->prev->type != PIPE))
-		cd_cmd(minishell, scmd);
+	{	//cd_cmd(minishell, scmd);
+		ft_printf("cd\n");
+		if (chdir(home_dir) < 0)
+				return ;
+	}
 	else if (ft_strncmp(scmd->command, "unset\0", 5) == 0)
-		unset_cmd(minishell, scmd);
+	{
+		ft_printf("unset\n");
+		//unset_cmd(minishell, scmd);
+	}
 	else if (!scmd->prev || (scmd->prev && !(scmd->prev->type == PIPE)))
-		exec_prog(minishell, scmd, pipe_fd, NULL);
+	{
+		ft_printf("pipe\n");
+		//exec_pipe2(minishell, scmd, pipe_fd, NULL);
+	}
 }
 
 void		process_sym2(t_cmd *scmd)
-{
+{/*
 	int		env;
 	char	**split;
 
@@ -45,22 +59,23 @@ void		process_sym2(t_cmd *scmd)
 		if (ft_count_split(split) > 1)
 			add_more_args(scmd, split);
 		ft_free_split(&split);
-	}
+	}*/
 }
 
 void		process_sym(t_cmd *scmd)
 {
-	t_sym	*scmd_temp;
+	/*t_sym	*scmd_temp;
 	char	**split;
 	int		env;
 
 	scmd_temp = scmd->sym_cmd;
 	while (scmd_temp)
 	{
+		ft_printf("str:/%s/\n", scmd_temp->str);
 		env = 0;
 		if (scmd_temp->str && scmd_temp->str[0] == '$')
 			env = 1;
-		scmd_temp->str = handle_quotes(scmd_temp->str, 1);
+		scmd_temp->str = exec_quotes(scmd_temp->str, 1);
 		if (env)
 		{
 			split = ft_ssplit(scmd_temp->str, " \n");
@@ -72,20 +87,20 @@ void		process_sym(t_cmd *scmd)
 			remove_redirect(scmd_temp, &scmd->sym_cmd);
 		scmd = scmd->next;
 	}
-	process_sym2(scmd);
+	process_sym2(scmd);*/
 }
-*/
+
 void	exec_scmd(t_minishell *minishell)
 {
 	t_cmd	*scmd;
 	int		pipe_fd[2];
 
 	scmd = minishell->scmd;
-	ft_printf("아직 작성중 /n");
-	//while (scmd)
-	//{
-	//	process_sym(scmd);
-		/*create_redirect(minishell, scmd);
+	while (scmd)
+	{
+		ft_printf("scmd->command: %s \n", minishell->scmd->command);
+		//process_sym(scmd);
+		create_redir(minishell, scmd);
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
 			if (pipe(pipe_fd))
@@ -96,11 +111,11 @@ void	exec_scmd(t_minishell *minishell)
 		}
 		if (!scmd->command && scmd->type != PIPE)
 		{
-			process_args_env(scmd);
-			add_scmd_env_variable(minishell, scmd);
+			//process_args_env(scmd);
+			//add_scmd_env_variable(minishell, scmd);
 		}
 		while (scmd->type == PIPE)
 			scmd = scmd->next;
-		scmd = scmd->next;*/
-	//}
+		scmd = scmd->next;
+	}
 }

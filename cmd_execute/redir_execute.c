@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:49:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 17:57:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,43 +159,81 @@ int		exec_dredir(t_cmd *curr, t_minishell *minishell)
     }
     return (1);
 }
-/* 깃헙에 있는 거 가져옴!
-int redirect(char * input, char * output, char * error){
-	int fd;
-	
-	//Redirección de entrada.
-	if(input != NULL){
-		fd = open(input,O_RDONLY);
-		if(fd == -1){
-			printf("%s, Error: fallo en apertura de fichero.\n",input);
-			exit(1);
-		}else{
-			dup2(fd,0);
-			close(fd);
-		}
-	}
-	//Redireccion de salida
-	if(output != NULL){
-		fd = creat(output,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-		if(fd == -1){
-			printf("%s, Error: fallo en apertura o creacion de fichero.\n",output);
-			exit(1);
-		}else{
-			dup2(fd,1);
-			close(fd);
-		}
-	}
-	//Redireccion de error
-	if(error != NULL){
-		fd = creat(error,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-		if(fd == -1){
-			printf("%s, Error: fallo en apertura o creacion de fichero.\n",error);
-			exit(1);
-		}else{
-			dup2(fd,2);
-			close(fd);
-		}
-	}
-	return EXIT_SUCCESS;
+
+void	free_redir(t_sym *sym)
+{
+	ft_strdel(&sym->str);
+	free(sym);
 }
-*/
+
+t_sym		*remove_redir(t_sym *sym, t_sym **start)
+{
+	t_sym	*sym_temp;
+	t_sym	*next;
+
+	sym_temp = *start;
+	if (*start == sym)
+	{
+		next = (*start)->next;
+		free_redir(*start);
+		*start = next;
+		next ? next->prev = NULL : 0;
+		return (next);
+	}
+	while (sym_temp)
+	{
+		if (sym_temp == sym && sym_temp->prev)
+		{
+			next = sym_temp->next;
+			sym_temp->prev->next = next;
+			sym_temp->next ? sym_temp->next->prev = sym_temp->prev : 0;
+			free_redir(sym);
+			return (next);
+		}
+		sym_temp = sym_temp->next;
+	}
+	return (NULL);
+}
+
+int		create_redir2(t_minishell *minishell, t_cmd *cmd, t_sym **sym, int flag)
+{
+	int		fd;
+
+	if ((fd = open((*sym)->next->str, flag, 0644)) < 0)
+	{
+		//에러
+		ft_printf("error\n");
+		exit(1);
+	}
+	if ((ft_compare((*sym)->str, ">") || ft_compare((*sym)->str, ">>"))
+		&& cmd->fdout)
+		close(cmd->fdout);
+	if (ft_compare((*sym)->str, "<") && cmd->fdin)
+		close(cmd->fdin);
+	*sym = remove_redir(*sym, &cmd->sym_cmd);
+	*sym = remove_redir(*sym, &cmd->sym_cmd);
+	return (fd);
+}
+
+void	create_redir(t_minishell *minishell, t_cmd *cmd)
+{
+	t_sym	*sym;
+
+	sym = cmd->sym_cmd;
+	while (sym && sym->next)
+	{
+		if (ft_compare(sym->str, ">") && sym->type == REDIR
+			&& cmd->fdout != -1)
+			cmd->fdout = create_redir2(minishell, cmd, &sym,
+				O_TRUNC | O_RDWR | O_CREAT);
+		else if (ft_compare(sym->str, ">>") && sym->type == REDIR
+			&& cmd->fdout != -1)
+			cmd->fdout = create_redir2(minishell, cmd, &sym,
+				O_RDWR | O_CREAT | O_APPEND);
+		else if (ft_compare(sym->str, "<") && sym->type == REDIR
+			&& cmd->fdin != -1)
+			cmd->fdin = create_redir2(minishell, cmd, &sym, O_RDONLY);
+		else
+			sym = sym->next;
+	}
+}
