@@ -1,65 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils2.c                                      :+:      :+:    :+:   */
+/*   handler_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 16:33:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 17:49:26 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 23:51:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*newline_copy(char *src)
+char	*newline_copy(char *command)
 {
 	int		i;
 	int		j;
 	char	*res;
 
-	if (!src)
+	if (!command)
 		return (NULL);
-	if (is_char_here('\n', src) == -1)
-		return (src);
+	if (is_char_here('\n', command) == -1)
+		return (command);
 	i = 0;
 	j = 0;
-	if (!(res = (char *)ft_calloc(1, ft_strlen(src))))
+	if (!(res = (char *)ft_calloc(1, ft_strlen(command))))
 		exit(1); //leaks	
-	while (src[i])
+	while (command[i])
 	{
-		if (src[i] != '\n')
+		if (command[i] != '\n')
 		{
-			res[j] = src[i];
+			res[j] = command[i];
 			j++;
 		}
 		i++;
 	}
 	res[j] = '\0';
 	return (res);
-}
-
-void	add_next_cmd(t_cmd **start, t_cmd *new)
-{
-	t_cmd	*temp;
-
-	if (!new || !start)
-		return ;
-	new->command = newline_copy(new->command);
-	if (*start)
-	{
-		temp = *start;
-		while (temp->next)
-		{
-			temp->next->prev = temp;
-			temp = temp->next;
-		}
-		temp->next = new;
-		new->prev = temp;
-		new->next = NULL;
-	}
-	else
-		*start = new;
 }
 
 char	**args_to_str(t_minishell *minishell, t_cmd *curr)
@@ -69,10 +46,10 @@ char	**args_to_str(t_minishell *minishell, t_cmd *curr)
 	t_sym *temp;
 
 	i = 1;
-	if (!(str = ft_calloc(1, sizeof(char *) * (sym_list_size(&curr->sym_cmd) + 2))))
+	if (!(str = ft_calloc(1, sizeof(char *) * (sym_list_size(&curr->sym) + 2))))
 		exit(1); //leaks (프리안했)
 	str[0] = curr->command;
-	temp = curr->sym_cmd;
+	temp = curr->sym;
 	while (temp)
 	{
 		str[i] = temp->str;
@@ -104,7 +81,7 @@ void	clear_cmd_list(t_cmd **start, void (*del)(void *))
 	while (temp)
 	{
 		clear_cmd_list_free(temp);
-		args = temp->sym_cmd;
+		args = temp->sym;
 		while (args)
 		{
 			ft_strdel(&args->str);
@@ -135,6 +112,29 @@ void		clear_symcmd(t_sym **start, void (*del)(void *))
 		temp = temp2;
 	}
 	*start = NULL;
+}
+
+void	add_next_cmd(t_cmd **start, t_cmd *new)
+{
+	t_cmd	*old;
+
+	if (!new || !start)
+		return ;
+	new->command = newline_copy(new->command);
+	if (*start)
+	{
+		old = *start;
+		while (old->next)
+		{
+			old->next->prev = old;
+			old = old->next;
+		}
+		old->next = new;
+		new->prev = old;
+		new->next = NULL;
+	}
+	else
+		*start = new;
 }
 
 ////////////////////////////////////////////

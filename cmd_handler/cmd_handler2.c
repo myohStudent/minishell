@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 17:54:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 00:00:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2])
 	}
 	else if (!scmd->prev || (scmd->prev && !(scmd->prev->type == PIPE)))
 	{
-		ft_printf("pipe\n");
+		ft_printf("pipe, redir\n");
 		//exec_pipe2(minishell, scmd, pipe_fd, NULL);
 	}
 }
@@ -98,7 +98,7 @@ void	exec_scmd(t_minishell *minishell)
 	scmd = minishell->scmd;
 	while (scmd)
 	{
-		ft_printf("scmd->command: %s \n", minishell->scmd->command);
+		ft_printf("scmd->command: %s \n", scmd->command);
 		//process_sym(scmd);
 		create_redir(minishell, scmd);
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
@@ -111,6 +111,7 @@ void	exec_scmd(t_minishell *minishell)
 		}
 		if (!scmd->command && scmd->type != PIPE)
 		{
+			ft_printf("다음\n");
 			//process_args_env(scmd);
 			//add_scmd_env_variable(minishell, scmd);
 		}
@@ -118,4 +119,5 @@ void	exec_scmd(t_minishell *minishell)
 			scmd = scmd->next;
 		scmd = scmd->next;
 	}
+	
 }

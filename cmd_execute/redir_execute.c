@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 17:57:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 00:05:51 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,8 @@ int		create_redir2(t_minishell *minishell, t_cmd *cmd, t_sym **sym, int flag)
 		close(cmd->fdout);
 	if (ft_compare((*sym)->str, "<") && cmd->fdin)
 		close(cmd->fdin);
-	*sym = remove_redir(*sym, &cmd->sym_cmd);
-	*sym = remove_redir(*sym, &cmd->sym_cmd);
+	*sym = remove_redir(*sym, &cmd->sym);
+	*sym = remove_redir(*sym, &cmd->sym);
 	return (fd);
 }
 
@@ -219,7 +219,7 @@ void	create_redir(t_minishell *minishell, t_cmd *cmd)
 {
 	t_sym	*sym;
 
-	sym = cmd->sym_cmd;
+	sym = cmd->sym;
 	while (sym && sym->next)
 	{
 		if (ft_compare(sym->str, ">") && sym->type == REDIR
