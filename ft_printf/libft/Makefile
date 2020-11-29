@@ -12,6 +12,7 @@ SRC		=	ft_hexchanger.c \
 			ft_strtolower.c \
 			ft_strlen.c \
 			ft_strdel.c \
+			ft_strlcat.c \
 			ft_strjoin.c \
 			ft_memalloc.c \
 			ft_strdup.c \

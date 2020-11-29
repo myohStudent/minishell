@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 22:33:37 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 17:34:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,12 @@ int			has_redirs(char *option);
 int			has_quotes(char *option);
 int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
+int			ft_is_alnum(int c);
 int			has_env(char *str);
 /*
 ** parse_utils.c
 */
 int         is_char(char c, char *s);
-void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
 int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
 char		*update_sym(t_minishell *minishell);
 /*
@@ -193,7 +193,7 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 void		parse_pipe(char **s);
 int			parse_sym2(t_sym **temp, t_cmd *curr);
-
+void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
 
 /*
 ** pipe_utils.c
@@ -215,6 +215,7 @@ char		**args_to_str(t_minishell *minishell, t_cmd *curr);
 ** redir_execute.c
 */
 int			exec_redir(t_cmd *curr, t_minishell *minishell);
+void		create_redir(t_minishell *minishell, t_cmd *cmd);
 
 /*
 **	redir_utils.c
@@ -236,5 +237,14 @@ int		which_quote(char *input);
 void	prompt_quote(t_minishell *minishell);
 int		in_quotes(char *s, int p);
 int		line_escape(char *input, int i);
+/*
+**quote_utils2.c
+*/
+char	*simple_quote(char *src, int *i);
+char	*no_quote(char *src, int *i, int j, int env);
+char	*double_quote(char *src, int *i, int j, int env);
+char	*exec_quotes(char *src, int env);
+int		quote_len(char *src, int type, int env);
+
 
 #endif

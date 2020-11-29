@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/28 22:37:48 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 14:59:07 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,15 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		return (-1); 
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
-		ft_printf(" entered the parser \n");
 		parse_symbols(minishell, curr);
 		update_sym(minishell); //symbol = update_sym(minishell);
 		sym = minishell->sym_cmd;
 		while (sym)
 			parse2_symbols(minishell, &sym); // 두 번째 파싱 
 		if (minishell->scmd)
+		{
 			exec_scmd(minishell);
+		}
 		if (minishell->sym_cmd)
 		clear_symcmd(&minishell->sym_cmd, free);
 	}

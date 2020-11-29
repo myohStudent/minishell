@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 17:31:54 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/26 23:33:12 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/29 15:37:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,23 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	}
 	result[resultlen] = 0;
 	return (result);
+}
+
+char	*ft_strjoin_free(char const *s1, char const *s2)
+{
+	char	*str;
+
+	if (!s2)
+	{
+		str = ft_strdup(s1);
+		free((void*)s1);
+		return (str);
+	}
+	if (!(str = (char*)ft_calloc(1, sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	ft_strcat(str, s1); //strcpy
+	free((void*)s1);
+	ft_strcat(str, s2);
+	free((void*)s2);
+	return (str);
 }
