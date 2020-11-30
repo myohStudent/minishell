@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 00:05:51 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 21:29:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int		exec_dredir(t_cmd *curr, t_minishell *minishell)
     }
     return (1);
 }
-
+//////////////////////////////////////////////////////
 void	free_redir(t_sym *sym)
 {
 	ft_strdel(&sym->str);
@@ -195,8 +195,8 @@ t_sym		*remove_redir(t_sym *sym, t_sym **start)
 	return (NULL);
 }
 
-int		create_redir2(t_minishell *minishell, t_cmd *cmd, t_sym **sym, int flag)
-{
+int		create_redir2(t_minishell *minishell, t_cmd *scmd, t_sym **sym, int flag)
+{/*
 	int		fd;
 
 	if ((fd = open((*sym)->next->str, flag, 0644)) < 0)
@@ -205,35 +205,28 @@ int		create_redir2(t_minishell *minishell, t_cmd *cmd, t_sym **sym, int flag)
 		ft_printf("error\n");
 		exit(1);
 	}
-	if ((ft_compare((*sym)->str, ">") || ft_compare((*sym)->str, ">>"))
-		&& cmd->fdout)
+	if (scmd->type = (ft_compare((*sym)->str, ">") || ft_compare((*sym)->str, ">>"))	&& cmd->fdout)
 		close(cmd->fdout);
 	if (ft_compare((*sym)->str, "<") && cmd->fdin)
 		close(cmd->fdin);
 	*sym = remove_redir(*sym, &cmd->sym);
 	*sym = remove_redir(*sym, &cmd->sym);
 	return (fd);
+	*/
+return (1);
 }
 
-void	create_redir(t_minishell *minishell, t_cmd *cmd)
+void	create_redir(t_minishell *minishell, t_cmd *scmd)
 {
-	t_sym	*sym;
-
-	sym = cmd->sym;
-	while (sym && sym->next)
+	while (scmd)
 	{
-		if (ft_compare(sym->str, ">") && sym->type == REDIR
-			&& cmd->fdout != -1)
-			cmd->fdout = create_redir2(minishell, cmd, &sym,
-				O_TRUNC | O_RDWR | O_CREAT);
-		else if (ft_compare(sym->str, ">>") && sym->type == REDIR
-			&& cmd->fdout != -1)
-			cmd->fdout = create_redir2(minishell, cmd, &sym,
-				O_RDWR | O_CREAT | O_APPEND);
-		else if (ft_compare(sym->str, "<") && sym->type == REDIR
-			&& cmd->fdin != -1)
-			cmd->fdin = create_redir2(minishell, cmd, &sym, O_RDONLY);
+	/*	if (scmd->type == REDIR && scmd->fdout != -1)
+			scmd->fdout = create_redir2(minishell, scmd, &sym, O_TRUNC | O_RDWR | O_CREAT);
+		else if (scmd->type == FREDIR && cmd->fdout != -1)
+			scmd->fdout = create_redir2(minishell, scmd, &sym, O_RDWR | O_CREAT | O_APPEND);
+		else if (scmd->type == DREDIR && cmd->fdin != -1)
+			scmd->fdin = create_redir2(minishell, scmd, &sym, O_RDONLY);
 		else
-			sym = sym->next;
+			scmd = scmd->next;*/
 	}
 }
