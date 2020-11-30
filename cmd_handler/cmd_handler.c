@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/30 00:08:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 21:26:02 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,25 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	t_sym	*sym;
 
-	// symbol이 있다면 다른 루트로 파싱한다
 	if (check_separator(minishell, curr) < 0)
 		return (-1);
+	// symbol이 있다면 다른 루트로 파싱한다
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
-		parse_symbols(minishell, curr); //파싱
-		update_sym(minishell); //symbol = update_sym(minishell);
-		sym = minishell->sym; //토큰리스트
-		ft_printf("중간점검 sym->str:/%s/ sym->type:/%d/", sym->str, sym->type);
-		while (sym)
-			parse2_symbols(minishell, &sym); // 파싱한 요소를 minishell에 넣는 과정
+		parse3(minishell, curr);
+		//parse_symbols(minishell, curr); //파싱
+		//update_sym(minishell); //symbol = update_sym(minishell);
+		//sym = minishell->sym; //토큰리스트
+		//ft_printf("중간점검 sym->str:/%s/ sym->type:/%d/", sym->str, sym->type);
+		//while (sym)
+		//	parse2_symbols(minishell, &sym); // 파싱한 요소를 minishell에 넣는 과정
 		if (minishell->scmd)
-		{
-			exec_scmd(minishell);
-			clear_cmd_list_free(minishell->scmd);
+		{ 
+			//exec_scmd(minishell);
+		// 	clear_cmd_list_free(minishell->scmd);
 		}
-		if (minishell->sym)
-			clear_symcmd(&minishell->sym, free);
+		// if (minishell->sym)
+		// 	clear_symcmd(&minishell->sym, free);
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{

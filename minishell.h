@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 23:48:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 21:27:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@
 # define ENVIRON 8
 # define AND 9
 # define OR 10
-# define PAR_OPEN 11   // >
-# define PAR_CLOSE 12 // <
+# define PAR_OPEN 11   //
+# define PAR_CLOSE 12 //
 
 char				*home_dir;
 int					g_command_nb;
@@ -65,6 +65,7 @@ typedef struct s_env
 typedef struct		s_sym
 {
 		char			*str;
+		char			*command;
 		int				type;
 		char			*sym; 
 		struct s_sym	*prev;
@@ -73,6 +74,7 @@ typedef struct		s_sym
 
 typedef struct		s_cmd
 {
+	int				cnt;
 	int				argc;
 	int				type;
 	char			*bin;
@@ -90,7 +92,6 @@ typedef struct		s_cmd
 
 typedef struct	 	s_minishell
 {
-	int				symbols_nb;
 	char			*path;
 	int				cnt;
 	int				cmd_num;
@@ -146,11 +147,13 @@ int			has_env(char *str);
 ** parse_utils.c
 */
 int         is_char(char c, char *s);
-int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
-char		*update_sym(t_minishell *minishell);
-void		parse_symbols(t_minishell *minishell, t_cmd *curr);
-int			recheck_sym(int i, char *str, char *temp, int sign);
-void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
+// int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
+// char		*update_sym(t_minishell *minishell);
+// void		parse_symbols(t_minishell *minishell, t_cmd *curr);
+// int			recheck_sym(int i, char *str, char *temp, int sign);
+// void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
+
+void		parse3(t_minishell *minishell, t_cmd *curr);
 
 /*
 ** cmd_unset.c
@@ -174,7 +177,7 @@ int			exec_else(t_minishell *minishell, t_cmd *curr);
 ** cmd_handler2.c
 */
 void		exec_piperedir(t_minishell *minishell);
-void		exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
+int			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
 void		exec_scmd(t_minishell *minishell);
 
 /*
@@ -196,6 +199,8 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 */
 int			exec_pipe(t_cmd *curr, t_minishell *minishell);
 void		parse_pipe(char **s);
+void	exec_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
+
 
 /*
 ** pipe_utils.c
@@ -225,14 +230,14 @@ void		create_redir(t_minishell *minishell, t_cmd *cmd);
 /*
 **	redir_utils.c
 */
-int			error_check(t_sym *sym);
-t_sym		*create_symcmd(t_minishell *minishell, int i);
-t_sym		*create_arg_sym(char *str, int type);
-void		add_next_sym(t_sym **start, t_sym *new);
+// int			error_check(t_sym *sym);
+// t_sym		*create_symcmd(t_minishell *minishell, int i);
+// t_sym		*create_arg_sym(char *str, int type);
+// void		add_next_sym(t_cmd **start, t_sym *new);
 
-int			line_split(t_minishell *minishell, char *str, t_sym **start, int *i);
-int			parse_sym(int i, char *str, char *splt, int sign);
-int			sym_list_size(t_sym **start);
+// int			line_split(t_minishell *minishell, char *str, t_sym **start, int *i);
+// int			parse_sym(int i, char *str, char *splt, int sign);
+// int			sym_list_size(t_sym **start);
 
 /*
 ** quote_utils.c

@@ -13,6 +13,7 @@ CMD_FILE	=	cmd_handler.c \
 				handler_utils2.c \
 				has_utils.c \
 				parse_utils.c \
+				parse_utils2.c \
 
 CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 OBJ_CMD = $(CMD:%.c=%.o)

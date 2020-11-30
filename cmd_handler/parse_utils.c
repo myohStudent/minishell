@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 23:55:16 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 18:09:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,30 @@ int         is_char(char c, char *s)
         i++;
     }
     return (-1);
+}
+
+/*
+void	add_next_cmd(t_cmd **start, t_cmd *new)
+{
+	t_cmd	*temp;
+
+	if (!new || !start)
+		return ;
+	new->command = newline_copy(new->command);
+	if (*start)
+	{
+		temp = *start;
+		while (temp->next)
+		{
+			temp->next->prev = temp;
+			temp = temp->next;
+		}
+		temp->next = new;
+		new->prev = temp;
+		new->next = NULL;
+	}
+	else
+		*start = new;
 }
 
 char		*update_sym(t_minishell *minishell)
@@ -97,7 +121,7 @@ void	parse_symbols(t_minishell *minishell, t_cmd *curr)
 	i = 0;
 	ft_printf("raw_input: /%s/ ", raw_input);
 	while (raw_input[i])
-	{
+	{		
 		if (!line_split(minishell, raw_input, start, &i)) //공백
 			continue ;
 		minishell->cnt++;
@@ -160,4 +184,4 @@ void	parse2_symbols(t_minishell *minishell, t_sym **sym)
 		*sym = (*sym)->next;
 	}
 	add_next_cmd(&minishell->scmd, curr);
-}
+}*/

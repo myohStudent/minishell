@@ -220,3 +220,31 @@ int			exec_pipe(t_cmd *curr, t_minishell *minishell)
 	}*/
 	return (-1);
 }
+
+/*
+void	exec_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2])
+{
+	pid_t	pid;
+
+	minishell->forked = 1;
+	//scmd->bin = get_bin(minishell, scmd->command);
+	//scmd->args_array = join_args(scmd);
+	pid = fork();
+	if (pid == 0)
+	{
+		scmd->fdout == -1 || scmd->fdin == -1 ? exit(1) : 0;
+		handle_fd(scmd, pipe_fd, pipe_s);
+		exec(minishell, scmd);
+	}
+	else if (pid < 0)
+		return ; //error;
+	else
+	{
+		// signal error print
+		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE
+			&& !close(pipe_fd[1]) && !close(pipe_fd[0]))
+			exec_prog2(minishell, scmd, pid, pipe_s);
+		else
+			exec_prog2(minishell, scmd, pid, pipe_s);
+	}
+}*/

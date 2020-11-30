@@ -6,12 +6,12 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 17:29:54 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/29 23:01:02 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 18:06:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 int			sym_list_size(t_sym **start)
 {
 	t_sym	*temp;
@@ -86,3 +86,19 @@ int		line_split(t_minishell *minishell, char *str, t_sym **start, int *i)
 		add_next_sym(start, create_symcmd(minishell, *i));
 	return (1);
 }
+
+int		parse_sym(int i, char *str, char *temp, int sign)
+{
+	if (sign == 1 && is_instr(str[i], temp) && !is_instr(str[i + 1], temp)
+		&& !in_quotes(str, i) && !line_escape(str, i - 1))
+		return (1);
+	else if (!sign && is_instr(str[i], temp) && i > 0
+		&& is_instr(str[i - 1], temp) && !in_quotes(str, i) && !line_escape(str, i - 1))
+		return (1);
+	else if (sign == 2 && is_instr(str[i], temp)
+		&& i > 0 && is_instr(str[i - 1], temp) && !in_quotes(str, i) && !line_escape(str, i - 1))
+		return (1);
+	else if (sign == 3 && is_instr(str[i], temp) && !in_quotes(str, i) && !line_escape(str, i - 1))
+		return (1);
+	return (0);
+}*/
