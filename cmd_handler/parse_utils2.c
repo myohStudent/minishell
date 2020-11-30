@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 21:10:12 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 23:44:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void			add_next_node(t_cmd *target, char *s, int i)
     new->next = target->next;
     new->command = ft_strdup(s);
 	new->type = i;
-	ft_printf("cmd:/%s/ type:/%d/\n", new->command, new->type);
+	//ft_printf("cmd:/%s/ type:/%d/\n", new->command, new->type);
     target->next = new;
 }
 
@@ -55,6 +55,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 						type = DREDIR;
 					//////////////////////////////
 					add_next_node(head, space_trim(temp2), type);
+					minishell->cnt++;
 					free(temp2);
 					temp3 = ft_strdup(temp);
 					free(temp);
@@ -91,6 +92,7 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	t_cmd		*head;
 	t_cmd		*scmd;
 
+	minishell->cnt = 1;
 	temp = ft_strjoin(curr->command, " ");
 	if (curr->option)
 		raw_input = ft_strjoin(temp, curr->option);
@@ -104,7 +106,8 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	scmd = head->next;
 	scmd = reverse_node(head);
 	minishell->scmd = scmd;
-/*	while (scmd != NULL)
+	/*	
+	while (scmd != NULL)
 	{
 		ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
 		if (scmd->next)
@@ -112,5 +115,7 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 		else
 			break ;
 	}
-	ft_printf("\n");*/
+	ft_printf("\n");
+	ft_printf("count: %d\n", minishell->cnt);
+	*/
 }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 21:27:19 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 23:47:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 {
-	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
+	if (ft_strncmp(curr->command, "pwd\0", 4) == 0 && curr->type != PIPE
+		&& (!curr->prev || curr->prev->type != PIPE))
 	{
 		if (curr->argc == 1 || curr->option == NULL)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
@@ -24,9 +25,9 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		else if (curr->argc > 1)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
 		ft_putchar('\n');
-
 	}
-	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
+	else if (ft_strncmp(curr->command, "cd\0", 3) == 0 && curr->type != PIPE
+		&& (!curr->prev || curr->prev->type != PIPE))
 	{
 		if (curr->argc == 1)
 		{
@@ -65,6 +66,8 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
+//	else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == PIPE)))
+//		exec_prog(minishell, tmp, pipe_fd, NULL);
 	else
 		ft_printf("%s: command not found\n", curr->command);
 	return (1);
@@ -145,22 +148,27 @@ void		process_sym(t_cmd *scmd)
 
 void	exec_scmd(t_minishell *minishell)
 {
+	int i = 0;
 	t_cmd	*scmd;
 	int		pipe_fd[2];
 
 	scmd = minishell->scmd;
-	while (scmd)
+	while (scmd && i < minishell->cnt)
 	{
 		//process_sym(scmd);
+		scmd->fdin = 0;
+		scmd->fdout = 0;
 		create_redir(minishell, scmd);
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
-			if (pipe(pipe_fd))
+			if (pipe(pipe_fd) < 0)
 				return ;
 			exec_else2(minishell, scmd, pipe_fd);
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 		}
 		scmd = scmd->next;
+		i++;
 	}
+
 }
