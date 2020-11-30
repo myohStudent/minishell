@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/30 21:26:02 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 23:40:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,9 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		//	parse2_symbols(minishell, &sym); // 파싱한 요소를 minishell에 넣는 과정
 		if (minishell->scmd)
 		{ 
-			//exec_scmd(minishell);
+			exec_scmd(minishell);
 		// 	clear_cmd_list_free(minishell->scmd);
 		}
-		// if (minishell->sym)
-		// 	clear_symcmd(&minishell->sym, free);
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{

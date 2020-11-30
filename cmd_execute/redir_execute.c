@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 21:29:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 23:43:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int		exec_dredir(t_cmd *curr, t_minishell *minishell)
     return (1);
 }
 //////////////////////////////////////////////////////
-void	free_redir(t_sym *sym)
+/*void	free_redir(t_sym *sym)
 {
 	ft_strdel(&sym->str);
 	free(sym);
@@ -193,40 +193,40 @@ t_sym		*remove_redir(t_sym *sym, t_sym **start)
 		sym_temp = sym_temp->next;
 	}
 	return (NULL);
-}
+}*/
 
-int		create_redir2(t_minishell *minishell, t_cmd *scmd, t_sym **sym, int flag)
-{/*
+int		create_redir2(t_minishell *minishell, t_cmd *scmd, int flag)
+{
 	int		fd;
-
-	if ((fd = open((*sym)->next->str, flag, 0644)) < 0)
+	
+	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
 	{
 		//에러
 		ft_printf("error\n");
 		exit(1);
 	}
-	if (scmd->type = (ft_compare((*sym)->str, ">") || ft_compare((*sym)->str, ">>"))	&& cmd->fdout)
-		close(cmd->fdout);
-	if (ft_compare((*sym)->str, "<") && cmd->fdin)
-		close(cmd->fdin);
-	*sym = remove_redir(*sym, &cmd->sym);
-	*sym = remove_redir(*sym, &cmd->sym);
+	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
+		close(scmd->fdout);
+	if ((scmd->type == DREDIR) && scmd->fdin)
+		close(scmd->fdin);
+	//scmd = remove_redir(*sym, &scmd->sym); // 파일 만드러진 거 지워야 함(안 그러면 말록 에러 남)
+	//scmd = remove_redir(*sym, &scmd->sym);
 	return (fd);
-	*/
-return (1);
 }
 
 void	create_redir(t_minishell *minishell, t_cmd *scmd)
 {
-	while (scmd)
+	int	i;
+
+	i = 0;
+	while (scmd->command != NULL && i < minishell->cnt)
 	{
-	/*	if (scmd->type == REDIR && scmd->fdout != -1)
-			scmd->fdout = create_redir2(minishell, scmd, &sym, O_TRUNC | O_RDWR | O_CREAT);
-		else if (scmd->type == FREDIR && cmd->fdout != -1)
-			scmd->fdout = create_redir2(minishell, scmd, &sym, O_RDWR | O_CREAT | O_APPEND);
-		else if (scmd->type == DREDIR && cmd->fdin != -1)
-			scmd->fdin = create_redir2(minishell, scmd, &sym, O_RDONLY);
-		else
-			scmd = scmd->next;*/
+		if (scmd->type == REDIR && scmd->fdout != -1)
+			scmd->fdout = create_redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
+		else if (scmd->type == FREDIR && scmd->fdout != -1)
+			scmd->fdout = create_redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
+		else if (scmd->type == DREDIR && scmd->fdin != -1)
+			scmd->fdin = create_redir2(minishell, scmd, O_RDONLY);
+		i++;
 	}
 }
