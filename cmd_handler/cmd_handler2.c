@@ -6,12 +6,11 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 23:47:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 09:58:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 {
@@ -66,8 +65,11 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-//	else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == PIPE)))
-//		exec_prog(minishell, tmp, pipe_fd, NULL);
+	else if (!curr->prev || (curr->prev && !(curr->prev->type == PIPE)))
+	{
+		ft_printf("%s: command not found or pipe \n", curr->command);
+		pipe_prog(minishell, curr, pipe_fd, NULL);
+	}
 	else
 		ft_printf("%s: command not found\n", curr->command);
 	return (1);
@@ -99,53 +101,6 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 	}*/
 }
 
-void		process_sym2(t_cmd *scmd)
-{/*
-	int		env;
-	char	**split;
-
-	env = 0;
-	if (scmd->command && scmd->command[0] == '$')
-		env = 1;
-	if (scmd->command)
-		scmd->command = handle_quotes(scmd->command, 1);
-	if (env)
-	{
-		split = ft_ssplit(scmd->command, " \n");
-		if (ft_count_split(split) > 1)
-			add_more_args(scmd, split);
-		ft_free_split(&split);
-	}*/
-}
-
-void		process_sym(t_cmd *scmd)
-{
-	/*t_sym	*scmd_temp;
-	char	**split;
-	int		env;
-
-	scmd_temp = scmd->sym_cmd;
-	while (scmd_temp)
-	{
-		ft_printf("str:/%s/\n", scmd_temp->str);
-		env = 0;
-		if (scmd_temp->str && scmd_temp->str[0] == '$')
-			env = 1;
-		scmd_temp->str = exec_quotes(scmd_temp->str, 1);
-		if (env)
-		{
-			split = ft_ssplit(scmd_temp->str, " \n");
-			if (ft_count_split(split) > 1)
-				scmd_temp = add_more_args2(scmd, &scmd_temp, split);
-			ft_free_split(&split);
-		}
-		if (env && ft_strlen(scmd_temp->str) == 0)
-			remove_redirect(scmd_temp, &scmd->sym_cmd);
-		scmd = scmd->next;
-	}
-	process_sym2(scmd);*/
-}
-
 void	exec_scmd(t_minishell *minishell)
 {
 	int i = 0;
@@ -170,5 +125,4 @@ void	exec_scmd(t_minishell *minishell)
 		scmd = scmd->next;
 		i++;
 	}
-
 }

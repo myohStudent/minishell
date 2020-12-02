@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 23:43:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 10:02:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ int		create_redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 	{
 		//에러
 		ft_printf("error\n");
-		exit(1);
+		//exit(1);
 	}
 	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
 		close(scmd->fdout);
