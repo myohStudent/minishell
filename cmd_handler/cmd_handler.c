@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/02 20:14:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:46:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,6 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	{
 		
 		parse3(minishell, curr);
-		//parse_symbols(minishell, curr); //파싱
-		//update_sym(minishell); //symbol = update_sym(minishell);
-		//sym = minishell->sym; //토큰리스트
-		//ft_printf("중간점검 sym->str:/%s/ sym->type:/%d/", sym->str, sym->type);
-		//while (sym)
-		//	parse2_symbols(minishell, &sym); // 파싱한 요소를 minishell에 넣는 과정
 		if (minishell->scmd)
 		{ 
 			exec_scmd(minishell);

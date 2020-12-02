@@ -6,25 +6,11 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 19:23:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:34:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// int		error_check(t_sym *sym)
-// {
-// 	if ((sym->type == PIPE || sym->type == SEMICOLON) && !sym->prev)
-// 		return (0);
-// 	if (sym->type == REDIR && (sym->prev && sym->prev->type == REDIR))
-// 		return (0);
-// 	if (sym->type == LAST && sym->prev && (sym->prev->type == REDIR || sym->prev->type == PIPE))
-// 		return (0);
-// 	if ((sym->type == PIPE || sym->type == SEMICOLON) &&
-// 		(sym->prev->type == PIPE || sym->prev->type == SEMICOLON || sym->prev->type == REDIR))
-// 		return (0);
-// 	return (1);
-// }
 
 int         is_char(char c, char *s)
 {

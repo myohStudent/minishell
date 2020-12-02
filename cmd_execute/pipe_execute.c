@@ -33,13 +33,13 @@ void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 		else
 			ft_printf(" 없음 ");
 	}
-	ft_printf(" pipe_prog2 실행중");
+	//ft_printf(" pipe_prog2 실행중");
 	
 	// close(pipe_fd[0]);
 	// close(pipe_fd[1]); // 여기서 세그폴트 왜?
 	close(pipe_s[1]);
 	close(pipe_s[0]);
-	ft_printf(" 되나? ");
+	//ft_printf(" 되나? ");
 	waitpid(pid, &stat, WUNTRACED);
 	 while (!WIFEXITED(stat)) //자식프로세스가 정상적으로 종료되었는가? -> non-zero
 	 	if (!WIFSIGNALED(stat) || curr->type == PIPE) //wifsignaled 자식프로세스가 어떤 신호 때문에 종료되었다면 1을 반환
@@ -111,7 +111,7 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 	{
 		if (curr->argc == 1 || curr->option == NULL)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		else if (curr->argc > 1 && curr->option)
+		else if (curr->option)
 			ft_putstr_fd("pwd: too many arguments", 1);
 		else if (curr->argc > 1)
 			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
@@ -134,7 +134,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 {
 	pid_t	pid;
 
-	ft_printf("pipe 들어옴 \n");
+	//ft_printf("pipe 들어옴 \n");
 	scmd->pipe_array = store_commands(scmd, minishell); 
 	//execve용 명령어 배열 정리하는 함수
 	scmd->pipe_bin = get_bin(minishell, scmd->command); 
@@ -159,7 +159,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 	}
 	else
 	{
-		ft_printf("	여기서 에러 나나? \n");
+		//ft_printf("	여기서 에러 나나? \n");
 		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE && !close(pipe_fd[1]) && !close(pipe_fd[0]))
 			pipe_prog2(minishell, scmd, pid, pipe_s);
 	 	else

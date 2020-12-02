@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 19:24:07 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:44:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,24 @@
 
 void			add_next_node(t_cmd *target, char *s, int i)
 {
+	char **str;
 	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
     new->next = target->next;
-    new->command = ft_strdup(s);
+
+	str = ft_split(s, ' ');
+	if (str[1])
+	{
+		new->command = ft_strdup(str[0]);
+		new->option = ft_strdup(str[1]);
+	}
+	else
+		new->command = ft_strdup(s);
 	new->type = i;
-	new->fdin = -1;
-	new->fdout = -1;
-	//ft_printf("cmd:/%s/ type:/%d/\n", new->command, new->type);
+	// new->fdin = -1;
+	// new->fdout = -1;
+	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
     target->next = new;
+	free(str);
 }
 
 int				parse_flags(t_cmd *head, t_minishell *minishell)
@@ -45,7 +55,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 				while ((temp[i] == '<' || temp[i] == '>' || temp[i] == '|')
 					&& temp[i + 1] != '\0')
 				{
-					temp2 = ft_substr(temp, 0, i);
+					temp2 = ft_substr(temp, 0, i);					
 					///////// type 결정하기 /////////
 					if (temp[i] == '>' && temp[i + 1] != '>')
 						type = REDIR;
@@ -55,7 +65,8 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 						type = FREDIR;
 					else
 						type = DREDIR;
-					//////////////////////////////
+					/////////////////////////////
+					//option parsing도 여기서 
 					add_next_node(head, space_trim(temp2), type);
 					minishell->cnt++;
 					free(temp2);
