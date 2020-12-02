@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/30 23:40:32 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:14:42 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
+void	clear_scmd(t_cmd *cmd)
+{
+	if (cmd->command)
+		ft_strdel(&cmd->command);
+	if (cmd->pipe_bin)
+		ft_strdel(&cmd->pipe_bin);
+	if (cmd->pipe_array)
+		free_arr(cmd->pipe_array);
+}
+
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	t_sym	*sym;
@@ -79,6 +89,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	// symbol이 있다면 다른 루트로 파싱한다
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
+		
 		parse3(minishell, curr);
 		//parse_symbols(minishell, curr); //파싱
 		//update_sym(minishell); //symbol = update_sym(minishell);
@@ -89,7 +100,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		if (minishell->scmd)
 		{ 
 			exec_scmd(minishell);
-		// 	clear_cmd_list_free(minishell->scmd);
+		 	clear_scmd(minishell->scmd);
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
@@ -171,5 +182,7 @@ int cmd_handler(t_minishell *minishell)
 	free(input);
 	free (minishell->cmd);
 	minishell->cmd = 0;
+	minishell->pipe_bin = NULL;
+	minishell->environ = NULL;
 	return (1);
 }

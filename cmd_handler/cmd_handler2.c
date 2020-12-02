@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 17:48:07 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:22:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 {
+	ft_printf("exec_else2 들어옴 \n");
 	if (ft_strncmp(curr->command, "pwd\0", 4) == 0 && curr->type != PIPE
 		&& (!curr->prev || curr->prev->type != PIPE))
 	{
@@ -65,38 +66,15 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	else if ((ft_strncmp(curr->command, "pwd\0", 4) == 0 || ft_strncmp(curr->command, "cd\0", 3) == 0) &&
-			(!curr->prev || (curr->prev && !(curr->prev->type == PIPE)))) // * 앞줄 고치고 나서 빼야 함
-		pipe_prog(minishell, curr, pipe_fd, NULL);
-	else
+	else if ((((curr->type != REDIR && curr->type != FREDIR && curr->type != DREDIR) &&
+		((curr->next == NULL) || (curr->type == PIPE) || (curr->prev->type == PIPE))
+		&& ((ft_strncmp(curr->command, "unset\0", 5) != 0) && (ft_strncmp(curr->command, "env\0", 4) != 0)
+	 	&& (ft_strncmp(curr->command, "echo\0", 5) != 0) && (ft_strncmp(curr->command, "unset\0", 5) != 0) &&
+	 	(ft_strncmp(curr->command, "cd\0", 3) != 0)  && (ft_strncmp(curr->command, "pwd\0", 4) != 0)))))
 		ft_printf("%s: command not found\n", curr->command);
+	else if ((!curr->prev || (curr->prev && !(curr->prev->type == PIPE))))
+		pipe_prog(minishell, curr, pipe_fd, NULL);
 	return (1);
-	/*if (ft_strncmp(scmd->command, "echo\0", 5) == 0 && scmd->type != PIPE
-		&& (!scmd->prev || scmd->prev->type != PIPE))
-	{
-		ft_printf("echo\n");//exit(1); //exit_cmd2(minishell, scmd, 0);
-	}
-	else if (ft_strncmp(scmd->command, "export\0", 7) == 0 && scmd->argv)
-	{
-		ft_printf("export\n");//export_cmd(minishell, scmd, 0);
-	}
-	else if (ft_strncmp(scmd->command, "cd\0", 3) == 0 && scmd->type != PIPE &&
-		(!scmd->prev || scmd->prev->type != PIPE))
-	{	//cd_cmd(minishell, scmd);
-		ft_printf("cd\n");
-		if (chdir(home_dir) < 0)
-				return ;
-	}
-	else if (ft_strncmp(scmd->command, "unset\0", 5) == 0)
-	{
-		ft_printf("unset\n");
-		//unset_cmd(minishell, scmd);
-	}
-	else if (!scmd->prev || (scmd->prev && !(scmd->prev->type == PIPE)))
-	{
-		ft_printf("pipe, redir\n");
-		exec_pipe2(minishell, scmd, pipe_fd, NULL);
-	}*/
 }
 
 void	exec_scmd(t_minishell *minishell)
@@ -108,7 +86,6 @@ void	exec_scmd(t_minishell *minishell)
 	scmd = minishell->scmd;
 	while (scmd && i < minishell->cnt)
 	{
-		//process_sym(scmd);
 		scmd->fdin = 0;
 		scmd->fdout = 0;
 		redir1(minishell, scmd);
@@ -117,11 +94,12 @@ void	exec_scmd(t_minishell *minishell)
 			if (pipe(pipe_fd) < 0)
 				return ;
 			exec_else2(minishell, scmd, pipe_fd);
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
+			if (pipe_fd[0])
+				close(pipe_fd[0]);
+			if (pipe_fd[1])
+				close(pipe_fd[1]);
 		}
 		scmd = scmd->next;
 		i++;
-		ft_printf("	다음 명령어 수행 \n");
 	}
 }

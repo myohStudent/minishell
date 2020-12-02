@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 23:44:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 19:24:07 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void			add_next_node(t_cmd *target, char *s, int i)
     new->next = target->next;
     new->command = ft_strdup(s);
 	new->type = i;
+	new->fdin = -1;
+	new->fdout = -1;
 	//ft_printf("cmd:/%s/ type:/%d/\n", new->command, new->type);
     target->next = new;
 }

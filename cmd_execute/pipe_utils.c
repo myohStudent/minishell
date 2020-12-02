@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 17:29:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 20:24:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 	while (temp)
 	{
 		store[i] = ft_strdup(temp->command);
-	//	ft_printf("store[i]: /%s/\n", store[i]);
+		//ft_printf("store[%d]: /%s/\n", i, store[i]);
 		temp = temp->next;
 		i++;
 	}
@@ -179,28 +179,6 @@ char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 	store[i] = NULL;
 	return (store);
 }
-
-
-/*void	parse_bin(t_minishell *minishell)
-{
-	int		i;
-	char	**bin;
-	char	*ban;
-
-	i = 0;
-	ban = NULL;
-	ban = get_env(minishell, "PATH");
-	bin = NULL;
-	if (ban)
-		bin = ft_split(ban, ':');
-	while (bin && bin[i])
-	{
-		bin[i] = ft_strjoin_free(bin[i], "/");
-		i++;
-	}
-	ft_free_split(&minishell->pipe_bin);
-	minishell->pipe_bin = bin;
-}*/
 
 char	*open_directory(char *path, char *command)
 {
