@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 09:58:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 17:48:07 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,9 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	else if (!curr->prev || (curr->prev && !(curr->prev->type == PIPE)))
-	{
-		ft_printf("%s: command not found or pipe \n", curr->command);
+	else if ((ft_strncmp(curr->command, "pwd\0", 4) == 0 || ft_strncmp(curr->command, "cd\0", 3) == 0) &&
+			(!curr->prev || (curr->prev && !(curr->prev->type == PIPE)))) // * 앞줄 고치고 나서 빼야 함
 		pipe_prog(minishell, curr, pipe_fd, NULL);
-	}
 	else
 		ft_printf("%s: command not found\n", curr->command);
 	return (1);
@@ -113,7 +111,7 @@ void	exec_scmd(t_minishell *minishell)
 		//process_sym(scmd);
 		scmd->fdin = 0;
 		scmd->fdout = 0;
-		create_redir(minishell, scmd);
+		redir1(minishell, scmd);
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
 			if (pipe(pipe_fd) < 0)
@@ -124,5 +122,6 @@ void	exec_scmd(t_minishell *minishell)
 		}
 		scmd = scmd->next;
 		i++;
+		ft_printf("	다음 명령어 수행 \n");
 	}
 }

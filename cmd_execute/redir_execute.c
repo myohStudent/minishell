@@ -3,15 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   redir_execute.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 10:02:03 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 17:05:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-//
+
+int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
+{
+	int		fd;
+	
+	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
+	{
+		//에러
+		ft_printf("error\n");
+		//exit(1);
+	}
+	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
+		close(scmd->fdout);
+	if ((scmd->type == DREDIR) && scmd->fdin)
+		close(scmd->fdin);
+	//scmd = remove_redir(*sym, &scmd->sym); // 파일 만드러진 거 지워야 함(안 그러면 말록 에러 남)
+	//scmd = remove_redir(*sym, &scmd->sym);
+	return (fd);
+}
+
+void	redir1(t_minishell *minishell, t_cmd *scmd)
+{
+	int	i;
+
+	i = 0;
+	while (scmd->command != NULL && i < minishell->cnt)
+	{
+		if (scmd->type == REDIR && scmd->fdout != -1)
+			scmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
+		else if (scmd->type == FREDIR && scmd->fdout != -1)
+			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
+		else if (scmd->type == DREDIR && scmd->fdin != -1)
+			scmd->fdin = redir2(minishell, scmd, O_RDONLY);
+		i++;
+	}
+}
+/*
 int		exec_redir(t_cmd *curr, t_minishell *minishell) 
 {
     int     i;
@@ -25,7 +61,7 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
 	parse_flag(curr, head, minishell, '>');
 //	parse_global(curr, head, minishell);
 	i = 0;
-/*	redir_cmd = head->next;
+	redir_cmd = head->next;
 	redir_cmd = reverse_node(head);
 	while (redir_cmd != NULL)
 	{
@@ -36,7 +72,7 @@ int		exec_redir(t_cmd *curr, t_minishell *minishell)
 			break ;
 	}
 	ft_printf("\n");
-	free(redir_cmd);*/
+	free(redir_cmd);
 	redir_cmd = head->next;
 	redir_cmd = reverse_node(head);
 	while (redir_cmd && redir_cmd->next)
@@ -159,6 +195,7 @@ int		exec_dredir(t_cmd *curr, t_minishell *minishell)
     }
     return (1);
 }
+*/
 //////////////////////////////////////////////////////
 /*void	free_redir(t_sym *sym)
 {
@@ -194,39 +231,3 @@ t_sym		*remove_redir(t_sym *sym, t_sym **start)
 	}
 	return (NULL);
 }*/
-
-int		create_redir2(t_minishell *minishell, t_cmd *scmd, int flag)
-{
-	int		fd;
-	
-	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
-	{
-		//에러
-		ft_printf("error\n");
-		//exit(1);
-	}
-	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
-		close(scmd->fdout);
-	if ((scmd->type == DREDIR) && scmd->fdin)
-		close(scmd->fdin);
-	//scmd = remove_redir(*sym, &scmd->sym); // 파일 만드러진 거 지워야 함(안 그러면 말록 에러 남)
-	//scmd = remove_redir(*sym, &scmd->sym);
-	return (fd);
-}
-
-void	create_redir(t_minishell *minishell, t_cmd *scmd)
-{
-	int	i;
-
-	i = 0;
-	while (scmd->command != NULL && i < minishell->cnt)
-	{
-		if (scmd->type == REDIR && scmd->fdout != -1)
-			scmd->fdout = create_redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
-		else if (scmd->type == FREDIR && scmd->fdout != -1)
-			scmd->fdout = create_redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
-		else if (scmd->type == DREDIR && scmd->fdin != -1)
-			scmd->fdin = create_redir2(minishell, scmd, O_RDONLY);
-		i++;
-	}
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 23:56:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/02 17:12:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ typedef struct		s_cmd
 	int				cnt;
 	int				argc;
 	int				type;
-	char			*bin;
+	char			*pipe_bin; //execve용
+	char			**pipe_array; //execve용
 	int				fdin;
 	int				fdout;
 	char			*command;
@@ -97,7 +98,8 @@ typedef struct	 	s_minishell
 	int				cmd_num;
 	int				pipe_num;
 	int				redir_num;
-	char			**environ;
+	char			**environ; // 환경변수 파이프 execve용
+	char			**pipe_bin; // 명령어 파이프 execve용
 	int				forked;
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
@@ -197,10 +199,9 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 /*
 **pipe_execute.c
 */
-//int			exec_pipe(t_cmd *curr, t_minishell *minishell);
+//int		exec_pipe(t_cmd *curr, t_minishell *minishell);
 //void		parse_pipe(char **s);
 void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
-
 
 /*
 ** pipe_utils.c
@@ -211,6 +212,9 @@ char		*space_trim(char *s);
 int			parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
 void		delete_space_flag(char **temp, char flag);
 void		flag_checker(char flag);
+char	**store_commands(t_cmd *scmd, t_minishell *minishell);
+char	*get_bin(t_minishell *minishell, char *command);
+
 /*
 ** handler_utils2.c
 */
@@ -224,8 +228,10 @@ char		**args_to_str(t_minishell *minishell, t_cmd *curr);
 /*
 ** redir_execute.c
 */
-int			exec_redir(t_cmd *curr, t_minishell *minishell);
-void		create_redir(t_minishell *minishell, t_cmd *cmd);
+//int			exec_redir(t_cmd *curr, t_minishell *minishell);
+void		redir1(t_minishell *minishell, t_cmd *cmd);
+int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
+
 
 /*
 **	redir_utils.c

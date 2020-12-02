@@ -12,32 +12,152 @@
 
 #include "../minishell.h"
 
+
+void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
+{
+	int		stat;
+	int		pipe_s[2];
+
+	if (pipe(pipe_s) < 0)
+		return ;
+	if (curr->type == PIPE)
+	{
+		//process_args(curr->next); //$ ' " " 작업
+		redir1(minishell, curr->next);
+		while (curr->next && !curr->next->command)
+		{
+			//process_args(curr->next);
+			redir1(minishell, curr->next);
+			curr = curr->next;
+		}
+		if (curr->next) 
+			pipe_prog(minishell, curr->next, pipe_fd, pipe_s);
+		else
+			ft_printf(" 없음 ");
+	}
+	ft_printf(" pipe_prog2 실행중");
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	close(pipe_s[1]);
+	close(pipe_s[0]);
+	ft_printf(" 되나? ");
+	waitpid(pid, &stat, WUNTRACED);
+	while (!WIFEXITED(stat))
+		if (!WIFSIGNALED(stat) || curr->type == PIPE)
+			break ;
+	if (WIFEXITED(stat) && curr->type != PIPE)
+		return ;	
+}
+
+void	create_fd(t_cmd *curr, int pipe_fd[2], int pipe_s[2])
+{
+	if (curr->prev && curr->prev->type == PIPE)
+	{
+		dup2(pipe_fd[0], 0);
+		close(pipe_fd[1]);
+		if (curr->type == PIPE)
+		{
+			dup2(pipe_s[1], 1);
+			close(pipe_s[0]);
+		}
+	}
+	else if (curr->type == PIPE)
+	{
+		dup2(pipe_fd[1], 1);
+		close(pipe_fd[0]);
+	}
+	if (curr->fdout)
+	{
+		dup2(curr->fdout, STDOUT_FILENO);
+		close(curr->fdout);
+	}
+	if (curr->fdin)
+	{
+		dup2(curr->fdin, STDIN_FILENO);
+		close(curr->fdin);
+	}
+}
+
+int		exec_ve(t_minishell *minishell, t_cmd *curr)
+{
+	ft_printf("exec_ve 들어옴 \n");
+	if (ft_strncmp(curr->command, "echo\0", 5) == 0)
+	{
+		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
+			ft_putstr_fd(curr->option + 3, 1);
+		else
+		{
+			if (curr->option)
+				ft_putstr_fd(curr->option, 1);
+			ft_putchar('\n');
+		}
+	}
+	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
+	{
+		if (curr->argc == 1)
+		{
+			if (chdir(home_dir) < 0)
+				return (-1);
+		}
+		else if (!curr->option)
+		{
+			if (chdir(home_dir) < 0)
+				return (-1);
+		}
+	}
+	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
+		cmd_exit(curr, minishell);
+	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
+		print_env(minishell->env_list);
+	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
+	{
+		if (curr->argc == 1 || curr->option == NULL)
+			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
+		else if (curr->argc > 1 && curr->option)
+			ft_putstr_fd("pwd: too many arguments", 1);
+		else if (curr->argc > 1)
+			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
+		ft_putchar('\n');
+	}
+	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
+		cmd_export(curr, minishell);
+	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
+		cmd_unset(curr, minishell);
+	else if (curr->command && minishell->environ != NULL && curr->pipe_array != NULL)
+	{
+		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
+		ft_printf("%s: command not found\n", curr->command);
+		exit(1);
+	}
+	return (0);
+}
+
 void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2])
 {
 	pid_t	pid;
 
 	minishell->forked = 1;
-	//ft_printf(" pipe 들어감 \n");
-	//scmd->bin = get_bin(minishell, scmd->command);
-	//scmd->args_array = join_args(scmd);
-	// pid = fork();
-	// if (pid == 0)
-	// {
-	// 	scmd->fdout == -1 || scmd->fdin == -1 ? exit(1) : 0;
-	// 	handle_fd(scmd, pipe_fd, pipe_s);
-	// 	exec(minishell, scmd);
-	// }
-	// else if (pid < 0)
-	// 	return ; //error;
-	// else
-	// {
-	// 	// signal error print
-	// 	if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE
-	// 		&& !close(pipe_fd[1]) && !close(pipe_fd[0]))
-	// 		exec_prog2(minishell, scmd, pid, pipe_s);
-	// 	else
-	// 		exec_prog2(minishell, scmd, pid, pipe_s);
-	// }
+	scmd->pipe_array = store_commands(scmd, minishell); //execve용 명령어 배열 정리하는 함수
+	scmd->pipe_bin = get_bin(minishell, scmd->command); 
+	pid = fork();
+	if (pid == 0)
+	{
+
+		scmd->fdout == -1 || scmd->fdin == -1 ? exit(1) : 0;
+		create_fd(scmd, pipe_fd, pipe_s);
+	 	exec_ve(minishell, scmd);
+	}
+	else if (pid < 0)
+	 	return ; //error;
+	else
+	{
+		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE && !close(pipe_fd[1]) && !close(pipe_fd[0]))
+	 	{
+			 pipe_prog2(minishell, scmd, pid, pipe_s);
+		}
+	 	else
+	 		pipe_prog2(minishell, scmd, pid, pipe_s);
+	}
 }
 
 /*
