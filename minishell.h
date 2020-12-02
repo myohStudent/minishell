@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/30 22:30:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/11/30 23:56:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 /*
 **pipe_execute.c
 */
-int			exec_pipe(t_cmd *curr, t_minishell *minishell);
-void		parse_pipe(char **s);
-void	exec_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
+//int			exec_pipe(t_cmd *curr, t_minishell *minishell);
+//void		parse_pipe(char **s);
+void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
 
 
 /*
