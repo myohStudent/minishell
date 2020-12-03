@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 10:27:27 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/03 15:59:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/03 16:46:05 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,10 @@
 /*
 ** 34 = single quote > 
 ** 39 = double quote <
+** \' \" => > 프롬프트가 작동한다 -> 구현노노
+** \\' \\" => > 프롬프트가 작동하지 않는다 -> 구현노노
+** ' ', " " 안의 문자들은 스페이스나 기호가 있어도 파싱이나 스플릿하지 않고 모두 한 줄의 문자열로 간주한다 
 */
-
-int		line_escape(char *input, int i)
-{
-	int ret;
-
-	ret = 0;
-	while (i >= 0 && input[i] == '\\')
-	{
-		ret++;
-		i--;
-	}
-	return (ret % 2);
-}
 
 int		in_quotes(char *s, int p)
 {
@@ -41,10 +31,10 @@ int		in_quotes(char *s, int p)
 	i = 0;
 	while (i <= p)
 	{
-		if (s[i] == 34 && (i == 0 || !line_escape(s, i - 1))
+		if (s[i] == 34 && (i == 0)
 			&& dquote % 2 == 0)
 			quote++;
-		if (s[i] == 39 && (i == 0 || dquote % 2 != 0 || !line_escape(s, i - 1))
+		if (s[i] == 39 && (i == 0 || dquote % 2 != 0)
 			&& quote % 2 == 0)
 			dquote++;
 		i++;
@@ -54,34 +44,7 @@ int		in_quotes(char *s, int p)
 	return (0);
 }
 
-int     end_pipe(char *input, int i)
-{
-    while (i > 0 && (input[i] == ' ' || input[i] == '\n'))
-		i--;
-	if (i > 0 && input[i] == '|' && !line_escape(input, i - 1))
-	{
-		i = 0;
-		while (input[i] && (input[i] == ' ' || input[i] == '\n'))
-			i++;
-		if (input[i] != '|')
-		{
-			while (input[i] && (input[i] != '|' || line_escape(input, i) ||
-				in_quotes(input, i)))
-				i++;
-			if (!input[i] || !input[i + 1])
-				return (1);
-			else
-				i++;
-			while (input[i] && (input[i] == ' ' || input[i] == '\n'))
-				i++;
-			if (input[i] != '|')
-				return (1);
-		}
-	}
-	return (0);
-}
-
-int		which_quote(char *input)
+int		which_quote(char *input, t_minishell *minishell)
 {
     int		quote;
 	int		dquote;
@@ -89,23 +52,19 @@ int		which_quote(char *input)
     int     r;
 
     i = 0;
+	r = 1;
 	quote = 0;
 	dquote = 0;
-	r = 1;
 	while (input[i])
 	{
-		if (input[i] == 34 && (i == 0 || !line_escape(input, i - 1))
-			&& dquote % 2 == 0)
-			quote++;
-		if (input[i] == 39 && (i == 0 || dquote % 2 != 0 || !line_escape(input, i - 1))
-			&& quote % 2 == 0)
-			dquote++;
+		if (input[i] == 34 && (i == 0)) // '가 처음에 튀어나왔다
+			minishell->quote[0]++; // '
+		if (input[i] == 39 && (i == 0)) // "가 처음에 튀어나왔다
+			minishell->quote[1]++; // ""
 		i++;
 	}
-	if (quote % 2 != 0 || dquote % 2 != 0)
+	if (minishell->quote[0] % 2 != 0 || minishell->quote[1] % 2 != 0)
 		return (1);
-    if (r)
-        return (end_pipe(input, i - 1));
     return (0);
 }
 
@@ -124,5 +83,7 @@ void	prompt_quote(t_minishell *minishell)
 		read(STDIN_FILENO, buf, 1);
 		if (buf[0] != '\n')
 			input = ft_strjoin(input, buf);
+			
+
 	}
 }

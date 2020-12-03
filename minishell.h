@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/03 15:59:34 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/03 16:46:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct	 	s_minishell
 	char			**environ; // 환경변수 파이프 execve용
 	char			**pipe_bin; // 명령어 파이프 execve용
 	int				forked;
+	int				quote[2];
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
@@ -248,18 +249,8 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
 /*
 ** quote_utils.c
 */
-int		which_quote(char *input);
+int		which_quote(char *input, t_minishell *minishell);
 void	prompt_quote(t_minishell *minishell);
 int		in_quotes(char *s, int p);
-int		line_escape(char *input, int i);
-/*
-**quote_utils2.c
-*/
-char	*simple_quote(char *src, int *i);
-char	*no_quote(char *src, int *i, int j, int env);
-char	*double_quote(char *src, int *i, int j, int env);
-char	*exec_quotes(char *src, int env);
-int		quote_len(char *src, int type, int env);
-
 
 #endif

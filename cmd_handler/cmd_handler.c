@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/03 15:43:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/03 16:22:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ int cmd_handler(t_minishell *minishell)
 	//[해결] 할일 : 라인 끝자락에 공백이 들어갔을 경우 argc 추가하지않기.
 
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	// ", '를 여기에서 실행.
-	while (which_quote(input))
+	// ", '를 여기에서 먼저 실행한다.
+	while (which_quote(input, minishell))
 		prompt_quote(minishell);
 	// 파싱
 	parse_cmd(minishell, minishell->cmd, input);
