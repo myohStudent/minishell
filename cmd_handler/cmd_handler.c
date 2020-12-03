@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/03 21:14:59 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/03 21:16:51 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int cmd_handler(t_minishell *minishell)
 	int b;
 	struct stat *buf_stat;
 	char temp[15];
-	int c;
 
 	//init
 	minishell->cmd_num = 0;
@@ -133,7 +132,6 @@ int cmd_handler(t_minishell *minishell)
 			input = ft_strjoin(input, buf);
 		if (fstat(b, buf_stat) < 0 && b == 0)
 		{
-			//ft_putstr_fd("\b\b  \b\b", STDOUT);
 			ft_printf(" exit \n");
 		 	exit(1);
 		}
