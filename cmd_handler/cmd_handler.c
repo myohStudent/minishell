@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/03 16:22:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/03 19:52:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
+	else if (ft_strncmp(curr->command, "$?\0", 3) == 0)
+		dollarquestion_print();
 	else
 		ft_printf("%s: command not found\n", curr->command);
 	return (1);
@@ -111,6 +113,8 @@ int cmd_handler(t_minishell *minishell)
 	char *input;
 	t_cmd *curr;
 	t_cmd *next;
+	int b;
+	struct stat *stat;
 
 	//init
 	minishell->cmd_num = 0;
@@ -122,9 +126,14 @@ int cmd_handler(t_minishell *minishell)
 	input = ft_strdup("");
 	while (buf[0] != '\n')
 	{
-		read(STDIN_FILENO, buf, 1);
+		b = read(STDIN_FILENO, buf, 1);
 		if (buf[0] != '\n')
 			input = ft_strjoin(input, buf);
+		if (fstat(b, stat) < 0)
+		{
+			ft_printf("ㅇㅅㅇ bye!\n");
+			exit(1);
+		}
 	}
 	/*char *temp;
 	if ((temp = search(input, '\\')))
