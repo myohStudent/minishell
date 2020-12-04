@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/03 20:20:46 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 17:26:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,12 +238,12 @@ char	*get_bin(t_minishell *minishell, char *command);
 /*
 ** handler_utils2.c
 */
-void		add_next_cmd(t_cmd **start, t_cmd *new);
-char		*newline_copy(char *src);
-void		clear_cmd_list_free(t_cmd *curr);
-void		clear_cmd_list(t_cmd **start, void (*del)(void *));
-void		clear_symcmd(t_sym **start, void (*del)(void *));
-char		**args_to_str(t_minishell *minishell, t_cmd *curr);
+// void		add_next_cmd(t_cmd **start, t_cmd *new);
+// char		*newline_copy(char *src);
+// void		clear_cmd_list_free(t_cmd *curr);
+// void		clear_cmd_list(t_cmd **start, void (*del)(void *));
+// void		clear_symcmd(t_sym **start, void (*del)(void *));
+// char		**args_to_str(t_minishell *minishell, t_cmd *curr);
 
 /*
 ** redir_execute.c

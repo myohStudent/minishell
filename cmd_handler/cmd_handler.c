@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/03 21:16:51 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 17:33:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	{
 		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 			ft_putstr_fd(curr->option + 3, 1);
+		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
+			ft_printf("%d\n", g_exit);
 		else
 		{
 			if (curr->option)
