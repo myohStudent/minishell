@@ -84,7 +84,7 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 			ft_putstr_fd(curr->option + 3, 1);
 		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
-			ft_printf("%d\n", g_exit);
+			ft_printf("%d\n", g_command_nb);
 		else
 		{
 			if (curr->option)
@@ -94,31 +94,15 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 	}
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
-		if (curr->argc == 1)
-		{
-			if (chdir(home_dir) < 0)
-				return (-1);
-		}
-		else if (!curr->option)
-		{
-			if (chdir(home_dir) < 0)
-				return (-1);
-		}
+		if (cmd_cd(curr, minishell) < 0)
+			return (-1);
 	}
 	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
 		cmd_exit(curr, minishell);
 	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
 		print_env(minishell->env_list);
-	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
-	{
-		if (curr->argc == 1 || curr->option == NULL)
-			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		else if (curr->option)
-			ft_putstr_fd("pwd: too many arguments", 1);
-		else if (curr->argc > 1)
-			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		ft_putchar('\n');
-	}
+	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
+		cmd_pwd(curr, minishell);
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)

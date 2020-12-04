@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/04 17:33:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 18:34:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,18 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 {
 	// 할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
-	{
-		if (curr->argc == 1 || curr->option == NULL)
-			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		else if (curr->argc > 1 && curr->option)
-			ft_putstr_fd("pwd: too many arguments", 1);
-		else if (curr->argc > 1)
-			ft_putstr_fd(getcwd(minishell->path, 4096), 1);
-		ft_putchar('\n');
-
-	}
+		cmd_pwd(curr, minishell);
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
-		if (curr->argc == 1)
-		{
-			if (chdir(home_dir) < 0)
-				return (-1);
-		}
-		else if (!curr->option)
-		{
-			if (chdir(home_dir) < 0)
-				return (-1);
-		}
-		else if (curr->argc == 2)
-		{
-			if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
-				ft_putstr_fd("cd: no such file or directory\n", 1);
-		}
-		else if (curr->argc > 2)
-			ft_putstr_fd("cd: too many arguments\n", 1);
+		if (cmd_cd(curr, minishell) < 0)
+			return (-1);
 	}
 	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
 	{
 		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 			ft_putstr_fd(curr->option + 3, 1);
 		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
-			ft_printf("%d\n", g_exit);
+			ft_printf("%d\n", g_command_nb);
 		else
 		{
 			if (curr->option)
@@ -67,8 +43,6 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	else if (ft_strncmp(curr->command, "$?\0", 3) == 0)
-		dollarquestion_print();
 	else
 		ft_printf("%s: command not found\n", curr->command);
 	return (1);

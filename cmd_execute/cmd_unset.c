@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 17:47:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 18:33:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void cmd_unset(t_cmd *curr, t_minishell *minishell)
 		}
 		free_arr(remove_env);
 	}
+	g_command_nb = 0;
 }
 
 

@@ -20,6 +20,8 @@ OBJ_CMD = $(CMD:%.c=%.o)
 EXE_DIR	=	./cmd_execute
 EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
+				cmd_pwd.c \
+				cmd_cd.c \
 				pipe_execute.c \
 				pipe_utils.c \
 				quote_utils.c \
