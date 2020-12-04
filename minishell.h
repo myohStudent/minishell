@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 17:26:56 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 18:35:09 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@
 
 char				*home_dir;
 int					g_command_nb;
-int					g_exit; // $? signal용 전역변수 
 char				*raw_input;
 char				*symbol; //parsing용
 int					flags[10];
@@ -181,12 +180,21 @@ void		parse3(t_minishell *minishell, t_cmd *curr);
 void		cmd_unset(t_cmd *curr, t_minishell *minishell);
 
 /*
+** cmd_pwd.c
+*/
+void		cmd_pwd(t_cmd *curr, t_minishell *minishell);
+
+/*
+** cmd_cd.c
+*/
+int			cmd_cd(t_cmd *curr, t_minishell *minishell);
+
+/*
 ** sig_handler.c
 */
 int			get_fork(void);
 int			set_fork(int current_fork);
 void		parent_signal_handler(int signo);
-void		dollarquestion_print(void);
 
 /*
 ** cmd_handler.c

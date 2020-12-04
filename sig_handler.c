@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/03 21:17:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/04 18:35:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	dollarquestion_print(void)
-{
-	ft_printf("%d: command not found", g_exit);
-	g_exit = 127;
-}
 
 // static	int	check_fork = 0;
 

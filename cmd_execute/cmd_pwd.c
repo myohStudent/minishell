@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   cmd_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:35:35 by myoh             ###   ########.fr       */
+/*   Created: 2020/12/04 17:59:08 by myoh              #+#    #+#             */
+/*   Updated: 2020/12/04 18:33:50 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		cmd_exit(t_cmd *curr, t_minishell *minishell)
+void	cmd_pwd(t_cmd *curr, t_minishell *minishell)
 {
-	if (curr->argc == 1 || curr->argc == 2)
-	{	ft_putstr_fd("\n[Process Completed]\0", 1);
-		exit(1);
-	}
-	else
+	if (curr->argc == 1 || curr->option == NULL)
 	{
-		ft_putstr_fd("\nexit: too many arguments\0", 1);
-		ft_putstr_fd("\n", 1);
-		g_command_nb = 127;
-		return (-1);
+		ft_putstr_fd(getcwd(minishell->path, 4096), 1);
+		g_command_nb = 0;
 	}
-
+	else if (curr->argc > 1 && curr->option)
+	{
+		ft_putstr_fd("pwd: too many arguments", 1);
+		g_command_nb = 127;
+	}
+	else if (curr->argc > 1)
+	{
+		ft_putstr_fd(getcwd(minishell->path, 4096), 1);
+		g_command_nb = 0;
+	}
+	ft_putchar('\n');
 }
