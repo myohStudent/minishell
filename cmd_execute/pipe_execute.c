@@ -83,6 +83,8 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 	{
 		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 			ft_putstr_fd(curr->option + 3, 1);
+		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
+			ft_printf("%d\n", g_exit);
 		else
 		{
 			if (curr->option)
@@ -159,6 +161,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 	}
 	else
 	{
+		//////여기서 SIGNAL 필요함(prog2에서 웨이팅에 필요 ) ///////
 		//ft_printf("	여기서 에러 나나? \n");
 		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE && !close(pipe_fd[1]) && !close(pipe_fd[0]))
 			pipe_prog2(minishell, scmd, pid, pipe_s);

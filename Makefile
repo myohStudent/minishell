@@ -10,7 +10,6 @@ CMD_FILE	=	cmd_handler.c \
 				cmd_handler2.c \
 				parse_input.c \
 				handler_utils.c \
-				handler_utils2.c \
 				has_utils.c \
 				parse_utils.c \
 				parse_utils2.c \
