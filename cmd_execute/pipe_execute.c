@@ -31,19 +31,19 @@ void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 		if (curr->next) 
 			pipe_prog(minishell, curr->next, pipe_fd, pipe_s);
 	}
-	ft_printf(" pipe_prog2 실행중");
+	//ft_printf(" pipe_prog2 실행중");
 	
 	close(pipe_fd[0]);
 	close(pipe_fd[1]); // 여기서 세그폴트 왜?
 	close(pipe_s[1]);
 	close(pipe_s[0]);
-	ft_printf(" 되나? ");
 	waitpid(pid, &stat, WUNTRACED);
 	while (!WIFEXITED(stat)) //자식프로세스가 정상적으로 종료되었는가? -> non-zero
 	 	if (!WIFSIGNALED(stat) || curr->type == PIPE) //wifsignaled 자식프로세스가 어떤 신호 때문에 종료되었다면 1을 반환
 	 		break ;
 	 if (WIFEXITED(stat) && curr->type != PIPE)
 	 	g_command_nb = WEXITSTATUS(stat);	
+	//ft_printf("prog2 완료\n");
 }
 
 void	create_fd(t_cmd *curr, int pipe_fd[2], int pipe_s[2])
@@ -108,8 +108,8 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		exit(0);//cmd_unset(curr, minishell);
 	else if (curr->command) //&& minishell->environ != NULL && curr->pipe_array != NULL)
 	{
-		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
 		ft_printf("%s: command not found\n", curr->command);
+		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
 		g_command_nb = 127;
 		exit(127);
 	}
@@ -132,7 +132,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 {
 	pid_t	pid;
 
-	ft_printf("pipe 들어옴 \n");
+	//ft_printf("pipe 들어옴 \n");
 	scmd->pipe_array = store_commands(scmd, minishell); 
 	//execve용 명령어 배열 정리하는 함수
 	scmd->pipe_bin = get_bin(minishell, scmd->command); 
@@ -162,9 +162,9 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 		else
 			signal(SIGQUIT, SIG_IGN); //signal ignore 시그널 무시
 		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE && !close(pipe_fd[1]) && !close(pipe_fd[0]))
-			pipe_prog2(minishell, scmd, pid, pipe_s);
+		 	pipe_prog2(minishell, scmd, pid, pipe_s);
 	 	else
-	 	 	pipe_prog2(minishell, scmd, pid, pipe_fd);
+	 	  	pipe_prog2(minishell, scmd, pid, pipe_fd);
 	}
 	///////////////////////////////////////
 }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 21:26:40 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 22:59:08 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 	
 	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
 	{
-		//에러
-		ft_printf("error: %s: %s\n", scmd->command, strerror(errno));
+		ft_printf("에러났음: %s: %s\n", scmd->command, strerror(errno));
 		g_command_nb = 1;
-		//exit(1);
+		exit(1);
 	}
 	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
 		close(scmd->fdout);
@@ -33,9 +32,11 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 void	redir1(t_minishell *minishell, t_cmd *scmd)
 {
 	int	i;
+	//t_cmd *sscmd;
 
+	//sscmd = scmd;
 	i = 0;
-	while (scmd->command != NULL && i < minishell->cnt)
+	while (scmd->command != NULL && scmd->next && i < minishell->cnt)
 	{
 		if (scmd->type == REDIR && scmd->fdout != -1)
 			scmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
@@ -44,9 +45,10 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 		else if (scmd->type == FREDIR && scmd->fdout != -1)
 			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
 		else
-			scmd = scmd->next;
+		 	scmd = scmd->next;
 		i++;
 	}
+	ft_printf("scmd->command : /%s/ \n", scmd->command);
 }
 /*
 int		exec_redir(t_cmd *curr, t_minishell *minishell) 

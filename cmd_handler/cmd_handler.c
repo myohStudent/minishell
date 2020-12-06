@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/06 21:20:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 22:27:37 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 			return (-1);
 	}
 	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
-	{
-		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
-			ft_putstr_fd(curr->option + 3, 1);
-		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
-			ft_printf("%d\n", g_command_nb);
-		else
-		{
-			if (curr->option)
-				ft_putstr_fd(curr->option, 1);
-			ft_putchar('\n');
-		}
-	}
+		cmd_echo(curr, minishell);
 	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
 		cmd_exit(curr, minishell);
 	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
@@ -63,8 +52,6 @@ void	clear_scmd(t_cmd *cmd)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	t_sym	*sym;
-
 	if (check_separator(minishell, curr) < 0 ) // quote일 때, 무시한다는 플래그 넣어야 함!
 		return (-1);
 	// symbol이 있다면 다른 루트로 파싱한다

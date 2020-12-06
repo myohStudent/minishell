@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 20:44:30 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 22:51:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ void			add_next_node(t_cmd *target, char *s, int i)
 	else
 		new->command = ft_strdup(s);
 	new->type = i;
-	// new->fdin = -1;
-	// new->fdout = -1;
+	if (i == 4)
+		new->typestr = ft_strdup(">");
+	else if (i == 5)
+		new->typestr = ft_strdup("<");
+	else if (i == 6)
+		new->typestr = ft_strdup(">>");
 	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
     target->next = new;
 	free(str);
@@ -58,7 +62,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 					temp2 = ft_substr(temp, 0, i);					
 					///////// type 결정하기 /////////
 					if (temp[i] == '>' && temp[i + 1] != '>')
-						type = REDIR;
+						type = REDIR;	
 					else if (temp[i] == '|')
 						type = PIPE;
 					else if (temp[i] == '>' && temp[i + 1] == '>')
@@ -119,16 +123,16 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	scmd = head->next;
 	scmd = reverse_node(head);
 	minishell->scmd = scmd;
-	/*	
-	while (scmd != NULL)
-	{
-		ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
-		if (scmd->next)
-			scmd = scmd->next;
-		else
-			break ;
-	}
-	ft_printf("\n");
-	ft_printf("count: %d\n", minishell->cnt);
-	*/
+		
+	// while (scmd != NULL)
+	// {
+	// 	ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
+	// 	if (scmd->next)
+	// 		scmd = scmd->next;
+	// 	else
+	// 		break ;
+	// }
+	// ft_printf("\n");
+	// ft_printf("count: %d\n", minishell->cnt);
+	// minishell->scmd = scmd;
 }

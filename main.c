@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/03 17:58:30 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 22:27:04 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,9 @@ int		main(int ac, char **av, char **env)
 	{
 		signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
 		signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
-		
+		minishell.forked = 0;
 		display_prompt();
 		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
-		
 	}
 	return (0);
 }

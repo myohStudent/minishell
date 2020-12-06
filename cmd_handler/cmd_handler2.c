@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 21:22:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 23:09:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 {
-//	ft_printf("exec_else2 들어옴 \n");
 	// if (ft_strncmp(curr->command, "pwd\0", 4) == 0 && curr->type != PIPE
 	// 	&& (!curr->prev || curr->prev->type != PIPE))
 	// 	cmd_pwd(curr, minishell);
@@ -23,22 +22,6 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 	{
 		if (cmd_cd(curr, minishell) < 0)
 			return (-1);
-	}
-	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
-	{
-		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
-			ft_putstr_fd(curr->option + 3, 1);
-		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
-		{
-			ft_printf("%d\n", g_command_nb);
-			g_command_nb = 0;
-		}
-		else
-		{
-			if (curr->option)
-				ft_putstr_fd(curr->option, 1);
-			ft_putchar('\n');
-		}
 	}
 	else if (ft_strncmp(curr->command, "exit\0", 5) == 0 && curr->type != PIPE 
 		&& (curr->prev || curr->prev->type != PIPE))
@@ -62,26 +45,35 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 
 void	exec_scmd(t_minishell *minishell)
 {
-	int i = 0;
+	int i;
 	t_cmd	*scmd;
 	int		pipe_fd[2];
 
+	i = 0;
 	scmd = minishell->scmd;
 	while (scmd && i < minishell->cnt)
 	{
-		scmd->fdin = 0;
-		scmd->fdout = 0;
 		redir1(minishell, scmd);
+		// while (scmd != NULL)
+		// {
+	 	// ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
+	 	// if (scmd->next)
+	 	// 	scmd = scmd->next;
+	 	// else
+	 	// 	break ;
+		// }
+	 	// ft_printf("\n");
+	 	// scmd = minishell->scmd;
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
 			if (pipe(pipe_fd) < 0)
 				return ;
 			exec_else2(minishell, scmd, pipe_fd);
-			//if (pipe_fd[0])
-				close(pipe_fd[0]);
-			//if (pipe_fd[1])
-				close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
 		}
+		if (scmd->type == PIPE)
+			scmd = scmd->next;
 		scmd = scmd->next;
 		i++;
 	}

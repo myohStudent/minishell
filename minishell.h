@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 20:53:08 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 22:17:54 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,12 @@ typedef struct s_env
 	struct s_env	*next;
 } 					t_env;
 
-typedef struct		s_sym
-{
-		char			*str;
-		char			*command;
-		int				type;
-		char			*sym; 
-		struct s_sym	*prev;
-		struct s_sym	*next;
-}							t_sym;
-
 typedef struct		s_cmd
 {
 	int				cnt;
 	int				argc;
 	int				type;
+	char			*typestr;
 	char			*pipe_bin; //execve용
 	char			**pipe_array; //execve용
 	int				fdin;
@@ -97,7 +88,6 @@ typedef struct		s_cmd
 	char			**argv;
 	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
 	struct s_list	*env_list;
-	struct s_sym	*sym;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }							t_cmd;
@@ -116,7 +106,6 @@ typedef struct	 	s_minishell
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
 	t_env			*export_list;
-	t_sym			*sym; //symbol 파싱용
 	t_cmd			*cmd;
 	t_cmd			*scmd; //cmd 복제
 } 					t_minishell;
@@ -138,6 +127,10 @@ int	print_export(t_env *env);
 */ 
 int			    ft_strcmp(const char *s1, const char *s2);
 int cmd_export(t_cmd *curr, t_minishell *minishell);
+/*
+** cmd_echo.c
+*/
+void        cmd_echo(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** handler_utils.c

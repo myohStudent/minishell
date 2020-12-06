@@ -22,6 +22,7 @@ EXE_FILE	=	cmd_env.c \
 				cmd_exit.c \
 				cmd_pwd.c \
 				cmd_cd.c \
+				cmd_echo.c \
 				pipe_execute.c \
 				pipe_utils.c \
 				quote_utils.c \
