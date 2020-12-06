@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/06 17:51:41 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 21:20:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	// symbol이 있다면 다른 루트로 파싱한다
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
-		
 		parse3(minishell, curr);
 		if (minishell->scmd)
 		{ 

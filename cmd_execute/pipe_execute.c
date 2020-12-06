@@ -31,19 +31,19 @@ void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 		if (curr->next) 
 			pipe_prog(minishell, curr->next, pipe_fd, pipe_s);
 	}
-	//ft_printf(" pipe_prog2 실행중");
+	ft_printf(" pipe_prog2 실행중");
 	
-	// close(pipe_fd[0]);
-	// close(pipe_fd[1]); // 여기서 세그폴트 왜?
+	close(pipe_fd[0]);
+	close(pipe_fd[1]); // 여기서 세그폴트 왜?
 	close(pipe_s[1]);
 	close(pipe_s[0]);
-	//ft_printf(" 되나? ");
+	ft_printf(" 되나? ");
 	waitpid(pid, &stat, WUNTRACED);
-	 while (!WIFEXITED(stat)) //자식프로세스가 정상적으로 종료되었는가? -> non-zero
+	while (!WIFEXITED(stat)) //자식프로세스가 정상적으로 종료되었는가? -> non-zero
 	 	if (!WIFSIGNALED(stat) || curr->type == PIPE) //wifsignaled 자식프로세스가 어떤 신호 때문에 종료되었다면 1을 반환
 	 		break ;
 	 if (WIFEXITED(stat) && curr->type != PIPE)
-	 	return ;	
+	 	g_command_nb = WEXITSTATUS(stat);	
 }
 
 void	create_fd(t_cmd *curr, int pipe_fd[2], int pipe_s[2])
@@ -89,6 +89,7 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 				ft_putstr_fd(curr->option, 1);
 			ft_putchar('\n');
 		}
+		g_command_nb = 0;
 	}
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
@@ -104,51 +105,66 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
-		cmd_unset(curr, minishell);
+		exit(0);//cmd_unset(curr, minishell);
 	else if (curr->command) //&& minishell->environ != NULL && curr->pipe_array != NULL)
 	{
-		ft_printf("%s: command not found\n", curr->command);
 		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
-		exit(1);
+		ft_printf("%s: command not found\n", curr->command);
+		g_command_nb = 127;
+		exit(127);
 	}
+	g_command_nb = 0;
 	exit(0);
+}
+
+void	shutdown(int sig_num)
+{
+	if (sig_num == SIGQUIT)
+		g_command_nb = 131;
+	if (sig_num == SIGINT)
+	{
+		g_command_nb = 130;
+		ft_printf("\n");
+	}
 }
 
 void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2])
 {
 	pid_t	pid;
 
-	//ft_printf("pipe 들어옴 \n");
+	ft_printf("pipe 들어옴 \n");
 	scmd->pipe_array = store_commands(scmd, minishell); 
 	//execve용 명령어 배열 정리하는 함수
 	scmd->pipe_bin = get_bin(minishell, scmd->command); 
 	//execve 앞 명령어에 디렉토리 붙이는 함수
 	pid = fork();
 	minishell->forked = 1;
+
 	////////////////////////////////
 	if (pid == 0)
 	{
 		if (scmd->fdout == -1 || scmd->fdin == -1)
 			exit(1);
-		else
-		{
-			create_fd(scmd, pipe_fd, pipe_s);
-	 		exec_ve(minishell, scmd);
-		}
+		create_fd(scmd, pipe_fd, pipe_s);
+	 	exec_ve(minishell, scmd);
 	}
 	else if (pid < 0)
 	{
-		ft_printf(" 에러 \n");
-		return ; //error;
+		strerror(errno);
+		//g_command_nb = 1;
 	}
 	else
 	{
 		//////여기서 SIGNAL 필요함(prog2에서 웨이팅에 필요 ) ///////
-		//ft_printf("	여기서 에러 나나? \n");
+		signal(SIGINT, shutdown);
+		if (scmd->command) //&& ft_compare(scmd->command + 2, ?))
+			signal(SIGQUIT, shutdown);
+		else
+			signal(SIGQUIT, SIG_IGN); //signal ignore 시그널 무시
 		if (scmd->type == PIPE && scmd->prev && scmd->prev->type == PIPE && !close(pipe_fd[1]) && !close(pipe_fd[0]))
 			pipe_prog2(minishell, scmd, pid, pipe_s);
 	 	else
-	 	 	pipe_prog2(minishell, scmd, pid, pipe_s);
+	 	 	pipe_prog2(minishell, scmd, pid, pipe_fd);
 	}
 	///////////////////////////////////////
 }

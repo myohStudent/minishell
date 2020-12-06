@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 17:59:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 21:26:40 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 			scmd->fdin = redir2(minishell, scmd, O_RDONLY);
 		else if (scmd->type == FREDIR && scmd->fdout != -1)
 			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
+		else
+			scmd = scmd->next;
 		i++;
 	}
 }

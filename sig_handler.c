@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:35:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 20:22:31 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ void		parent_signal_handler(int signo)
 		if (SIGINT == signo)
 		{
 			write(1, "\b\b \b\b bye!\n", 11);
+			g_command_nb = 130;
 			exit(1);
 		}
 		else if (SIGQUIT == signo)
 		{
 			write(1,"\b\b \b\b bye!!\n", 12);
+			g_command_nb = 131;
 			exit(1);
 		}
 	

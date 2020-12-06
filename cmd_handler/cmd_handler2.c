@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 19:54:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 21:22:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 {
 //	ft_printf("exec_else2 들어옴 \n");
-	if (ft_strncmp(curr->command, "pwd\0", 4) == 0 && curr->type != PIPE
-		&& (!curr->prev || curr->prev->type != PIPE))
-		cmd_pwd(curr, minishell);
-	else if (ft_strncmp(curr->command, "cd\0", 3) == 0 && curr->type != PIPE
+	// if (ft_strncmp(curr->command, "pwd\0", 4) == 0 && curr->type != PIPE
+	// 	&& (!curr->prev || curr->prev->type != PIPE))
+	// 	cmd_pwd(curr, minishell);
+	if (ft_strncmp(curr->command, "cd\0", 3) == 0 && curr->type != PIPE
 		&& (!curr->prev || curr->prev->type != PIPE))
 	{
 		if (cmd_cd(curr, minishell) < 0)
@@ -29,7 +29,10 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 			ft_putstr_fd(curr->option + 3, 1);
 		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
+		{
 			ft_printf("%d\n", g_command_nb);
+			g_command_nb = 0;
+		}
 		else
 		{
 			if (curr->option)

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 17:58:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 20:53:08 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int			has_env(char *str);
 /*
 ** parse_utils.c
 */
-int         is_char(char c, char *s);
+char *ft_trimchar(char *str, char c);
 // int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
 // char		*update_sym(t_minishell *minishell);
 // void		parse_symbols(t_minishell *minishell, t_cmd *curr);
@@ -273,6 +273,7 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
 /*
 ** quote_utils.c
 */
+
 int		which_quote(char *input, t_minishell *minishell);
 void	prompt_quote(t_minishell *minishell);
 int		in_quotes(char *s, int p);

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 18:02:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 21:22:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,8 @@ int		has_quotes(char *str)
 		if (ft_isquote(str[i]) == 1) //39
 			isdouble++;
 		i++;
-		if (isquote == 2 || isdouble == 2)
-			return (i);
-	}
-	return (0);
-}
+		if (isquote == 2 || isdouble == 2 || isdouble == 2)
+			return (i);}
 
 int		ft_is_alnum(int c)
 {

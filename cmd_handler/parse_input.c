@@ -23,19 +23,6 @@ int get_argc(t_cmd *curr)
 	return (curr->argc);
 }
 
-char				*parse_search(char *s, int c)
-{
-	unsigned char	s2;
-	int				i;
-
-	s2 = (unsigned char)c;
-	i = 0;
-	while (s[i] != s2 && s && s[i])
-		i++;
-	if (s[i] == s2)
-		return (&s[i]);
-	return (0);
-}
 
 void				tild_handler(t_minishell *minishell, t_cmd *curr)
 {
@@ -51,6 +38,30 @@ void				tild_handler(t_minishell *minishell, t_cmd *curr)
 	}
 }
 
+int ft_remove_quote(t_cmd *curr)
+{
+	char *temp;
+	int quotenum;
+	int i;
+
+	quotenum = 0;
+	i = 0;
+	while (curr->command[i])
+	{
+		if (ft_isquote(curr->command[i]) == 1)
+			quotenum++;
+		i++;
+	}
+	temp = ft_strdup(curr->command);
+	free(curr->command);
+	curr->command = ft_trimchar(temp, '\'');
+	free(temp);
+	temp = ft_trimchar(curr->command, '\"');
+	free(curr->command);
+	curr->command = temp;
+	return (quotenum);
+}
+
 void split_argv(t_cmd *curr)
 {
 	int i;
@@ -59,11 +70,13 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	if (!curr || !curr->command || get_argc(curr) == 1)
+	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
 		return ;
-	i = 0;
+	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
+		i = has_quotes(curr->command);
+	i -= ft_remove_quote(curr);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
-		i++;	
+		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
@@ -111,14 +124,14 @@ void split_argv_quotes_cmd(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	if (!curr || !curr->command || get_argc(curr) == 1)
+	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
 		return ;
-	i = has_quotes(curr->command);
+	i = has_quotes(curr->command) - ft_remove_quote(curr);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
-	temp = ft_substr(curr->command, 1, i - 2);
+	temp = ft_substr(curr->command, 0, i);
 	ft_printf(">>%s<<\n", temp);
 	ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
@@ -147,12 +160,15 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//ft_printf("%c",new->command[ft_strlen(new->command)]);
 	//ft_printf("---------------------\n");
 	
+	//has_quotes에서 "가 더블이고, "앞에  '이 하나라도 있으면 무조건 has_env 스위치 켜지도록 한다. (구조체에 hasenv 변수를 만들것.)
+	// 여기서 미리 "하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. ==0이 아니면 ENV로 치환하지않음.
+
 	if (ft_isquote(new->command[0]) && has_quotes(new->command) && (new->command[has_quotes(new->command)] == 0 || new->command[has_quotes(new->command)] == ' '))
 		split_argv_quotes_cmd(new);
-
-	
-	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	else split_argv(new);
+	
+
+	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	//if (new->option != NULL && new->option)
 		//tild_handler(minishell, new);
 	if (new->option != NULL && new->option)

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:35:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 21:19:33 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		cmd_exit(t_cmd *curr, t_minishell *minishell)
 {
 	if (curr->argc == 1 || curr->argc == 2)
 	{	ft_putstr_fd("\n[Process Completed]\0", 1);
+		g_command_nb = 1;
 		exit(1);
 	}
 	else
