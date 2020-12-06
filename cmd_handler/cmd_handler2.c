@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 18:07:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 19:54:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	else if ((((curr->type != REDIR && curr->type != FREDIR && curr->type != DREDIR) &&
-		((curr->next == NULL) || (curr->type == PIPE) || (curr->prev->type == PIPE))
-		&& ((ft_strncmp(curr->command, "unset\0", 5) != 0) && (ft_strncmp(curr->command, "env\0", 4) != 0)
-	 	&& (ft_strncmp(curr->command, "echo\0", 5) != 0) && (ft_strncmp(curr->command, "unset\0", 5) != 0) &&
-	 	(ft_strncmp(curr->command, "cd\0", 3) != 0)  && (ft_strncmp(curr->command, "pwd\0", 4) != 0)))))
-		ft_printf("%s: command not found\n", curr->command);
 	else if ((!curr->prev || (curr->prev && !(curr->prev->type == PIPE))))
 		pipe_prog(minishell, curr, pipe_fd, NULL);
+	// else if ((((curr->type != REDIR && curr->type != FREDIR && curr->type != DREDIR) &&
+	// 	((curr->next == NULL) || (curr->type == PIPE) || (curr->prev->type == PIPE))
+	// 	&& ((ft_strncmp(curr->command, "unset\0", 5) != 0) && (ft_strncmp(curr->command, "env\0", 4) != 0)
+	//  	&& (ft_strncmp(curr->command, "echo\0", 5) != 0) && (ft_strncmp(curr->command, "unset\0", 5) != 0) &&
+	//  	(ft_strncmp(curr->command, "cd\0", 3) != 0)  && (ft_strncmp(curr->command, "pwd\0", 4) != 0)))))
+	// 	ft_printf("%s: command not found\n", curr->command);
 	return (1);
 }
 
