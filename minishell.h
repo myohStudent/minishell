@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:35:09 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 17:58:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <errno.h>
 # include <limits.h>
 
 # define STDIN 0
 # define STDOUT 1
 # define STDERROR 2
-# define ISSPACE(x) (x == ' ' || x == '\t' || x == '\r')
-# define SYMBOLS ";|<>"
-
 # define CHARACTERS 1
 # define SEMICOLON 2
 # define PIPE 3
@@ -43,11 +41,8 @@
 # define FREDIR 6
 # define LAST 7
 # define ENVIRON 8
-# define AND 9
-# define OR 10
-# define PAR_OPEN 11   //
-# define PAR_CLOSE 12 //
 
+extern int 			errno;
 char				*home_dir;
 int					g_command_nb;
 char				*raw_input;
@@ -203,6 +198,8 @@ int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
 int			cmd_executer(t_minishell *minishell, t_cmd *curr);
 int			exec_else(t_minishell *minishell, t_cmd *curr);
+void		clear_scmd(t_cmd *cmd);
+
 /*
 ** cmd_handler2.c
 */

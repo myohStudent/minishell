@@ -30,8 +30,6 @@ void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 		}
 		if (curr->next) 
 			pipe_prog(minishell, curr->next, pipe_fd, pipe_s);
-		else
-			ft_printf(" 없음 ");
 	}
 	//ft_printf(" pipe_prog2 실행중");
 	

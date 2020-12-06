@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:34:31 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 18:07:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 			ft_putchar('\n');
 		}
 	}
-	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
+	else if (ft_strncmp(curr->command, "exit\0", 5) == 0 && curr->type != PIPE 
+		&& (curr->prev || curr->prev->type != PIPE))
 		cmd_exit(curr, minishell);
 	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
 		print_env(minishell->env_list);
@@ -73,9 +74,9 @@ void	exec_scmd(t_minishell *minishell)
 			if (pipe(pipe_fd) < 0)
 				return ;
 			exec_else2(minishell, scmd, pipe_fd);
-			if (pipe_fd[0])
+			//if (pipe_fd[0])
 				close(pipe_fd[0]);
-			if (pipe_fd[1])
+			//if (pipe_fd[1])
 				close(pipe_fd[1]);
 		}
 		scmd = scmd->next;

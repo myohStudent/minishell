@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/27 00:16:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 18:02:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,32 @@ int		has_dollar(char *str)
 
 	return (0);
 }
-int		has_quotes(char *option)
+int ft_isquote(char c)
 {
-	int	res;
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
+}
 
-	res = 0;
-	while (*option)
+int		has_quotes(char *str)
+{
+	int isdouble;
+	int isquote;
+	int i;
+
+	isdouble = 0;
+	isquote = 0;
+	i = 0;
+	while (str[i])
 	{
-		if (*option == '\'' || *option == '\"') // \', /"
-			return (1);
+		if (ft_isquote(str[i]) == 1) //34
+			isquote++;
+		if (ft_isquote(str[i]) == 1) //39
+			isdouble++;
+		i++;
+		if (isquote == 2 || isdouble == 2)
+			return (i);
 	}
-	ft_printf("quote있는가: %d\n", res);
 	return (0);
 }
 

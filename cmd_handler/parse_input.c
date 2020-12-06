@@ -63,7 +63,7 @@ void split_argv(t_cmd *curr)
 		return ;
 	i = 0;
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
-		i++;
+		i++;	
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
@@ -103,6 +103,35 @@ char		*check_copy(char const *s, unsigned int start, size_t len)
 	return (a);
 }
 
+void split_argv_quotes_cmd(t_cmd *curr)
+{
+	int i;
+	char *temp;
+	int len;
+
+	i = 0;
+	curr->option = NULL;
+	if (!curr || !curr->command || get_argc(curr) == 1)
+		return ;
+	i = has_quotes(curr->command);
+	while (!(ft_isspace(curr->command[i])) && curr->command[i])
+		i++;
+	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
+	len = ft_strlen(curr->command);
+	temp = ft_substr(curr->command, 1, i - 2);
+	ft_printf(">>%s<<\n", temp);
+	ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
+	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
+	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));
+	ft_printf(">>%s<<\n", curr->option);
+	free(curr->command);
+	curr->command = ft_strdup(temp);
+	free(temp);
+	temp = 0;
+	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
+
+}
+
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 {
 	int word_start;
@@ -113,13 +142,17 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	while (ft_isspace(data[word_end]) || data[word_end] == ';')
 		word_end--;
 	//word_end++;
-	printf("(%d %d)\n", word_start, word_end - word_start);
+	//printf("(%d %d)\n", word_start, word_end - word_start);
 	new->command = ft_substr(data, word_start, word_end - word_start + 1);
 	//ft_printf("%c",new->command[ft_strlen(new->command)]);
 	//ft_printf("---------------------\n");
-	//ft_printf(">>%s<<\n", new->command);
+	
+	if (ft_isquote(new->command[0]) && has_quotes(new->command) && (new->command[has_quotes(new->command)] == 0 || new->command[has_quotes(new->command)] == ' '))
+		split_argv_quotes_cmd(new);
+
+	
 	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
-	split_argv(new);
+	else split_argv(new);
 	//if (new->option != NULL && new->option)
 		//tild_handler(minishell, new);
 	if (new->option != NULL && new->option)

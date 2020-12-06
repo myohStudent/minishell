@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:48:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/04 18:30:33 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 14:47:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	print_env(t_env *env)
 			ft_printf("%s=%s\n",env->variable,env->value);
 		env = env->next;
 	}
+	g_command_nb = 0;
 	return (1);
 }
 

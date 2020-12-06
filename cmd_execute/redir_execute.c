@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_execute.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 17:05:21 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 17:59:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
 	{
 		//에러
-		ft_printf("error\n");
+		ft_printf("error: %s: %s\n", scmd->command, strerror(errno));
+		g_command_nb = 1;
 		//exit(1);
 	}
 	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
 		close(scmd->fdout);
 	if ((scmd->type == DREDIR) && scmd->fdin)
 		close(scmd->fdin);
-	//scmd = remove_redir(*sym, &scmd->sym); // 파일 만드러진 거 지워야 함(안 그러면 말록 에러 남)
-	//scmd = remove_redir(*sym, &scmd->sym);
 	return (fd);
 }
 
@@ -40,10 +39,10 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 	{
 		if (scmd->type == REDIR && scmd->fdout != -1)
 			scmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
-		else if (scmd->type == FREDIR && scmd->fdout != -1)
-			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
 		else if (scmd->type == DREDIR && scmd->fdin != -1)
 			scmd->fdin = redir2(minishell, scmd, O_RDONLY);
+		else if (scmd->type == FREDIR && scmd->fdout != -1)
+			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
 		i++;
 	}
 }
