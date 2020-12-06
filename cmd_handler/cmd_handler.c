@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/04 18:34:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 14:41:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int cmd_handler(t_minishell *minishell)
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	// ", '를 여기에서 먼저 실행한다.
 	while (which_quote(input, minishell))
-		prompt_quote(minishell);
+	 	prompt_quote(minishell);
 	// 파싱
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next; // 헤드 노드

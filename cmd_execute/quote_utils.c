@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 10:27:27 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/03 16:58:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/06 14:41:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int		which_quote(char *input, t_minishell *minishell)
 
     i = 0;
 	r = 1;
-	quote = 0;
-	dquote = 0;
+	minishell->quote[0] = 0;
+	minishell->quote[1] = 0;
 	while (input[i])
 	{
 		if (input[i] == 34 && (i == 0)) // '가 처음에 튀어나왔다
