@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 22:59:08 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 11:21:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 {
 	int		fd;
 	
-	if ((fd = open(scmd->command, flag, 0644)) < 0)  //str
+	if ((fd = open(scmd->next->command, flag, 0644)) < 0)  //str
 	{
 		ft_printf("에러났음: %s: %s\n", scmd->command, strerror(errno));
 		g_command_nb = 1;
@@ -32,23 +32,23 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 void	redir1(t_minishell *minishell, t_cmd *scmd)
 {
 	int	i;
-	//t_cmd *sscmd;
+	 t_cmd *sscmd;
 
-	//sscmd = scmd;
+	 sscmd = scmd;
 	i = 0;
-	while (scmd->command != NULL && scmd->next && i < minishell->cnt)
+	while (sscmd && sscmd->next && i < minishell->cnt)
 	{
-		if (scmd->type == REDIR && scmd->fdout != -1)
-			scmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
-		else if (scmd->type == DREDIR && scmd->fdin != -1)
-			scmd->fdin = redir2(minishell, scmd, O_RDONLY);
-		else if (scmd->type == FREDIR && scmd->fdout != -1)
-			scmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
+		ft_printf("dscmd->command : /%s/ \n", sscmd->command);
+		if (sscmd->type == REDIR && sscmd->fdout != -1)
+			sscmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
+		else if (scmd->type == DREDIR && sscmd->fdin != -1)
+			sscmd->fdin = redir2(minishell, scmd, O_RDONLY);
+		else if (scmd->type == FREDIR && sscmd->fdout != -1)
+			sscmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
 		else
-		 	scmd = scmd->next;
+		 	sscmd = sscmd->next;
 		i++;
 	}
-	ft_printf("scmd->command : /%s/ \n", scmd->command);
 }
 /*
 int		exec_redir(t_cmd *curr, t_minishell *minishell) 

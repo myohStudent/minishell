@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 23:09:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 11:10:33 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,11 @@ void	exec_scmd(t_minishell *minishell)
 	scmd = minishell->scmd;
 	while (scmd && i < minishell->cnt)
 	{
+		scmd->fdin = 0;
+		scmd->fdout = 0;
+
 		redir1(minishell, scmd);
-		// while (scmd != NULL)
-		// {
-	 	// ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
-	 	// if (scmd->next)
-	 	// 	scmd = scmd->next;
-	 	// else
-	 	// 	break ;
-		// }
-	 	// ft_printf("\n");
-	 	// scmd = minishell->scmd;
+		ft_printf("redir1 나옴\n");
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
 			if (pipe(pipe_fd) < 0)

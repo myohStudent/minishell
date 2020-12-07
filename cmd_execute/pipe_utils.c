@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/02 20:24:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 12:31:01 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ int		parse_flag(t_cmd *curr, t_cmd *head,
 	return (1);
 }
 
-
 char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 {
 	char	**store;
@@ -178,6 +177,47 @@ char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 	free(temp);
 	store[i] = NULL;
 	return (store);
+}
+
+void get_path(t_env *list, t_minishell *minishell)
+{
+	char	**bin;
+	char *temp;
+	int i;
+	t_env *l;
+
+	l = list;
+	i = 0;
+	temp = NULL;
+	while (l && i < minishell->env_currnb)
+	{
+		if (ft_strcmp(l->variable, "PATH") == 0)
+		{
+			temp = ft_strdup(l->value);
+			break ;
+		}
+		l = l->next;
+		i++;
+	}
+	bin[0] = NULL;
+	if (temp)
+	{
+		bin = ft_split(temp, ':');
+		free(temp);
+	}
+	i = 0;
+	while (bin[i])
+		i++;
+	minishell->pipe_bin = (char **)malloc(sizeof(char) * (i + 1));
+	i = 0;
+	while (bin && bin[i])
+	{
+		minishell->pipe_bin[i] = ft_strjoin(bin[i], "/");
+		free(bin[i]);
+		ft_printf("%s\n", minishell->pipe_bin[i]);
+		i++;
+	}
+	ft_printf("나옴\n");
 }
 
 char	*open_directory(char *path, char *command)

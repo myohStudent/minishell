@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/06 22:27:37 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 11:14:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-void	clear_scmd(t_cmd *cmd)
+void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
 	if (cmd->command)
 		ft_strdel(&cmd->command);
@@ -48,6 +48,10 @@ void	clear_scmd(t_cmd *cmd)
 		ft_strdel(&cmd->pipe_bin);
 	if (cmd->pipe_array)
 		free_arr(cmd->pipe_array);
+	if (minishell->environ)
+		free_arr(minishell->environ);
+	if (minishell->pipe_bin != NULL)
+		minishell->pipe_bin = NULL;
 }
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
@@ -61,7 +65,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		if (minishell->scmd)
 		{ 
 			exec_scmd(minishell);
-		 	clear_scmd(minishell->scmd);
+		 	clear_scmd(minishell->scmd, minishell);
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)

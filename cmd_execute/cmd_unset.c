@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 22:18:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 11:44:54 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void ft_envremove(t_env *list, char **remove, t_minishell *minishell)
 
 	i = 0;
 	prev = NULL;
-	while(list && i < minishell->env_currnb)
+	while (list && i < minishell->env_currnb)
 	{
 		if (ft_strcmp(list->variable, remove[0]) == 0)
 		{

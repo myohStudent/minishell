@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 22:17:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 11:51:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
 int			ft_is_alnum(int c);
 int			has_env(char *str);
+int			ft_isquote(char c);
 /*
 ** parse_utils.c
 */
@@ -191,7 +192,7 @@ int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
 int			cmd_executer(t_minishell *minishell, t_cmd *curr);
 int			exec_else(t_minishell *minishell, t_cmd *curr);
-void		clear_scmd(t_cmd *cmd);
+void		clear_scmd(t_cmd *cmd, t_minishell *minishell);
 
 /*
 ** cmd_handler2.c
@@ -232,6 +233,7 @@ void		delete_space_flag(char **temp, char flag);
 void		flag_checker(char flag);
 char	**store_commands(t_cmd *scmd, t_minishell *minishell);
 char	*get_bin(t_minishell *minishell, char *command);
+void	get_path(t_env *list, t_minishell *minishell);
 
 /*
 ** handler_utils2.c

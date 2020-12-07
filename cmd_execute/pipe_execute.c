@@ -78,19 +78,7 @@ void	create_fd(t_cmd *curr, int pipe_fd[2], int pipe_s[2])
 int		exec_ve(t_minishell *minishell, t_cmd *curr)
 {
 	if (ft_strncmp(curr->command, "echo\0", 5) == 0)
-	{
-		if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
-			ft_putstr_fd(curr->option + 3, 1);
-		if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)
-			ft_printf("%d\n", g_command_nb);
-		else
-		{
-			if (curr->option)
-				ft_putstr_fd(curr->option, 1);
-			ft_putchar('\n');
-		}
-		g_command_nb = 0;
-	}
+		cmd_echo(curr, minishell);
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 	{
 		if (cmd_cd(curr, minishell) < 0)
@@ -106,9 +94,10 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		exit(0);//cmd_unset(curr, minishell);
-	else if (curr->command) //&& minishell->environ != NULL && curr->pipe_array != NULL)
+	else if (curr->command && minishell->environ != NULL && curr->pipe_array != NULL)
 	{
-		ft_printf("%s: command not found\n", curr->command);
+		strerror(errno);
+		//ft_printf("%s: command not found\n", curr->command);
 		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
 		g_command_nb = 127;
 		exit(127);
@@ -132,14 +121,12 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 {
 	pid_t	pid;
 
-	//ft_printf("pipe 들어옴 \n");
 	scmd->pipe_array = store_commands(scmd, minishell); 
 	//execve용 명령어 배열 정리하는 함수
 	scmd->pipe_bin = get_bin(minishell, scmd->command); 
 	//execve 앞 명령어에 디렉토리 붙이는 함수
 	pid = fork();
 	minishell->forked = 1;
-
 	////////////////////////////////
 	if (pid == 0)
 	{
@@ -151,7 +138,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 	else if (pid < 0)
 	{
 		strerror(errno);
-		//g_command_nb = 1;
+		g_command_nb = 1;
 	}
 	else
 	{
