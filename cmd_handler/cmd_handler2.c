@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 21:26:05 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 22:56:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,39 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 
 void	exec_scmd(t_minishell *minishell)
 {
-	int i;
+	int		i;
 	t_cmd	*scmd;
-	int		pipe_fd[2];
+	t_cmd	*start;
+	int		past_fdout = dup(STDOUT);
+	int		past_fdin = dup(STDIN);
+	start = minishell->scmd;
+	while (minishell->scmd)
+	{
+		if (create_pipe(&minishell))
+			break ;
+		// if (minishell->scmd->pipe)
+		// 	ft_printf("%d\n", minishell->scmd->next->input);
+		if (make_and_exec_cmd(minishell))
+		{
+			dup2(past_fdout, STDOUT);
+			dup2(past_fdin, STDIN);
+			break;
+		}
+		// if (ret)
+		// {
+		// 	ft_putstr_fd(ret, 1/*minishell->scmd->output*/);
+		// 	free(ret);
+		// }
+		dup2(past_fdout, STDOUT);
+		dup2(past_fdin, STDIN);
+		minishell->scmd = minishell->scmd->next;
+	}
+	l_lst_clear(start);
+
+
+
+
+	/*int		pipe_fd[2];
 
 	i = 0;
 	scmd = minishell->scmd;
@@ -56,5 +86,5 @@ void	exec_scmd(t_minishell *minishell)
 			scmd = scmd->next;
 		scmd = scmd->next;
 		i++;
-	}
+	}*/
 }

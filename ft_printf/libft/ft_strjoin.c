@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 17:31:54 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/29 15:37:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 21:59:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,12 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-char	*ft_strjoin_free(char const *s1, char const *s2)
+char	*ft_strjoin_free(char *s1, const char *s2)
 {
-	char	*str;
+	char	*tmp;
 
-	if (!s2)
-	{
-		str = ft_strdup(s1);
-		free((void*)s1);
-		return (str);
-	}
-	if (!(str = (char*)ft_calloc(1, sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
-		return (NULL);
-	ft_strcat(str, s1); //strcpy
-	free((void*)s1);
-	ft_strcat(str, s2);
-	free((void*)s2);
-	return (str);
+	tmp = s1;
+	s1 = ft_strjoin(s1, s2);
+	free(tmp);
+	return (s1);
 }
