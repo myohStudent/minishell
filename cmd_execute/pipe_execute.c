@@ -96,9 +96,11 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		exit(0);//cmd_unset(curr, minishell);
 	else if (curr->command && minishell->environ != NULL && curr->pipe_array != NULL)
 	{
-		strerror(errno);
-		//ft_printf("%s: command not found\n", curr->command);
+		
 		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
+		ft_printf("%s: command not found\n", curr->command);
+		ft_printf(strerror(errno));
+		ft_printf("\n");
 		g_command_nb = 127;
 		exit(127);
 	}
@@ -137,7 +139,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 	}
 	else if (pid < 0)
 	{
-		strerror(errno);
+		ft_printf(strerror(errno));
 		g_command_nb = 1;
 	}
 	else

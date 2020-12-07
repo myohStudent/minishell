@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 11:51:47 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 21:06:12 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void		clear_scmd(t_cmd *cmd, t_minishell *minishell);
 ** cmd_handler2.c
 */
 void		exec_piperedir(t_minishell *minishell);
-int			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
+void			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
 void		exec_scmd(t_minishell *minishell);
 
 /*

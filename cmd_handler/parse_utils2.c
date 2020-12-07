@@ -6,12 +6,11 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 22:51:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 20:47:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void			add_next_node(t_cmd *target, char *s, int i)
 {

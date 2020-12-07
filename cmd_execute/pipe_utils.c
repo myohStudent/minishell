@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 12:31:01 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 21:10:14 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,10 +214,8 @@ void get_path(t_env *list, t_minishell *minishell)
 	{
 		minishell->pipe_bin[i] = ft_strjoin(bin[i], "/");
 		free(bin[i]);
-		ft_printf("%s\n", minishell->pipe_bin[i]);
 		i++;
 	}
-	ft_printf("나옴\n");
 }
 
 char	*open_directory(char *path, char *command)
