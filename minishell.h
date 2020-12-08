@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 21:06:12 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/07 22:56:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ typedef struct		s_cmd
 	char			**pipe_array; //execve용
 	int				fdin;
 	int				fdout;
+	int				input;
+	int				output;
 	char			*command;
 	char			*option;
 	char			**argv;

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 09:32:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/11/29 15:57:27 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/08 10:52:54 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ size_t			ft_strlen(const char *str);
 int				ft_strcat(char *dest, char const *src);
 int				ft_strlcat(char *dst, const char *src, int dstsize);
 char			*ft_strjoin(char const *s1, char const *s2);
-char			*ft_strjoin_free(char const *s1, char const *s2);
+char			*ft_strjoin_free(char *s1, char const *s2);
 char			*ft_strdup(const char *src);
 char			*ft_strdchar(char src);
 char			ft_strchr(const char *s, int c);
