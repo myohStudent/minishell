@@ -99,7 +99,7 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		
 		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
 		ft_printf("%s: command not found\n", curr->command);
-		ft_printf(strerror(errno));
+		//ft_printf(strerror(errno));
 		ft_printf("\n");
 		g_command_nb = 127;
 		exit(127);
