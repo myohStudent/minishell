@@ -23,7 +23,7 @@ void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 	if (curr->type == PIPE)
 	{
 		redir1(minishell, curr->next);
-		while (curr->next && !curr->next->command)
+		while (!curr->next->command && curr->next)
 		{
 			redir1(minishell, curr->next);
 			curr = curr->next;
@@ -94,13 +94,17 @@ int		exec_ve(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		exit(0);//cmd_unset(curr, minishell);
-	else if (curr->command && minishell->environ != NULL && curr->pipe_array != NULL)
+	else if ((curr->type == 1) || ((ft_strncmp(curr->command, "echo\0", 5))
+		&& (ft_strncmp(curr->command, "cd\0", 3)) &&
+		(ft_strncmp(curr->command, "exit\0", 5)) &&
+		(ft_strncmp(curr->command, "env\0", 4)) &&
+		 (ft_strncmp(curr->command, "pwd\0", 4)) &&
+		(ft_strncmp(curr->command, "export\0", 7)) &&
+		(ft_strncmp(curr->command, "unset\0", 5))))
 	{
-		
 		execve(curr->pipe_bin, curr->pipe_array, minishell->environ);
 		ft_printf("%s: command not found\n", curr->command);
 		//ft_printf(strerror(errno));
-		ft_printf("\n");
 		g_command_nb = 127;
 		exit(127);
 	}
@@ -122,11 +126,11 @@ void	shutdown(int sig_num)
 void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2])
 {
 	pid_t	pid;
-
 	scmd->pipe_array = store_commands(scmd, minishell); 
 	//execve용 명령어 배열 정리하는 함수
 	scmd->pipe_bin = get_bin(minishell, scmd->command); 
 	//execve 앞 명령어에 디렉토리 붙이는 함수
+
 	pid = fork();
 	minishell->forked = 1;
 	////////////////////////////////
@@ -135,6 +139,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 		if (scmd->fdout == -1 || scmd->fdin == -1)
 			exit(1);
 		create_fd(scmd, pipe_fd, pipe_s);
+		ft_printf("execve: /%s/ \n", scmd->command);
 	 	exec_ve(minishell, scmd);
 	}
 	else if (pid < 0)

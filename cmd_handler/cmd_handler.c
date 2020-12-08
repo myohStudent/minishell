@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/07 22:00:03 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/08 21:54:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
-	while (cmd && cmd->next)
+	while (cmd)
 	{
 		if (cmd->command)
 			ft_strdel(&cmd->command);
@@ -52,8 +52,11 @@ void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 			free_arr(cmd->pipe_array);
 		if (cmd->option)
 			ft_strdel(&cmd->option);
+		if (cmd->type)
+			cmd->type = 0;
 		cmd = cmd->next;
 	}
+	free(cmd);
 }
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
@@ -65,7 +68,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	{
 		parse3(minishell, curr);
 		if (minishell->scmd)
-		{ 
+		{
 			exec_scmd(minishell);
 		 	clear_scmd(minishell->scmd, minishell);
 		}

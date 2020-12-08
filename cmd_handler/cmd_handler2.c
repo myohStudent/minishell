@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/08 11:53:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/08 23:44:34 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 	else if (ft_strncmp(curr->command, "exit\0", 5) == 0 && curr->type != PIPE 
 		&& (!curr->prev || curr->prev->type != PIPE))
 		cmd_exit(curr, minishell);
-	// else if (ft_strncmp(curr->command, "env\0", 4) == 0)
-	// 	print_env(minishell->env_list);
+	//else if (ft_strncmp(curr->command, "env\0", 4) == 0)
+	 //	print_env(minishell->env_list);
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0
 		&& (curr->type == REDIR || curr->type == DREDIR || curr->type == FREDIR))
 		cmd_export(curr, minishell);
@@ -63,12 +63,17 @@ void	exec_scmd(t_minishell *minishell)
 	t_cmd	*scmd;
 
 	i = 0;
+	// while (minishell->scmd->command)
+	// 	minishell->scmd = minishell->scmd->prev;
+	// minishell->scmd = minishell->scmd->next;
 	scmd = minishell->scmd;
+
 	while (scmd && i < minishell->cnt)
 	{
 		// scmd->fdin = -1;
 		// scmd->fdout = -1;
 		redir1(minishell, scmd);
+		ft_printf("current command: /%s/ \n", scmd->command);
 		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
 		{
 			if (pipe(pipe_fd) < 0)
@@ -77,8 +82,8 @@ void	exec_scmd(t_minishell *minishell)
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 		}
-		if (scmd->type == PIPE)
-			scmd = scmd->next;
+		while (scmd->type == PIPE)
+		 	scmd = scmd->next;
 		scmd = scmd->next;
 		i++;
 	}

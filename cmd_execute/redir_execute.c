@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 11:21:39 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/08 23:41:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 void	redir1(t_minishell *minishell, t_cmd *scmd)
 {
 	int	i;
-	 t_cmd *sscmd;
+	t_cmd *sscmd;
 
-	 sscmd = scmd;
+	sscmd = scmd;
 	i = 0;
 	while (sscmd && sscmd->next && i < minishell->cnt)
 	{
-		ft_printf("dscmd->command : /%s/ \n", sscmd->command);
+		ft_printf("redir : /%s/ \n", sscmd->command);
 		if (sscmd->type == REDIR && sscmd->fdout != -1)
 			sscmd->fdout = redir2(minishell, scmd, O_TRUNC | O_RDWR | O_CREAT);
 		else if (scmd->type == DREDIR && sscmd->fdin != -1)
@@ -46,9 +46,15 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 		else if (scmd->type == FREDIR && sscmd->fdout != -1)
 			sscmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
 		else
-		 	sscmd = sscmd->next;
+		  	sscmd = sscmd->next;
 		i++;
 	}
+	i = 0;
+	// while (sscmd && sscmd->prev && i < minishell->cnt)
+	// {
+	// 	sscmd = sscmd->prev;
+	// 	ft_printf("rewind scmd->command : /%s/ \n", sscmd->command);
+	// }
 }
 /*
 int		exec_redir(t_cmd *curr, t_minishell *minishell) 

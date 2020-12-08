@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 20:47:15 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/08 23:15:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	// 		break ;
 	// }
 	// ft_printf("\n");
-	// ft_printf("count: %d\n", minishell->cnt);
-	// minishell->scmd = scmd;
+	ft_printf("count: %d\n", minishell->cnt);
+	minishell->scmd = scmd;
 }
