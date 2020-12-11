@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/08 21:54:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/11 18:00:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,14 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
 	{
 		parse3(minishell, curr);
-		if (minishell->scmd)
+		if (minishell->scmd && minishell->pipe_num > 0)
 		{
 			exec_scmd(minishell);
 		 	clear_scmd(minishell->scmd, minishell);
+		}
+		else 
+		{ 
+			ft_printf("redir은 파이프부터 고치고\n");
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)

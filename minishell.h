@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 22:56:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/11 18:16:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char				*raw_input;
 char				*symbol; //parsing용
 int					flags[10];
 int					pipe_num;
+int					g_pid;
 
 // typedef struct stat{
 // 	dev_t st_dev; /* ID of device containing file */ 
