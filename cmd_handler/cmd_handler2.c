@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/11 18:21:32 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 00:30:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,54 +56,75 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		pipe_prog(minishell, curr, pipe_fd, NULL);
 }
 
-void	init_fd(int *fd_outold, int *fd_inold, t_cmd *scmd, t_minishell *minishell)
+int			do_exec_scmd(t_cmd *scmd, t_minishell *minishell)
+{
+	ft_printf("do_scmd\n");
+
+	exec_else(minishell, minishell->scmd);
+	if (minishell->scmd->output > 2 && close(minishell->scmd->output) < 0)
+		ft_printf("error close output\n");
+	if (minishell->scmd->input > 2 && close(minishell->scmd->input) < 0)
+		ft_printf("error close input\n");
+	return (1);
+}
+
+void	init_fd(int *fd_outold, int *fd_inold, t_cmd **start, t_cmd **scmd)
 {
 	*fd_outold = dup(STDOUT);
 	*fd_inold = dup(STDIN);
-	*scmd = *(minishell->scmd);
-
+	*start = *(scmd);
 }
 
-// int	last_pipe_exit(t_list_line **lst_line, int fd_inold)
-// {
-// 	dup2(fd_inold, STDIN);
-// 	l_lst_remove_next_one(*lst_line);
-// 	*lst_line = (*lst_line)->next;
-// 	return (2);
-// }
-
-int		do_pipe2(int pipe_fd[2], t_cmd **scmd, t_minishell *minishell, int fd_inold)
+int	last_pipe_exit(t_cmd **scmd, int fd_inold)
 {
-	// if (g_pid > 0)
-	// {
-	// 	close(fdpipe[1]);
-	// 	wait(NULL);
-	// 	if ((*lst_line)->pipe && !((*lst_line)->next->next) &&\
-	// 	!ft_strncmp((*lst_line)->next->cmd->str, "exit", 5))
-	// 		return (last_pipe_exit(lst_line, fd_inold));
-	// 	*lst_line = (*lst_line)->next;
-	// 	(*lst_line)->input = fdpipe[0];
-	// 	dup2((*lst_line)->input, STDIN);
-	// }
-	// else
-	// {
-	// close(fdpipe[0]);
-	// 	(*lst_line)->output = fdpipe[1];
-	// 	dup2((*lst_line)->output, STDOUT);
-	// 	if (make_and_exec_cmd((*lst_line), env))
-	// 		g_glob.exit = CMD_NOT_FOUND;
-	// 	close(fdpipe[1]);
-	// 	exit(0);
-	// }
-	// return (1);
+	dup2(fd_inold, STDIN);
+	ft_printf("클리어 준비\n");
+
+	cmd_clear(*scmd);
+	ft_printf("cmd clear\n");
+	*scmd = (*scmd)->next;
+	return (2);
 }
 
-int		do_pipe(t_cmd **scmd, t_minishell *minishell, int fd_inold)
+int		do_pipe2(int pipe_fd[2], t_cmd **scmd, t_minishell **minishell, int fd_inold)
+{
+	ft_printf("do_pipe2\n");
+
+	if (g_pid > 0)
+	{
+		ft_printf("do_pipe의 parent구문\n");
+
+		close(pipe_fd[1]);
+		wait(NULL);
+		if ((*minishell)->scmd->type == PIPE && !((*minishell)->scmd->next->next) &&
+		!ft_strncmp((*minishell)->cmd->next->command, "exit\0", 5))
+			return (last_pipe_exit(scmd, fd_inold));
+		(*minishell)->scmd = (*minishell)->scmd->next;
+		(*minishell)->scmd->input = pipe_fd[0];
+		dup2((*minishell)->scmd->input, STDIN);
+	}
+	else
+	{
+		ft_printf("do_pipe의 else구문\n");
+
+		close(pipe_fd[0]);
+		(*minishell)->scmd->output = pipe_fd[1];
+		dup2((*minishell)->scmd->output, STDOUT);
+		do_exec_scmd((*minishell)->scmd, *minishell);
+		close(pipe_fd[1]);
+		exit(0);
+	}
+	return (1);
+}
+
+int		do_pipe(t_cmd **scmd, t_minishell **minishell, int fd_inold)
 {
 	t_cmd	*cmd;
 	int		pipe_fd[2];
 
-	if ((*scmd)->type != PIPE)
+	ft_printf("do_pipe1\n");
+
+	if ((*minishell)->scmd->type != PIPE)
 		return (1);
 	if (pipe(pipe_fd) < 0)
 		return (-1);
@@ -111,9 +132,7 @@ int		do_pipe(t_cmd **scmd, t_minishell *minishell, int fd_inold)
 	if (g_pid < 0)
 		return (-1);
 	else
-		return (do_pipe2(pipe_fd, scmd, minishell, fd_inold))0;
-	
-
+		return (do_pipe2(pipe_fd, scmd, minishell, fd_inold));
 }
 
 void	exec_scmd(t_minishell *minishell)
@@ -121,31 +140,39 @@ void	exec_scmd(t_minishell *minishell)
 	int		pipe_fd[2];
 	int		i;
 	int		j;
-	t_cmd	*scmd;
+	t_cmd	*start;
 	int		fd_outold;
 	int		fd_inold;
 
 	i = 0;
-	init_fd(&fd_outold, &fd_inold, &scmd, &minishell);
 	//scmd = minishell->scmd;
-	while (scmd && i < minishell->cnt)
+	init_fd(&fd_outold, &fd_inold, &start, &(minishell->scmd));
+	//scmd = minishell->scmd;
+	while (minishell->scmd)
 	{
-		while (scmd && scmd->type == PIPE)
+		while (minishell->scmd && minishell->scmd->type == PIPE)
 		{
-			if ((j = do_pipe(&scmd, minishell, fd_inold)) == 2)
-				return ; //del(scmd);
+			ft_printf("current: /%s/\n", minishell->scmd->command);
+
+			if ((j = do_pipe(&minishell->scmd, &minishell, fd_inold)) == 2)
+			{
+				ft_printf("리턴\n");
+				return(cmd_clear(minishell->scmd)) ; //del(scmd);
+			}
 			else if (j)
 				break ;
 		}
-		if (do_exec_scmd(scmd, minishell))
+		if (do_exec_scmd(minishell->scmd, minishell))
 		{
+			ft_printf("듀플리케이트\n");
 			dup2(fd_outold, STDOUT);
 			dup2(fd_inold, STDIN);
+			ft_printf("와일문 밖으로 나가기\n");
 			break ;
 		}
 		dup2(fd_outold, STDOUT);
 		dup2(fd_inold, STDIN);
-		scmd = scmd->next;
+		minishell->scmd = minishell->scmd->next;
 		// // scmd->fdin = -1;
 		// // scmd->fdout = -1;
 		// redir1(minishell, scmd);
@@ -161,9 +188,11 @@ void	exec_scmd(t_minishell *minishell)
 		// while (scmd->type == PIPE)
 		//  	scmd = scmd->next;
 		// scmd = scmd->next;
-		i++;
 	}
-	//del(scmd);
+	ft_printf("밖 1\n");
+	//cmd_clear(start);
+	ft_printf("밖 2\n");
+
 }
 
 /*
