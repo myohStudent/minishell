@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/11 22:38:36 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 20:48:14 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ char				*raw_input;
 char				*symbol; //parsing용
 int					flags[10];
 int					pipe_num;
+char				**g_cmd_array;
 int					g_pid;
+char				**pipe_bin;
+char				**envp_list;
 
 // typedef struct stat{
 // 	dev_t st_dev; /* ID of device containing file */ 
@@ -103,7 +106,7 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	int				redir_num;
 	char			**environ; // 환경변수 파이프 execve용
-	char			**pipe_bin; // 명령어 파이프 execve용
+ // 명령어 파이프 execve용
 	int				forked;
 	int				quote[2];
 	int				env_currnb; // current number
@@ -118,6 +121,7 @@ void		welcome_shell(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
 int		dollar_exec(t_cmd *curr, t_minishell *minishell);
+void		parent_signal_handler(int signo);
 
 /*
 ** cmd_env.c
@@ -203,6 +207,7 @@ void		clear_scmd(t_cmd *cmd, t_minishell *minishell);
 void		exec_piperedir(t_minishell *minishell);
 void			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
 void		exec_scmd(t_minishell *minishell);
+void	create_pipe_array(t_minishell *minishell);
 
 /*
 ** cmd_exit.c
@@ -237,6 +242,8 @@ void		flag_checker(char flag);
 char	**store_commands(t_cmd *scmd, t_minishell *minishell);
 char	*get_bin(t_minishell *minishell, char *command);
 void	get_path(t_env *list, t_minishell *minishell);
+char	*open_directory(char *path, char *command);
+
 
 /*
 ** handler_utils2.c

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/28 09:28:02 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 20:42:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 	char	*input;
 	int		i;
 
-	minishell->pipe_num = 0;
+	pipe_num = 0;
 	minishell->redir_num = 0;
 	temp = ft_strjoin(curr->command, " ");
 	if (curr->option)
@@ -94,9 +94,9 @@ int	check_separator(t_minishell *minishell, t_cmd *curr)
 	{
 		if (input[i] == '|')
 		{
-			minishell->pipe_num++;
-			free(input);
-			return (1);
+			pipe_num++;
+			// free(input);
+			// return (1);
 		}
 		else if (input[i] == '>' || input[i] == '<')
 		{	

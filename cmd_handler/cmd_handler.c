@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/12 10:10:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 20:34:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
-	cmd = cmd->prev;
+	//cmd = cmd->prev;
 	while (cmd)
 	{
 		if (cmd->command)
@@ -65,17 +65,19 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 	if (check_separator(minishell, curr) < 0 ) // quote일 때, 무시한다는 플래그 넣어야 함!
 		return (-1);
 	// symbol이 있다면 다른 루트로 파싱한다
-	if (minishell->pipe_num > 0 || minishell->redir_num > 0)
+	if (pipe_num > 0 || minishell->redir_num > 0)
 	{
 		parse3(minishell, curr);
-		if (minishell->scmd && minishell->pipe_num > 0)
+		if (minishell->scmd && pipe_num > 0)
 		{
-			exec_scmd(minishell);
+			exec_scmd(minishell); 
 		 	clear_scmd(minishell->scmd, minishell);
+			free_arr(g_cmd_array);
+			g_cmd_array = NULL;
 		}
 		else 
 		{ 
-			ft_printf("redir은 파이프부터 고치고\n");
+			ft_printf("redir\n");
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
@@ -166,7 +168,7 @@ int cmd_handler(t_minishell *minishell)
 	free(input);
 	free (minishell->cmd);
 	minishell->cmd = 0;
-	minishell->pipe_bin = NULL;
+	//pipe_bin = NULL;
 	minishell->environ = NULL;
 	return (1);
 }

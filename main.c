@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/08 22:11:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 20:55:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,39 @@ void	display_prompt(void)
 	ft_putstr_fd("\033[0m", 1);
 }
 
+void	get_envp(char **env, int i)
+{
+	int 	j;
+
+	j = 0;
+	envp_list = (char **)malloc(sizeof(char *) * i);
+	while (j < i)
+	{
+		envp_list[j] = ft_strdup(env[j]);
+		j++;
+	}
+	envp_list[j] = NULL;
+
+}
+// void	shell_levelup(t_minishell *minishell, t_env *env_list)
+// {
+// 	int		i;
+// 	t_env	*list;
+
+// 	i = 0;
+// 	list = env_list;
+// 	while (list && i < minishell->env_currnb)
+// 	{
+// 		if (ft_strcmp(list->variable, "SHLVL") == 0)
+// 		{
+// 			list->value++; //아니 문자열이네 이거 이러면 안 되잖아 다시 만들어야 함 ㅠㅠ
+// 			break ;
+// 		}
+// 		list = list->next;
+// 		i++;
+// 	}
+// }
+
 int		main(int ac, char **av, char **env)
 {
 	t_minishell minishell;
@@ -64,6 +97,8 @@ int		main(int ac, char **av, char **env)
 	minishell.env_list = (t_env *)malloc(sizeof(t_env));
 	init_env(env, &minishell, minishell.env_list);
 	get_path(minishell.env_list, &minishell);
+	get_envp(env, minishell.env_currnb);
+	//shell_levelup(&minishell, minishell.env_list); //셸레벨 올리기 필요없음
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{

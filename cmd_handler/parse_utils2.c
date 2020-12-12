@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/11 17:43:56 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 13:43:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			add_next_node(t_cmd *target, char *s, int i)
 		new->typestr = ft_strdup("<");
 	else if (i == 6)
 		new->typestr = ft_strdup(">>");
+	// new->next = NULL;
 	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
     target->next = new;
 	free(str);
@@ -90,7 +91,6 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 				type = CHARACTERS;
 				add_next_node(head, space_trim(temp), type);
 				temp = NULL;
-				
 			}
 		}
 	}
@@ -122,16 +122,13 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	scmd = head->next;
 	scmd = reverse_node(head);
 	minishell->scmd = scmd;
-		
-	// while (scmd != NULL)
-	// {
-	// 	ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
-	// 	if (scmd->next)
-	// 		scmd = scmd->next;
-	// 	else
-	// 		break ;
-	// }
-	// ft_printf("\n");
-	ft_printf("count: %d\n", minishell->cnt);
-	minishell->scmd = scmd;
+	while (scmd != NULL)
+	{
+		ft_printf("type:%d /%s/ ", scmd->type, scmd->command);
+		if (scmd->next)
+			scmd = scmd->next;
+		else
+			break ;
+	}
+	ft_printf("\n");
 }

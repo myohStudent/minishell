@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 21:10:14 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 20:42:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,6 @@ void get_path(t_env *list, t_minishell *minishell)
 		l = l->next;
 		i++;
 	}
-	bin[0] = NULL;
 	if (temp)
 	{
 		bin = ft_split(temp, ':');
@@ -208,11 +207,12 @@ void get_path(t_env *list, t_minishell *minishell)
 	i = 0;
 	while (bin[i])
 		i++;
-	minishell->pipe_bin = (char **)malloc(sizeof(char) * (i + 1));
+	pipe_bin = NULL;
+	pipe_bin = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (bin && bin[i])
 	{
-		minishell->pipe_bin[i] = ft_strjoin(bin[i], "/");
+		pipe_bin[i] = ft_strjoin(bin[i], "/");
 		free(bin[i]);
 		i++;
 	}
@@ -221,14 +221,14 @@ void get_path(t_env *list, t_minishell *minishell)
 char	*open_directory(char *path, char *command)
 {
 	DIR				*dir;
-	struct dirent	*direc;
+	struct dirent	*dent;
 
 	dir = opendir(path);
 	if (dir)
 	{
-		while ((direc = readdir(dir)))
+		while ((dent = readdir(dir)))
 		{
-			if (ft_compare(direc->d_name, command))
+			if (ft_compare(dent->d_name, command))
 			{
 				if (dir)
 					closedir(dir);
@@ -250,15 +250,17 @@ char	*get_bin(t_minishell *minishell, char *command)
 		return (NULL);
 	if (is_char_here('/', command) >= 0)
 		return (ft_strdup(command));
-	if (!minishell->pipe_bin)
-		return (ft_strjoin("./", command));
+	if (!pipe_bin)
+	 	return (ft_strjoin("/bin/", command));
 	i = 0;
-	while (minishell->pipe_bin && minishell->pipe_bin[i])
+	while (pipe_bin &&pipe_bin[i])
 	{
-		ret = open_directory(minishell->pipe_bin[i], command);
+		ret = open_directory(pipe_bin[i], command);
 		if (ret)
 			return (ret);
 		i++;
 	}
-	return (NULL);
+	if (ret == NULL)
+		ret = ft_strjoin("/bin/", command);
+	return (ret);
 }
