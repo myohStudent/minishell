@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/12 00:30:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 10:51:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	init_fd(int *fd_outold, int *fd_inold, t_cmd **start, t_cmd **scmd)
 {
 	*fd_outold = dup(STDOUT);
 	*fd_inold = dup(STDIN);
-	*start = *(scmd);
+	*start = *scmd;
 }
 
 int	last_pipe_exit(t_cmd **scmd, int fd_inold)
@@ -127,10 +127,18 @@ int		do_pipe(t_cmd **scmd, t_minishell **minishell, int fd_inold)
 	if ((*minishell)->scmd->type != PIPE)
 		return (1);
 	if (pipe(pipe_fd) < 0)
+	{
+		ft_printf("pipe failed.\n");
+		g_command_nb = 1;
 		return (-1);
+	}
 	g_pid = fork();
 	if (g_pid < 0)
+	{	
+		ft_printf("pipe: fork failed.\n");
+		g_command_nb = 1;
 		return (-1);
+	}
 	else
 		return (do_pipe2(pipe_fd, scmd, minishell, fd_inold));
 }
@@ -146,7 +154,7 @@ void	exec_scmd(t_minishell *minishell)
 
 	i = 0;
 	//scmd = minishell->scmd;
-	init_fd(&fd_outold, &fd_inold, &start, &(minishell->scmd));
+	init_fd(&fd_outold, &fd_inold, &start, &minishell->scmd);
 	//scmd = minishell->scmd;
 	while (minishell->scmd)
 	{
@@ -157,7 +165,8 @@ void	exec_scmd(t_minishell *minishell)
 			if ((j = do_pipe(&minishell->scmd, &minishell, fd_inold)) == 2)
 			{
 				ft_printf("리턴\n");
-				return(cmd_clear(minishell->scmd)) ; //del(scmd);
+				return ;
+				//return(cmd_clear(minishell->scmd)) ; //del(scmd);
 			}
 			else if (j)
 				break ;
@@ -173,6 +182,9 @@ void	exec_scmd(t_minishell *minishell)
 		dup2(fd_outold, STDOUT);
 		dup2(fd_inold, STDIN);
 		minishell->scmd = minishell->scmd->next;
+		ft_printf("next: /%s/\n", minishell->scmd->command);
+	}
+}
 		// // scmd->fdin = -1;
 		// // scmd->fdout = -1;
 		// redir1(minishell, scmd);
@@ -188,12 +200,12 @@ void	exec_scmd(t_minishell *minishell)
 		// while (scmd->type == PIPE)
 		//  	scmd = scmd->next;
 		// scmd = scmd->next;
-	}
-	ft_printf("밖 1\n");
+	
+	//ft_printf("밖 1\n");
 	//cmd_clear(start);
-	ft_printf("밖 2\n");
+	//ft_printf("밖 2\n");
 
-}
+
 
 /*
 

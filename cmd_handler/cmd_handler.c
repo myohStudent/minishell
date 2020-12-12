@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/11 18:00:47 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/12 10:10:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
+	cmd = cmd->prev;
 	while (cmd)
 	{
 		if (cmd->command)
@@ -54,7 +55,7 @@ void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
 			ft_strdel(&cmd->option);
 		if (cmd->type)
 			cmd->type = 0;
-		cmd = cmd->next;
+		cmd = cmd->prev;
 	}
 	free(cmd);
 }
