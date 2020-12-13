@@ -6,35 +6,22 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 21:45:26 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 21:57:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static	int	check_fork = 0;
-
-// int			get_fork(void)
-// {
-// 	return (check_fork);
-// }
-
-// int			set_fork(int current_fork)
-// {
-// 	check_fork = current_fork;
-// 	return (check_fork);
-// }
+void		controld_exit(char *input)
+{
+	free(input); 
+	g_command_nb = 130;
+	write(1, "\b\b \b\b exit!\n", 13);
+	exit(1);
+}
 
 void		parent_signal_handler(int signo)
-{
-	// if (get_fork() != 0)
-	// {
-	// 	ft_putstr_fd("\b\b  \b\b", STDOUT);
-	// 	if (SIGINT == signo)
-	// 		exit(1);
-	// }
-	// else
-	
+{	
 		if (SIGINT == signo)
 		{
 			write(1, "\b\b \b\b bye!\n", 11);
@@ -47,5 +34,4 @@ void		parent_signal_handler(int signo)
 			g_command_nb = 131;
 			exit(1);
 		}
-	
 }

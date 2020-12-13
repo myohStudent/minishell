@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/13 10:11:00 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 22:17:16 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,39 @@ char	*add_dir(t_minishell *minishell, char *command)
 		i++;
 	}
 	return (NULL);
+}
+
+void	exec_redir_scmd(t_minishell *minishell)
+{
+	int		pipe_fd[2];
+	int		i;
+	t_cmd	*scmd;
+
+	i = 0;
+	// while (minishell->scmd->command)
+	// 	minishell->scmd = minishell->scmd->prev;
+	// minishell->scmd = minishell->scmd->next;
+	scmd = minishell->scmd;
+
+	while (scmd && i < minishell->cnt)
+	{
+		// scmd->fdin = -1;
+		// scmd->fdout = -1;
+		redir1(minishell, scmd);
+		ft_printf("current command: /%s/ \n", scmd->command);
+		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
+		{
+			if (pipe(pipe_fd) < 0)
+				return ;
+			exec_else2(minishell, scmd, pipe_fd);
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+		}
+		while (scmd->type == PIPE)
+		 	scmd = scmd->next;
+		scmd = scmd->next;
+		i++;
+	}
 }
 
 void	exec_scmd(t_minishell *minishell)

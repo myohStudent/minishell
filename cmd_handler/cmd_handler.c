@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/12 20:34:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 22:17:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		}
 		else 
 		{ 
-			ft_printf("redir\n");
+			exec_redir_scmd(minishell);
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
@@ -112,11 +112,7 @@ int cmd_handler(t_minishell *minishell)
 		if (buf[0] != '\n')
 			input = ft_strjoin(input, buf);
 		if (fstat(b, buf_stat) < 0 && b == 0)
-		{
-			ft_printf(" exit \n");
-		 	exit(1);
-		}
-		
+			controld_exit(input);
 	}
 	/*char *temp;
 	if ((temp = search(input, '\\')))

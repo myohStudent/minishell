@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/08 23:41:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 22:08:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ int		redir2(t_minishell *minishell, t_cmd *scmd, int flag)
 	
 	if ((fd = open(scmd->next->command, flag, 0644)) < 0)  //str
 	{
-		ft_printf("에러났음: %s: %s\n", scmd->command, strerror(errno));
+		ft_printf("에러: %s: %s\n", scmd->command, strerror(errno));
 		g_command_nb = 1;
-		exit(1);
+		//exit(1);
+		scmd->no_access = 1;
 	}
 	if (((scmd->type == REDIR) || (scmd->type == FREDIR)) && scmd->fdout)
 		close(scmd->fdout);
@@ -45,11 +46,12 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 			sscmd->fdin = redir2(minishell, scmd, O_RDONLY);
 		else if (scmd->type == FREDIR && sscmd->fdout != -1)
 			sscmd->fdout = redir2(minishell, scmd, O_RDWR | O_CREAT | O_APPEND);
-		else
+		else if (!scmd->no_access)
 		  	sscmd = sscmd->next;
+		else
+			return ;
 		i++;
 	}
-	i = 0;
 	// while (sscmd && sscmd->prev && i < minishell->cnt)
 	// {
 	// 	sscmd = sscmd->prev;

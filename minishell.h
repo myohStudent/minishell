@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/12 20:48:14 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 22:15:01 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct		s_cmd
 	char			**pipe_array; //execve용
 	int				fdin;
 	int				fdout;
+	int				no_access;
 	int				input;
 	int				output;
 	char			*command;
@@ -122,6 +123,7 @@ void		*ft_memalloc(size_t size);
 void		display_prompt(void);
 int		dollar_exec(t_cmd *curr, t_minishell *minishell);
 void		parent_signal_handler(int signo);
+void		controld_exit(char *input);
 
 /*
 ** cmd_env.c
@@ -208,6 +210,8 @@ void		exec_piperedir(t_minishell *minishell);
 void			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
 void		exec_scmd(t_minishell *minishell);
 void	create_pipe_array(t_minishell *minishell);
+void	exec_redir_scmd(t_minishell *minishell);
+
 
 /*
 ** cmd_exit.c

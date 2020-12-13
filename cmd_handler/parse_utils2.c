@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/12 13:43:53 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/13 22:07:14 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			add_next_node(t_cmd *target, char *s, int i)
 		new->typestr = ft_strdup("<");
 	else if (i == 6)
 		new->typestr = ft_strdup(">>");
+	new->no_access = 0;
 	// new->next = NULL;
 	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
     target->next = new;
