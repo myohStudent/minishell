@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/13 22:07:14 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 13:55:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 			}
 			if (temp) // 마지막 cmd
 			{
-				type = CHARACTERS;
+				type = LAST;
 				add_next_node(head, space_trim(temp), type);
 				temp = NULL;
 			}

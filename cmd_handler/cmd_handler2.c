@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/13 22:17:16 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 15:48:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,29 +89,42 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 	// 	pipe_prog(minishell, curr, pipe_fd, NULL);
 }
 
-char	*add_dir(t_minishell *minishell, char *command)
-{
-	char	*ret;
-	int		i;
 
-	if (!command)
-	{
-		ft_printf("no command ");
-		return (NULL);
-	}
-	if (is_char_here('/', command) >= 0)
-		return (ft_strdup(command));
-	if (!pipe_bin)
-		return (ft_strjoin("./", command));
-	i = 0;
-	while (pipe_bin && pipe_bin[i])
-	{
-		ret = open_directory(pipe_bin[i], command);
-		if (ret)
-			return (ret);
-		i++;
-	}
-	return (NULL);
+char    *add_dir(t_minishell *minishell, char *command)
+{
+    char    *ret;
+    int     i;
+
+    if (!command)
+    {
+        ft_printf("no command ");
+        return (NULL);
+    }
+    if ((ft_compare(command, "pwd")))
+        return (ft_strdup("pwd"));
+    else if ((ft_compare(command, "echo")))
+        return (ft_strdup("echo"));
+    else if ((ft_compare(command, "cd")))
+        return (ft_strdup("cd"));
+    else if ((ft_compare(command, "unset")))
+        return (ft_strdup("unset"));
+    else if ((ft_compare(command, "unset")))
+        return (ft_strdup("unset"));    
+    else if ((ft_compare(command, "env")))
+        return (ft_strdup("env"));
+    // if (is_char_here('/', command) >= 0)
+    //  return (ft_strdup(command));
+    // if (!pipe_bin)
+    //  return (ft_strjoin("./", command));
+    // i = 0;
+    // while (pipe_bin && pipe_bin[i])
+    // {
+    //  ret = open_directory(pipe_bin[i], command);
+    //  if (ret)
+    //      return (ret);
+    //  i++;
+    // }
+    return (NULL);
 }
 
 void	exec_redir_scmd(t_minishell *minishell)
@@ -147,78 +160,77 @@ void	exec_redir_scmd(t_minishell *minishell)
 	}
 }
 
-void	exec_scmd(t_minishell *minishell)
+void    exec_scmd(t_minishell *minishell)
 {
-	int		pipe_fd[2];
-	pid_t	pid[2];
-	int		i;
-	int		j;
-	int		stat;
-	t_cmd	*scmd;
-	char	*command;
-	int		fd_outold;
-	int		fd_inold;
+    int     pipe_fd[2];
+    pid_t   pid[2];
+    int     i;
+    int     stat;
+    t_cmd   *scmd;
+    char    *command;
 
-	g_pid = 0;
-	i = 0;
-	scmd = minishell->scmd;
-	create_pipe_array(minishell); 
-	while (g_cmd_array[i] && scmd->command)
-	{
-		command = add_dir(minishell, g_cmd_array[i]);
-		//pipe는 execve 때문에 이중배열로 명령어 리스트 arg를 만들어놔야 한다 
-		//그런데! option 어떡하지......
-		if (pipe(pipe_fd) < 0)
-		{
-			free(command);
-			command = NULL;
-			return ;
-		}
-		pid[0] = fork();
-		if (pid[0] == -1)
-		{
-			free(command);
-			command = NULL;
-			perror("fork error\n");
-			break;
-		}
-		if (pid[0] == 0)
-		{
-			dup2(pipe_fd[0], 0);
-			close(pipe_fd[1]);
-			//exec_else2(minishell, minishell->scmd, pipe_fd);
-			if (command == NULL)
-			{
-				ft_printf("%s:command not found\n", scmd->command);
-				exit(127);
+    g_pid = 0;
+    i = 0;
+    scmd = minishell->scmd;
+    create_pipe_array(minishell); 
+    while (g_cmd_array[i] && scmd->command)
+    {
+        command = add_dir(minishell, g_cmd_array[i]);
+		//ft_printf("current cmd: %s\n", command);
+        if (pipe(pipe_fd) < 0)
+        {
+            free(command);
+            command = NULL;
+            return ;
+        }
+        pid[0] = fork();
+        if (pid[0] == -1)
+        {
+            free(command);
+            command = NULL;
+            perror("fork error\n");
+            break;
+        }
+        if (pid[0] == 0)
+        {
+            dup2(pipe_fd[0], 0);
+            close(pipe_fd[1]);
+            if (scmd->type != LAST &&
+                !(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
+                !(ft_compare(command, "cd")) && !(ft_compare(command, "echo"))
+                && !(ft_compare(command, "env")))
+            {
+                ft_printf("%s:command not found\n", scmd->command);
+				//clear_single_cmd(minishell->scmd);
+                exit(127);
+                //execve(command, &g_cmd_array[i], minishell->environ);
+            }
+            else if (scmd->type == LAST)
+            {
+				   exec_else(minishell, scmd);
+				   //clear_single_cmd(minishell->scmd);
+				   exit(127);
 			}
-			else
-				execve(command, &g_cmd_array[i], minishell->environ);
-		}
-		else
-		{
-			close(pipe_fd[0]);
-			wait(&stat);
-			signal(SIGINT, parent_signal_handler);
-		}
-		i++;
-		scmd = scmd->next;
-		free(command);
-		command = NULL;
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		// {
-		// 	//ft_printf("1\n");
-		// 	close(pipe_fd[1]);
-		// 	dup2(pipe_fd[0], 0);
-		// 	//execve(scmd->pipe_bin, scmd->pipe_array, minishell->environ);
-		// 	break ;
-	}
-		//exec_else2(minishell, minishell->scmd, pipe_fd);
-		//minishell->scmd = minishell->scmd->next;
-		//execve(command, g_cmd_array, minishell->environ);
-		//ft_printf(strerror(errno));
-	
+            else
+            	exit(127);
+;
+        }
+        else
+        {
+            close(pipe_fd[0]);
+            wait(&stat);
+            //signal(SIGINT, parent_signal_handler);
+        }
+        i++;
+        scmd = scmd->next;
+        free(command);
+        command = NULL;
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+    }
+	clear_scmd(minishell->scmd, minishell);
+	free_arr(g_cmd_array);
+	g_cmd_array = NULL;
 }
 	
 		//ft_printf("next: /%s/\n", minishell->scmd->command);

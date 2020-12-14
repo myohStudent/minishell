@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/13 22:17:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 15:49:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,47 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
+void	clear_single_cmd(t_cmd *cmd)
 {
-	//cmd = cmd->prev;
-	while (cmd)
-	{
-		if (cmd->command)
-			ft_strdel(&cmd->command);
-		if (cmd->pipe_bin)
-			ft_strdel(&cmd->pipe_bin);
-		if (cmd->pipe_array)
-			free_arr(cmd->pipe_array);
-		if (cmd->option)
-			ft_strdel(&cmd->option);
-		if (cmd->type)
-			cmd->type = 0;
-		cmd = cmd->prev;
-	}
-	free(cmd);
+	//ft_printf("cmd 청소 : /%s/\n", cmd->command);
+    while (cmd->command)
+    {
+        if (cmd->command)
+            ft_strdel(&cmd->command);
+        if (cmd->pipe_bin)
+            ft_strdel(&cmd->pipe_bin);
+        if (cmd->pipe_array)
+            free_arr(cmd->pipe_array);
+        if (cmd->option)
+            ft_strdel(&cmd->option);
+        if (cmd->type)
+            cmd->type = 0;
+        if (cmd->typestr)
+            free(cmd->typestr);
+        cmd->no_access = 0;
+    }
+}
+void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
+{
+    ft_printf("위잉위잉 cmd 청소시작 : /%s/\n", cmd->command);
+    while (cmd)
+    {
+        if (cmd->command)
+            ft_strdel(&cmd->command);
+        if (cmd->pipe_bin)
+            ft_strdel(&cmd->pipe_bin);
+        if (cmd->pipe_array)
+            free_arr(cmd->pipe_array);
+        if (cmd->option)
+            ft_strdel(&cmd->option);
+        if (cmd->type)
+            cmd->type = 0;
+        if (cmd->typestr)
+            free(cmd->typestr);
+        cmd->no_access = 0;
+        cmd = cmd->next;
+    }
+    free(cmd);
 }
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
@@ -71,13 +94,13 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		if (minishell->scmd && pipe_num > 0)
 		{
 			exec_scmd(minishell); 
-		 	clear_scmd(minishell->scmd, minishell);
-			free_arr(g_cmd_array);
-			g_cmd_array = NULL;
+		 	
 		}
 		else 
 		{ 
 			exec_redir_scmd(minishell);
+			if (minishell->scmd)
+				clear_scmd(minishell->scmd, minishell);
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
@@ -101,6 +124,7 @@ int cmd_handler(t_minishell *minishell)
 	//init
 	minishell->cmd_num = 0;
 	minishell->forked = 0;
+
 	//
 
 	buf[0] = ' ';
@@ -161,10 +185,13 @@ int cmd_handler(t_minishell *minishell)
 			curr = next;
 		}
     }
+	// 지우기
+	if (curr)
+		clear_scmd(curr, minishell);
+	curr = NULL;
 	free(input);
-	free (minishell->cmd);
+	input = NULL;
+	//clear_scmd(minishell->cmd, minishell);
 	minishell->cmd = 0;
-	//pipe_bin = NULL;
-	minishell->environ = NULL;
 	return (1);
 }
