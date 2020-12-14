@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 13:56:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 15:48:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,12 +165,9 @@ void    exec_scmd(t_minishell *minishell)
     int     pipe_fd[2];
     pid_t   pid[2];
     int     i;
-    int     j;
     int     stat;
     t_cmd   *scmd;
     char    *command;
-    int     fd_outold;
-    int     fd_inold;
 
     g_pid = 0;
     i = 0;
@@ -179,6 +176,7 @@ void    exec_scmd(t_minishell *minishell)
     while (g_cmd_array[i] && scmd->command)
     {
         command = add_dir(minishell, g_cmd_array[i]);
+		//ft_printf("current cmd: %s\n", command);
         if (pipe(pipe_fd) < 0)
         {
             free(command);
@@ -203,19 +201,25 @@ void    exec_scmd(t_minishell *minishell)
                 && !(ft_compare(command, "env")))
             {
                 ft_printf("%s:command not found\n", scmd->command);
+				//clear_single_cmd(minishell->scmd);
                 exit(127);
                 //execve(command, &g_cmd_array[i], minishell->environ);
             }
             else if (scmd->type == LAST)
-                exec_else(minishell, scmd);
+            {
+				   exec_else(minishell, scmd);
+				   //clear_single_cmd(minishell->scmd);
+				   exit(127);
+			}
             else
-                 ;
+            	exit(127);
+;
         }
         else
         {
             close(pipe_fd[0]);
             wait(&stat);
-            signal(SIGINT, parent_signal_handler);
+            //signal(SIGINT, parent_signal_handler);
         }
         i++;
         scmd = scmd->next;
@@ -224,6 +228,9 @@ void    exec_scmd(t_minishell *minishell)
         close(pipe_fd[0]);
         close(pipe_fd[1]);
     }
+	clear_scmd(minishell->scmd, minishell);
+	free_arr(g_cmd_array);
+	g_cmd_array = NULL;
 }
 	
 		//ft_printf("next: /%s/\n", minishell->scmd->command);
