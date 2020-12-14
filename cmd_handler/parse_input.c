@@ -159,12 +159,14 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 
 	//has_quotes에서 "가 2개 있고, 첫번 째 "앞에  '이 하나라도 없다면
 	//무조건 has_env 스위치 켜지도록 한다.
+	//doublequote 앞에 singlequote가 있거나, singlequote앞에 doublequote가 있을 경우 quote_type on
 	//--여기까지 완료 --
-	
-	// hasenv==1이고 "하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. ==0이 아니면 ENV로 치환하지않음.
-
+	//hasenv==1이고, quote_type가 1이 아니고,
+	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환.
+	//==0이 아니면 ENV로 치환하지않음. 
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
-	//아무 종류의 쿼트가 존재하고, 그 앞에 다른 종류의 쿼트가 존재한다면, 안쪽에 있는 종류의 쿼트는 보존해야함.
+
+	//quote_type ==1일 경우 "" 지우면 안됨, quote_type == 2일 경우 ' 지우면 안됨
 
 		new->hasenv = 0;
 
