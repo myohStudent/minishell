@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 15:48:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 20:34:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ char    *add_dir(t_minishell *minishell, char *command)
         return (ft_strdup("cd"));
     else if ((ft_compare(command, "unset")))
         return (ft_strdup("unset"));
-    else if ((ft_compare(command, "unset")))
-        return (ft_strdup("unset"));    
+    else if ((ft_compare(command, "export")))
+        return (ft_strdup("export"));    
     else if ((ft_compare(command, "env")))
         return (ft_strdup("env"));
     // if (is_char_here('/', command) >= 0)
@@ -198,7 +198,7 @@ void    exec_scmd(t_minishell *minishell)
             if (scmd->type != LAST &&
                 !(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
                 !(ft_compare(command, "cd")) && !(ft_compare(command, "echo"))
-                && !(ft_compare(command, "env")))
+                && !(ft_compare(command, "env")) && !(ft_compare(command, "echo")))
             {
                 ft_printf("%s:command not found\n", scmd->command);
 				//clear_single_cmd(minishell->scmd);

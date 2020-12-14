@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/12 20:42:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 20:40:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,34 +39,6 @@ t_cmd		*reverse_node(t_cmd *head)
 		head->next = q;
     }
     return (q);
-}
-
-char		*space_trim(char *s)
-{
-	int		len;
-	char	*t;
-	char	*end;
-	char	*begin;
-
-	begin = ft_strdup(s);
-    while (*begin != '\0')
-    {
-        if (ft_isspace(*begin))
-          	begin++;
-        else
-        {  
-          s = ft_strdup(begin);
-          break;
-        }  
-    }
-	t = ft_strdup(s);
-	len = ft_strlen(s);
-	end = t + len - 1;
-	while (end != t && ft_isspace(*end))
-        end--;
-    *(end + 1) = '\0';
-    s = ft_strdup(t);
-    return (s);
 }
 
 void	delete_space_flag(char **temp, char flag)

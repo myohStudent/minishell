@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 19:00:29 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/14 20:41:46 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,16 +163,16 @@ int			ft_is_alnum(int c);
 int			has_env(char *str);
 int			ft_isquote(char c);
 /*
-** parse_utils.c
+** parse_utils, parse_utils2.c
 */
-char *ft_trimchar(char *str, char c);
+char		*ft_trimchar(char *str, char c);
+char		*space_trim(char *s);
+void		parse3(t_minishell *minishell, t_cmd *curr);
 // int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
 // char		*update_sym(t_minishell *minishell);
 // void		parse_symbols(t_minishell *minishell, t_cmd *curr);
 // int			recheck_sym(int i, char *str, char *temp, int sign);
-// void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd);
-
-void		parse3(t_minishell *minishell, t_cmd *curr);
+// void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd)
 
 /*
 ** cmd_unset.c
@@ -243,7 +243,6 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 */
 void		add_node(t_cmd *target, char *s);
 t_cmd		*reverse_node(t_cmd *head);
-char		*space_trim(char *s);
 int			parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
 void		delete_space_flag(char **temp, char flag);
 void		flag_checker(char flag);

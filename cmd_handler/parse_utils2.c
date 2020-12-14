@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 13:55:47 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 21:10:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,52 @@
 
 void			add_next_node(t_cmd *target, char *s, int i)
 {
-	char **str;
+	char	**str;
+	char	*temp;
 	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
     new->next = target->next;
 
 	str = ft_split(s, ' ');
-	if (str[1])
+	if (str[1] != NULL)
 	{
-		new->command = ft_strdup(str[0]);
-		new->option = ft_strdup(str[1]);
+		if ((ft_compare(str[0], "pwd")) || (ft_compare(str[0], "echo")) || (ft_compare(str[0], "cd"))
+			|| (ft_compare(str[0], "env")) || (ft_compare(str[0], "export")) ||(ft_compare(str[0], "unset")))
+		{
+			new->command = ft_strdup(str[0]);
+			new->option = ft_strdup(str[1]);
+		}
+		else
+		{
+			new->command = ft_strjoin(str[0], " ");
+			temp = ft_strjoin(new->command, str[1]);
+			free(new->command);
+			new->command = NULL;
+			new->command = ft_strdup(temp);
+			free(temp);
+			temp = NULL;
+		}
 	}
 	else
-		new->command = ft_strdup(s);
+	{
+		new->command = ft_strdup(str[0]);
+	}
+	
 	new->type = i;
-	if (i == 4)
-		new->typestr = ft_strdup(">");
-	else if (i == 5)
-		new->typestr = ft_strdup("<");
-	else if (i == 6)
-		new->typestr = ft_strdup(">>");
+	// if (i == 4)
+	// 	new->typestr = ft_strdup(">");
+	// else if (i == 5)
+	// 	new->typestr = ft_strdup("<");
+	// else if (i == 6)
+	// 	new->typestr = ft_strdup(">>");
 	new->no_access = 0;
 	// new->next = NULL;
 	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
-    target->next = new;
-	free(str);
+    ft_printf("str[0]: /%s/, str[1]: /%s/\n", str[0], str[1]);
+	target->next = new;
+	if (str[1])
+		free_arr(str);
+	else
+		free(str);
 }
 
 int				parse_flags(t_cmd *head, t_minishell *minishell)
@@ -71,7 +93,8 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 					else
 						type = DREDIR;
 					/////////////////////////////
-					//option parsing도 여기서 
+					//option parsing도 add_next_node에서
+					//ft_printf("parsing temp2:/%s/ /%s/\n", temp2, space_trim(temp2));
 					add_next_node(head, space_trim(temp2), type);
 					minishell->cnt++;
 					free(temp2);
