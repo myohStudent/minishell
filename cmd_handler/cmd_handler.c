@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/13 22:17:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 13:52:41 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,27 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-void	clear_scmd(t_cmd *cmd, t_minishell *minishell)
+void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
-	//cmd = cmd->prev;
-	while (cmd)
-	{
-		if (cmd->command)
-			ft_strdel(&cmd->command);
-		if (cmd->pipe_bin)
-			ft_strdel(&cmd->pipe_bin);
-		if (cmd->pipe_array)
-			free_arr(cmd->pipe_array);
-		if (cmd->option)
-			ft_strdel(&cmd->option);
-		if (cmd->type)
-			cmd->type = 0;
-		cmd = cmd->prev;
-	}
-	free(cmd);
+    ft_printf("위잉위잉 cmd 청소시작 : /%s/\n", cmd->command);
+    while (cmd)
+    {
+        if (cmd->command)
+            ft_strdel(&cmd->command);
+        if (cmd->pipe_bin)
+            ft_strdel(&cmd->pipe_bin);
+        if (cmd->pipe_array)
+            free_arr(cmd->pipe_array);
+        if (cmd->option)
+            ft_strdel(&cmd->option);
+        if (cmd->type)
+            cmd->type = 0;
+        if (cmd->typestr)
+            free(cmd->typestr);
+        cmd->no_access = 0;
+        cmd = cmd->next;
+    }
+    free(cmd);
 }
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
@@ -78,6 +81,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		else 
 		{ 
 			exec_redir_scmd(minishell);
+			clear_scmd(minishell->scmd, minishell);
 		}
 	}
 	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
