@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   has_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 21:42:08 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 13:30:03 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-int		is_char_here(char c, char *str)
+int is_char_here(char c, char *str)
 {
-	int		i;
+	int i;
 
 	i = 0;
 	while (str[i])
@@ -27,16 +26,16 @@ int		is_char_here(char c, char *str)
 	return (-1);
 }
 
-int		is_instr(char c, char *str)
+int is_instr(char c, char *str)
 {
 	if (is_char_here(c, str) >= 0)
 		return (1);
 	return (0);
 }
 
-int			has_pipes(char *option)
+int has_pipes(char *option)
 {
-	int		res;
+	int res;
 
 	res = 0;
 	if (!option)
@@ -51,9 +50,9 @@ int			has_pipes(char *option)
 	return (res);
 }
 
-int			has_redirs(char *option)
+int has_redirs(char *option)
 {
-	int		res;
+	int res;
 
 	res = 0;
 	if (!option)
@@ -68,9 +67,9 @@ int			has_redirs(char *option)
 	return (res);
 }
 
-int		has_dollar(char *str)
+int has_dollar(char *str)
 {
-	int	res;
+	int res;
 
 	res = 0;
 	while (str[res])
@@ -85,12 +84,30 @@ int		has_dollar(char *str)
 }
 int ft_isquote(char c)
 {
-	if (c == '\'' || c == '\"')
+	if (c == '\'')
 		return (1);
+	if (c == '\"')
+		return (2);
 	return (0);
 }
 
-int		has_quotes(char *str)
+int get_first_quote(t_cmd *new, int type)
+{
+	int i;
+
+	i = 0;
+	if (type != 1 && type != 2)
+		return (-1);
+	while (new->command[i])
+	{
+		if (ft_isquote(new->command[i]) == type) //34
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+int has_quotes(t_cmd *new)
 {
 	int isdouble;
 	int isquote;
@@ -99,29 +116,34 @@ int		has_quotes(char *str)
 	isdouble = 0;
 	isquote = 0;
 	i = 0;
-	while (str[i])
+	while (new->command[i])
 	{
-		if (ft_isquote(str[i]) == 1) //34
+		if (ft_isquote(new->command[i]) == 1) //34
 			isquote++;
-		if (ft_isquote(str[i]) == 1) //39
+		if (ft_isquote(new->command[i]) == 2) //39
 			isdouble++;
 		i++;
-		if (isquote == 2 || isdouble == 2 || isdouble == 2)
-			return (i);}
+		//'이 없거나, 있어도 "보다 늦게 나온다.
+		if (isdouble == 2 && get_first_quote(new->command, 1) <
+		get_first_quote(new->command, 2))
+			new->hasenv = 1;
+
+		if (isquote == 2 || isdouble == 2)
+			return (i);
+	}
 }
 
-int		ft_is_alnum(int c)
+int ft_is_alnum(int c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
-	|| ft_isdigit(c))
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || ft_isdigit(c))
 		return (1);
 	return (0);
 }
 
-int		has_env(char *str)
+int has_env(char *str)
 {
-	int		i;
-	int		cnt;
+	int i;
+	int cnt;
 
 	i = 0;
 	cnt = 0;
@@ -129,8 +151,7 @@ int		has_env(char *str)
 	{
 		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
 			return (0);
-		if (!ft_is_alnum(str[i]) && str[i] != '_' && str[i] != '='
-			&& str[i] != '+' && str[i] != '\'' && str[i] != '\"')
+		if (!ft_is_alnum(str[i]) && str[i] != '_' && str[i] != '=' && str[i] != '+' && str[i] != '\'' && str[i] != '\"')
 			return (0);
 		if ((str[i] == '\'' || str[i] == '\"') && cnt < 1)
 			return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/13 22:15:01 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/14 13:15:57 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct		s_cmd
 	int				no_access;
 	int				input;
 	int				output;
+	int				hasenv;
 	char			*command;
 	char			*option;
 	char			**argv;
@@ -154,7 +155,7 @@ int		check_separator(t_minishell *minishell, t_cmd *curr);
 */
 int			has_pipes(char *option);
 int			has_redirs(char *option);
-int			has_quotes(char *option);
+int			has_quotes(t_cmd *new);
 int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
 int			ft_is_alnum(int c);

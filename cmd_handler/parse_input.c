@@ -19,12 +19,11 @@ int get_argc(t_cmd *curr)
 		i--;
 	}
 	curr->argc++;
-	ft_printf("%d\n",curr->argc);
+	ft_printf("%d\n", curr->argc);
 	return (curr->argc);
 }
 
-
-void				tild_handler(t_minishell *minishell, t_cmd *curr)
+void tild_handler(t_minishell *minishell, t_cmd *curr)
 {
 	int i;
 
@@ -32,7 +31,7 @@ void				tild_handler(t_minishell *minishell, t_cmd *curr)
 	{
 		ft_printf("if 1 진입\n");
 		curr->option = ft_strjoin(home_dir, curr->option + 1);
-		ft_printf("> %s < \n",curr->option);
+		ft_printf("> %s < \n", curr->option);
 		//new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
 		//curr->option = ft_strdup(new);
 	}
@@ -71,7 +70,7 @@ void split_argv(t_cmd *curr)
 	i = 0;
 	curr->option = NULL;
 	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
-		return ;
+		return;
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
 	i -= ft_remove_quote(curr);
@@ -90,13 +89,12 @@ void split_argv(t_cmd *curr)
 	free(temp);
 	temp = 0;
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
-
 }
 
-char		*check_copy(char const *s, unsigned int start, size_t len)
+char *check_copy(char const *s, unsigned int start, size_t len)
 {
-	char	*a;
-	int		i;
+	char *a;
+	int i;
 
 	i = 0;
 	if (!(a = (char *)malloc(sizeof(char) * ((int)len))))
@@ -112,7 +110,7 @@ char		*check_copy(char const *s, unsigned int start, size_t len)
 		start++;
 	}
 	a[i] = '\0';
-	ft_printf("%d, %s))\n",i, a);
+	ft_printf("%d, %s))\n", i, a);
 	return (a);
 }
 
@@ -125,7 +123,7 @@ void split_argv_quotes_cmd(t_cmd *curr)
 	i = 0;
 	curr->option = NULL;
 	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
-		return ;
+		return;
 	i = has_quotes(curr->command) - ft_remove_quote(curr);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
@@ -142,7 +140,6 @@ void split_argv_quotes_cmd(t_cmd *curr)
 	free(temp);
 	temp = 0;
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
-
 }
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
@@ -159,36 +156,45 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	new->command = ft_substr(data, word_start, word_end - word_start + 1);
 	//ft_printf("%c",new->command[ft_strlen(new->command)]);
 	//ft_printf("---------------------\n");
-	
-	//has_quotes에서 "가 더블이고, "앞에  '이 하나라도 있으면 무조건 has_env 스위치 켜지도록 한다. (구조체에 hasenv 변수를 만들것.)
-	// 여기서 미리 "하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. ==0이 아니면 ENV로 치환하지않음.
 
-	if (ft_isquote(new->command[0]) && has_quotes(new->command) && (new->command[has_quotes(new->command)] == 0 || new->command[has_quotes(new->command)] == ' '))
+	//has_quotes에서 "가 2개 있고, 첫번 째 "앞에  '이 하나라도 없다면
+	//무조건 has_env 스위치 켜지도록 한다.
+	// hasenv==1이고 "하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. ==0이 아니면 ENV로 치환하지않음.
+
+	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
+	//아무 종류의 쿼트가 존재하고, 그 앞에 다른 종류의 쿼트가 존재한다면, 안쪽에 있는 종류의 쿼트는 보존해야함.
+
+		new->hasenv = 0;
+
+	if (ft_isquote(new->command[0]) && has_quotes(new) &&
+		(new->command[has_quotes(new)] == 0 ||
+		 new->command[has_quotes(new)] == ' '))
 		split_argv_quotes_cmd(new);
-	else split_argv(new);
-	
+	else
+		ft_printf("dtd");
+	// split_argv(new);
 
 	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	//if (new->option != NULL && new->option)
-		//tild_handler(minishell, new);
+	//tild_handler(minishell, new);
 	if (new->option != NULL && new->option)
 		tild_handler(minishell, new);
 }
 
-t_cmd	*create_node(t_minishell *minishell, char *data, int word_len)
+t_cmd *create_node(t_minishell *minishell, char *data, int word_len)
 {
-    t_cmd *new;
+	t_cmd *new;
 	int i;
 
 	i = 0;
-    if (!(new = (t_cmd *)malloc(sizeof(t_cmd))))
+	if (!(new = (t_cmd *)malloc(sizeof(t_cmd))))
 		return (NULL);
 	set_node(minishell, new, data, word_len);
-    new->next = 0;
-    return (new);
+	new->next = 0;
+	return (new);
 }
 
-int		parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
+int parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 {
 	raw_input = ft_strdup(input);
 	/*int		start;
@@ -233,7 +239,7 @@ int		parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 		if (input[end] == ';' || !input[end])
 		{
 			cmd->next = create_node(minishell, input + start, end - start - 1);
-			ft_printf("argc = %d\n",cmd->argc);
+			ft_printf("argc = %d\n", cmd->argc);
 			cmd = cmd->next;
 		}
 		end++;
