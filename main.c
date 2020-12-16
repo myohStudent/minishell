@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/14 15:21:50 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/16 16:17:02 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,16 @@ int		main(int ac, char **av, char **env)
 	init_env(env, &minishell, minishell.env_list);
 	get_path(minishell.env_list, &minishell);
 	get_envp(env, minishell.env_currnb);
+	g_sigexit = 0;
 	//shell_levelup(&minishell, minishell.env_list); //셸레벨 올리기 필요없음
 	minishell.path = getcwd(NULL, 0);
-	signal(SIGINT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
-	signal(SIGQUIT, parent_signal_handler); //Ctrl+C Ctrl+\ 수행하기
 	while (1)
 	{
+		signal(SIGINT, parent_signal_handler);
+		signal(SIGQUIT, parent_signal_handler);
 		display_prompt();
-		cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
+		if (g_sigexit != 1 && g_sigexit != 2)
+			cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
 	}
 	minishell.environ = NULL;
 	return (0);

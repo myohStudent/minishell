@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/14 15:49:46 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/16 16:17:53 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int cmd_handler(t_minishell *minishell)
 	curr = NULL;
 	free(input);
 	input = NULL;
-	//clear_scmd(minishell->cmd, minishell);
 	minishell->cmd = 0;
+	g_sigexit = 0;
 	return (1);
 }

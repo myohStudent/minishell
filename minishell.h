@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 20:41:46 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/16 16:16:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ extern int 			errno;
 char				*home_dir;
 int					g_command_nb;
 char				*raw_input;
-char				*symbol; //parsing용
-int					flags[10];
 int					pipe_num;
+int					g_sigexit;
+int					flags[10];
 char				**g_cmd_array;
 int					g_pid;
 char				**pipe_bin;
