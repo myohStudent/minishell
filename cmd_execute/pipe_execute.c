@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 
 void	pipe_prog2(t_minishell *minishell, t_cmd *curr, pid_t pid, int pipe_fd[2])
 {
@@ -162,6 +162,7 @@ void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2
 	}
 	///////////////////////////////////////
 }
+*/
 
 /*
 void 		exec_child(int *pipe_fd, t_minishell *minishell, t_cmd *curr)

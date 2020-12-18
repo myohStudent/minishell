@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/16 15:49:09 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 00:38:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,24 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
-		cmd_unset(curr, minishell);
+		exit(0);
 	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 		cmd_pwd(curr, minishell);
-	else
-		ft_printf("%s : command not found.\n", curr->command);
+	// else
+	// 	ft_printf("%s : command not found.\n", curr->command);
+	
+	/*if (!(ft_compare(curr->command, "pwd")) && !(ft_compare(curr->command, "echo"))
+		&& !(ft_compare(curr->command, "env")) && !(ft_compare(curr->command, "cd"))
+		&& !(ft_compare(curr->command, "export")) && !(ft_compare(curr->command, "unset")))
+	{
+		execve(curr->command, NULL, NULL);
+		ft_printf("%s\n", strerror(errno));
+		//ft_printf("%s : command not found.\n", scmd->command);
+		exit(127);
+	}*/
+	exit(0);
+	// else
+	// 	ft_printf("%s : command not found.\n", curr->command);
 	// else if ((!curr->prev || (curr->prev && !(curr->prev->type == PIPE))))
 	// 	pipe_prog(minishell, curr, pipe_fd, NULL);
 }
@@ -112,6 +125,7 @@ char    *add_dir(t_minishell *minishell, char *command)
         return (ft_strdup("export"));    
     else if ((ft_compare(command, "env")))
         return (ft_strdup("env"));
+	
     // if (is_char_here('/', command) >= 0)
     //  return (ft_strdup(command));
     // if (!pipe_bin)
@@ -129,35 +143,43 @@ char    *add_dir(t_minishell *minishell, char *command)
 
 void	exec_redir_scmd(t_minishell *minishell)
 {
+	pid_t	pid;
 	int		pipe_fd[2];
 	int		i;
 	t_cmd	*scmd;
+	int		stat;
 
-	i = 0;
-	// while (minishell->scmd->command)
-	// 	minishell->scmd = minishell->scmd->prev;
-	// minishell->scmd = minishell->scmd->next;
 	scmd = minishell->scmd;
-
-	while (scmd && i < minishell->cnt)
+	while (scmd->command && scmd->type != LAST)
 	{
-		// scmd->fdin = -1;
-		// scmd->fdout = -1;
-		redir1(minishell, scmd);
-		ft_printf("current command: /%s/ \n", scmd->command);
-		if (scmd->command && scmd->fdout != -1 && scmd->fdin != -1)
+		pid = fork();
+		if (pid == 0)
 		{
-			if (pipe(pipe_fd) < 0)
-				return ;
-			exec_else2(minishell, scmd, pipe_fd);
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
+			//자식
+			//redir1(minishell, scmd);
+			if (scmd->type == REDIR && scmd->fd != -1)
+				scmd->fd = do_redir(minishell, scmd);
+			else if (scmd->type == BREDIR && scmd->fd != -1)
+				scmd->fd = do_bredir(minishell, scmd);
+			else if (scmd->type == DREDIR && scmd->fd != -1)
+				scmd->fd = do_dredir(minishell, scmd);
+			//fd가 -1일 때 예외처리 안 해줬음(exit(-1)).
+			if (scmd->type == REDIR || scmd->type == DREDIR)
+				dup2(scmd->fd, 1);
+			else
+				dup2(scmd->fd, 0);
+			close(scmd->fd);
+			if (scmd->command && scmd->fd != -1)
+			{
+				exec_else2(minishell, scmd, pipe_fd);
+				g_sigexit = 0;
+				exit(0);
+			}
+			waitpid(pid, NULL, 0);
 		}
-		while (scmd->type == PIPE)
-		 	scmd = scmd->next;
 		scmd = scmd->next;
-		i++;
 	}
+	g_sigexit = 0;
 }
 
 void    exec_scmd(t_minishell *minishell)
@@ -207,7 +229,7 @@ void    exec_scmd(t_minishell *minishell)
 				   exit(127);
 			}
             else
-            	exit(127);
+            	exit(1);
         }
         else
         {
@@ -222,6 +244,8 @@ void    exec_scmd(t_minishell *minishell)
         close(pipe_fd[1]);
     }
 	clear_scmd(minishell->scmd, minishell);
+	if (command)
+		free(command);
 	free_arr(g_cmd_array);
 	g_cmd_array = NULL;
 }

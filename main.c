@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/16 16:17:02 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 00:46:16 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,46 @@ void		init_env(char **env, t_minishell *minishell, t_env *env_list)
 	ft_printf("%d\n",minishell->env_currnb);
 }
 
+
+void get_path(t_env *list, t_minishell *minishell)
+{
+	char	**bin;
+	char *temp;
+	int i;
+	t_env *l;
+
+	l = list;
+	i = 0;
+	temp = NULL;
+	while (l && i < minishell->env_currnb)
+	{
+		if (ft_strcmp(l->variable, "PATH") == 0)
+		{
+			temp = ft_strdup(l->value);
+			break ;
+		}
+		l = l->next;
+		i++;
+	}
+	if (temp)
+	{
+		bin = ft_split(temp, ':');
+		free(temp);
+	}
+	i = 0;
+	while (bin[i])
+		i++;
+	pipe_bin = NULL;
+	pipe_bin = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (bin && bin[i])
+	{
+		pipe_bin[i] = ft_strjoin(bin[i], "/");
+		free(bin[i]);
+		i++;
+	}
+}
+
 void	display_prompt(void)
 {
 	ft_putstr_fd("\033[0;31mm", 1);
@@ -68,26 +108,7 @@ void	get_envp(char **env, int i)
 		j++;
 	}
 	envp_list[j] = NULL;
-
 }
-// void	shell_levelup(t_minishell *minishell, t_env *env_list)
-// {
-// 	int		i;
-// 	t_env	*list;
-
-// 	i = 0;
-// 	list = env_list;
-// 	while (list && i < minishell->env_currnb)
-// 	{
-// 		if (ft_strcmp(list->variable, "SHLVL") == 0)
-// 		{
-// 			list->value++; //아니 문자열이네 이거 이러면 안 되잖아 다시 만들어야 함 ㅠㅠ
-// 			break ;
-// 		}
-// 		list = list->next;
-// 		i++;
-// 	}
-// }
 
 int		main(int ac, char **av, char **env)
 {
@@ -99,16 +120,20 @@ int		main(int ac, char **av, char **env)
 	get_path(minishell.env_list, &minishell);
 	get_envp(env, minishell.env_currnb);
 	g_sigexit = 0;
-	//shell_levelup(&minishell, minishell.env_list); //셸레벨 올리기 필요없음
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
+		display_prompt();
 		signal(SIGINT, parent_signal_handler);
 		signal(SIGQUIT, parent_signal_handler);
-		display_prompt();
 		if (g_sigexit != 1 && g_sigexit != 2)
-			cmd_handler(&minishell);		  // stdin 입력을 input에 저장한다.
+			cmd_handler(&minishell);// stdin 입력을 input에 저장한다.
 	}
-	minishell.environ = NULL;
+	//////////////free////////////////
+	clear_env(minishell.env_list);
+	free_arr(envp_list);
+	free(minishell.path);
+	free(home_dir);
+	free(raw_input);
 	return (0);
 }

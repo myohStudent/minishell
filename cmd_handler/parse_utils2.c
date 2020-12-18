@@ -6,20 +6,23 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 21:10:25 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/18 21:17:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void			add_next_node(t_cmd *target, char *s, int i)
+t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 {
 	char	**str;
 	char	*temp;
-	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
-    new->next = target->next;
+	t_cmd	*new;
 
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+    new->next = target->next;
+	str = NULL;
 	str = ft_split(s, ' ');
+	//ft_printf("str[0]: /%s/, str[1]: /%s/\n", str[0], str[1]);
 	if (str[1] != NULL)
 	{
 		if ((ft_compare(str[0], "pwd")) || (ft_compare(str[0], "echo")) || (ft_compare(str[0], "cd"))
@@ -35,36 +38,29 @@ void			add_next_node(t_cmd *target, char *s, int i)
 			free(new->command);
 			new->command = NULL;
 			new->command = ft_strdup(temp);
+			new->fd = 0;
 			free(temp);
 			temp = NULL;
 		}
 	}
 	else
-	{
 		new->command = ft_strdup(str[0]);
-	}
-	
 	new->type = i;
-	// if (i == 4)
-	// 	new->typestr = ft_strdup(">");
-	// else if (i == 5)
-	// 	new->typestr = ft_strdup("<");
-	// else if (i == 6)
-	// 	new->typestr = ft_strdup(">>");
-	new->no_access = 0;
-	// new->next = NULL;
-	//ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
-    ft_printf("str[0]: /%s/, str[1]: /%s/\n", str[0], str[1]);
+	ft_printf("cmd:/%s/ type:/%d/ opt:/%s/\n", new->command, new->type, new->option);
 	target->next = new;
 	if (str[1])
 		free_arr(str);
 	else
 		free(str);
+	str = NULL;
+	//ft_printf("target-nextcmd:/%s/, newcmd:/%s/\n", target->next->command, new->command);
+	//clear_scmd(new, NULL); 여기서 프리를 어떻게 해줘야 할지 모릅니다....
+	//free(new);
+	return (target);
 }
 
 int				parse_flags(t_cmd *head, t_minishell *minishell)
 {
-	// 심볼 기준 잘라서 넣기
 	int			i;
 	int			type;
 	char		*temp;
@@ -89,9 +85,9 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 					else if (temp[i] == '|')
 						type = PIPE;
 					else if (temp[i] == '>' && temp[i + 1] == '>')
-						type = FREDIR;
-					else
 						type = DREDIR;
+					else
+						type = BREDIR;
 					/////////////////////////////
 					//option parsing도 add_next_node에서
 					//ft_printf("parsing temp2:/%s/ /%s/\n", temp2, space_trim(temp2));
@@ -113,7 +109,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 			if (temp) // 마지막 cmd
 			{
 				type = LAST;
-				add_next_node(head, space_trim(temp), type);
+				head = add_next_node(head, space_trim(temp), type);
 				temp = NULL;
 			}
 		}

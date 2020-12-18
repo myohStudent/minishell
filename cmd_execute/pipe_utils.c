@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 20:40:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 00:46:18 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,45 +151,6 @@ char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 	return (store);
 }
 
-void get_path(t_env *list, t_minishell *minishell)
-{
-	char	**bin;
-	char *temp;
-	int i;
-	t_env *l;
-
-	l = list;
-	i = 0;
-	temp = NULL;
-	while (l && i < minishell->env_currnb)
-	{
-		if (ft_strcmp(l->variable, "PATH") == 0)
-		{
-			temp = ft_strdup(l->value);
-			break ;
-		}
-		l = l->next;
-		i++;
-	}
-	if (temp)
-	{
-		bin = ft_split(temp, ':');
-		free(temp);
-	}
-	i = 0;
-	while (bin[i])
-		i++;
-	pipe_bin = NULL;
-	pipe_bin = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (bin && bin[i])
-	{
-		pipe_bin[i] = ft_strjoin(bin[i], "/");
-		free(bin[i]);
-		i++;
-	}
-}
-
 char	*open_directory(char *path, char *command)
 {
 	DIR				*dir;
@@ -233,6 +194,6 @@ char	*get_bin(t_minishell *minishell, char *command)
 		i++;
 	}
 	if (ret == NULL)
-		ret = ft_strjoin("/bin/", command);
+		ret = NULL; //ret = ft_strjoin("/bin/", command);
 	return (ret);
 }

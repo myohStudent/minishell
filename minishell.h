@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/16 16:16:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 00:37:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define PIPE 3
 # define REDIR 4
 # define DREDIR 5
-# define FREDIR 6
+# define BREDIR 6
 # define LAST 7
 # define ENVIRON 8
 
@@ -53,22 +53,6 @@ char				**g_cmd_array;
 int					g_pid;
 char				**pipe_bin;
 char				**envp_list;
-
-// typedef struct stat{
-// 	dev_t st_dev; /* ID of device containing file */ 
-// 	ino_t st_ino; /* inode number */ 
-// 	mode_t st_mode; /* 파일의 종류 및 접근권한 */ 
-// 	nlink_t st_nlink; /* hardlink 된 횟수 */ 
-// 	uid_t st_uid; /* 파일의 owner */ 
-// 	gid_t st_gid; /* group ID of owner */ 
-// 	dev_t st_rdev; /* device ID (if special file) */ 
-// 	off_t st_size; /* 파일의 크기(bytes) */ 
-// 	blksize_t st_blksize; /* blocksize for file system I/O */ 
-// 	blkcnt_t st_blocks; /* number of 512B blocks allocated */ 
-// 	// time_t st_atime; /* time of last access */ 
-// 	// time_t st_mtime; /* time of last modification */ 
-// 	// time_t st_ctime; /* time of last status change */ 
-// };
 
 typedef struct s_env
 {
@@ -87,7 +71,7 @@ typedef struct		s_cmd
 	char			**pipe_array; //execve용
 	int				fdin;
 	int				fdout;
-	int				no_access;
+	int				fd;
 	int				input;
 	int				output;
 	int				hasenv;
@@ -108,7 +92,7 @@ typedef struct	 	s_minishell
 	int				cmd_num;
 	int				pipe_num;
 	int				redir_num;
-	char			**environ; // 환경변수 파이프 execve용
+	//char			**environ; // 환경변수 파이프 execve용
  // 명령어 파이프 execve용
 	int				forked;
 	int				quote[2];
@@ -149,7 +133,7 @@ void        cmd_echo(t_cmd *curr, t_minishell *minishell);
 int			arr_len(char **env);
 void		free_arr(char **arr);
 char	*parse_space(char *s, char *space);
-int		check_separator(t_minishell *minishell, t_cmd *curr);
+int		check_token(t_minishell *minishell, t_cmd *curr);
 //void	init_curr(t_cmd *curr);
 /*
 ** has_utils.c
@@ -221,6 +205,7 @@ void	exec_redir_scmd(t_minishell *minishell);
 ** cmd_exit.c
 */
 int			cmd_exit(t_cmd *curr, t_minishell *minishell);
+void	clear_env(t_env *env);
 /*
 ** parse_input.c
 */
@@ -236,7 +221,7 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 */
 //int		exec_pipe(t_cmd *curr, t_minishell *minishell);
 //void		parse_pipe(char **s);
-void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
+//void	pipe_prog(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2], int pipe_s[2]);
 
 /*
 ** pipe_utils.c
@@ -267,7 +252,12 @@ char	*open_directory(char *path, char *command);
 */
 //int			exec_redir(t_cmd *curr, t_minishell *minishell);
 void		redir1(t_minishell *minishell, t_cmd *cmd);
-int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
+//int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
+int		do_redir(t_minishell *minishell, t_cmd *scmd);
+int		do_dredir(t_minishell *minishell, t_cmd *scmd);
+int		do_bredir(t_minishell *minishell, t_cmd *scmd);
+
+
 
 
 /*
