@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 11:53:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 18:04:01 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct		s_cmd
 	int				output;
 	int				hasenv;
 	int				quote_type;
+	int				hasquote;
 	char			*command;
 	char			*option;
 	char			**argv;
@@ -108,6 +109,7 @@ void		welcome_shell(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
 int		dollar_exec(t_cmd *curr, t_minishell *minishell);
+int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell);
 void		parent_signal_handler(int signo);
 void		controld_exit(char *input);
 
@@ -141,23 +143,17 @@ int		check_token(t_minishell *minishell, t_cmd *curr);
 int			has_pipes(char *option);
 int			has_redirs(char *option);
 int			has_quotes(t_cmd *new);
+int get_quote_type(t_cmd *new);
 int			is_char_here(char c, char *str);
 int			is_instr(char c, char *str);
-int			ft_is_alnum(int c);
-int			has_env(char *str);
 int			ft_isquote(char c);
+
 /*
 ** parse_utils, parse_utils2.c
 */
 char		*ft_trimchar(char *str, char c);
 char		*space_trim(char *s);
 void		parse3(t_minishell *minishell, t_cmd *curr);
-// int			parse_sym_detail(t_sym **sym_cmd, t_cmd *cmd);
-// char		*update_sym(t_minishell *minishell);
-// void		parse_symbols(t_minishell *minishell, t_cmd *curr);
-// int			recheck_sym(int i, char *str, char *temp, int sign);
-// void		parse2_symbols(t_minishell *minishell, t_sym **sym_cmd)
-
 /*
 ** cmd_unset.c
 */
@@ -190,7 +186,6 @@ int			exec_else(t_minishell *minishell, t_cmd *curr);
 void		clear_scmd(t_cmd *cmd, t_minishell *minishell);
 void		clear_single_cmd(t_cmd *cmd);
 
-
 /*
 ** cmd_handler2.c
 */
@@ -199,7 +194,6 @@ void			exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
 void		exec_scmd(t_minishell *minishell);
 void	create_pipe_array(t_minishell *minishell);
 void	exec_redir_scmd(t_minishell *minishell);
-
 
 /*
 ** cmd_exit.c
@@ -236,41 +230,13 @@ char	*get_bin(t_minishell *minishell, char *command);
 void	get_path(t_env *list, t_minishell *minishell);
 char	*open_directory(char *path, char *command);
 
-
-/*
-** handler_utils2.c
-*/
-// void		add_next_cmd(t_cmd **start, t_cmd *new);
-// char		*newline_copy(char *src);
-// void		clear_cmd_list_free(t_cmd *curr);
-// void		clear_cmd_list(t_cmd **start, void (*del)(void *));
-// void		clear_symcmd(t_sym **start, void (*del)(void *));
-// char		**args_to_str(t_minishell *minishell, t_cmd *curr);
-
 /*
 ** redir_execute.c
 */
-//int			exec_redir(t_cmd *curr, t_minishell *minishell);
-void		redir1(t_minishell *minishell, t_cmd *cmd);
-//int		redir2(t_minishell *minishell, t_cmd *scmd, int flag);
+void	redir1(t_minishell *minishell, t_cmd *cmd);
 int		do_redir(t_minishell *minishell, t_cmd *scmd);
 int		do_dredir(t_minishell *minishell, t_cmd *scmd);
 int		do_bredir(t_minishell *minishell, t_cmd *scmd);
-
-
-
-
-/*
-**	redir_utils.c
-*/
-// int			error_check(t_sym *sym);
-// t_sym		*create_symcmd(t_minishell *minishell, int i);
-// t_sym		*create_arg_sym(char *str, int type);
-// void		add_next_sym(t_cmd **start, t_sym *new);
-
-// int			line_split(t_minishell *minishell, char *str, t_sym **start, int *i);
-// int			parse_sym(int i, char *str, char *splt, int sign);
-// int			sym_list_size(t_sym **start);
 
 /*
 ** quote_utils.c

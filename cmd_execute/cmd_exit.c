@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/06 21:53:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 16:29:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,4 @@ int		cmd_exit(t_cmd *curr, t_minishell *minishell)
 		g_command_nb = 127;
 		return (-1);
 	}
-
 }

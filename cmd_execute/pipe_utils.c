@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 00:46:18 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 18:04:16 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_cmd		*reverse_node(t_cmd *head)
     p = head->next;
 	q = NULL;
 	r = NULL;
-    //q = (t_cmd *)malloc(sizeof(t_cmd));
     while (p != NULL)
 	{
         r = q;
@@ -75,52 +74,96 @@ void	flag_checker(char flag)
 	}
 }
 
+// int		parse_flag(t_cmd *curr, t_cmd *head,
+// 					t_minishell *minishell, char flag)
+// {
+// 	int		i;
+// 	int		j;
+// 	char		*temp;
+// 	char		*temp2;
+// 	char		*temp3;
+// 	t_cmd	*next;
+
+// 	flag_checker(flag);
+// 	i = 0;
+// 	temp = ft_strjoin(curr->command, " ");
+// 	temp = ft_strjoin(temp, curr->option);
+// 	ft_printf("%s\n", temp);
+// 	curr = curr->next;
+// 	head->next = NULL;
+// 	if (temp != NULL)
+// 	{
+// 		delete_space_flag(&temp, flag);
+// 		i = 0;
+// 		if (temp != NULL)
+// 		{
+// 			while (temp[i])
+// 			{
+// 				while (temp[i] == flag && temp[i + 1] != '\0')
+// 				{
+// 					temp2 = ft_substr(temp, 0, i);
+// 					//option 넣는 거랑 다른 부호 파싱이 여기 들어가야 함.
+// 					add_node(head, space_trim(temp2));
+// 					free(temp2);
+// 					free(temp);
+// 					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
+// 					temp2 = NULL;
+// 					i = -1;
+// 				}
+// 				i++;
+// 			}
+// 			if (temp)
+// 			{
+// 				add_node(head, space_trim(temp));
+// 				temp = NULL;
+// 				free(temp);
+// 			}
+// 			free(temp2);
+// 		}
+// 	}
+// 	return (1);
+// }
+
 int		parse_flag(t_cmd *curr, t_cmd *head,
-				t_minishell *minishell, char flag)
+					t_minishell *minishell, char flag)
 {
 	int		i;
 	int		j;
-	char		*temp;
-	char		*temp2;
-	char		*temp3;
+	char		*temp[3];
 	t_cmd	*next;
 
 	flag_checker(flag);
 	i = 0;
-	temp = ft_strjoin(curr->command, " ");
-	temp = ft_strjoin(temp, curr->option);
-	ft_printf("%s\n", temp);
+	temp[0] = ft_strjoin(curr->command, " ");
+	temp[1] = ft_strjoin(temp[0], curr->option);
 	curr = curr->next;
 	head->next = NULL;
-
-	if (temp != NULL)
+	if (temp[1] != NULL)
 	{
-		delete_space_flag(&temp, flag);
+		delete_space_flag(&temp[1], flag);
 		i = 0;
-		if (temp != NULL)
+		if (temp[1] != NULL)
 		{
-			while (temp[i])
-			{ 
-				while (temp[i] == flag && temp[i + 1] != '\0')
+			while (temp[1][i])
+			{
+				while (temp[1][i] == flag && temp[1][i + 1] != '\0')
 				{
-					temp2 = ft_substr(temp, 0, i);
+					
+					temp[2] = ft_substr(temp[1], 0, i);
 					//option 넣는 거랑 다른 부호 파싱이 여기 들어가야 함.
-					add_node(head, space_trim(temp2));
-					free(temp2);
-					free(temp);
-					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
-					temp2 = NULL;
+					add_node(head, space_trim(temp[2]));
+					free(temp[2]);
+					free(temp[1]);
+					temp[1] = NULL;
+					temp[1] = ft_substr(temp[1], i + 1, ft_strlen(temp[1]) - i);
+					temp[2] = NULL;
 					i = -1;
 				}
 				i++;
 			}
-			if (temp) // 마지막 cmd
-			{
-				add_node(head, space_trim(temp));
-				temp = NULL;
-				free(temp);
-			}
-			free(temp2);				
+			if (temp[1])
+				add_node(head, space_trim(temp[1]));
+			free_arr(temp);
 		}
 	}
 	return (1);
@@ -142,7 +185,6 @@ char	**store_commands(t_cmd *scmd, t_minishell *minishell)
 	while (temp)
 	{
 		store[i] = ft_strdup(temp->command);
-		//ft_printf("store[%d]: /%s/\n", i, store[i]);
 		temp = temp->next;
 		i++;
 	}
@@ -194,6 +236,6 @@ char	*get_bin(t_minishell *minishell, char *command)
 		i++;
 	}
 	if (ret == NULL)
-		ret = NULL; //ret = ft_strjoin("/bin/", command);
+		ret = NULL;
 	return (ret);
 }

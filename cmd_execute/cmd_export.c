@@ -137,7 +137,7 @@ int cmd_export(t_cmd *curr, t_minishell *minishell)
 	sort_env(minishell);
 	if (curr->argc == 1)
 		print_export(minishell->export_list);
-	if (curr->argc > 1)
+	if (curr->argc > 1 && curr->argc != 42)
 	{
 		new_env = ft_split(curr->option, ' ');
 		while(new_env[i] != NULL)

@@ -69,7 +69,9 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
+	// ft_printf("-----------------------------------%d\n",has_quotes(curr));
+	if ((!curr || !curr->command || get_argc(curr) == 1) && curr->hasquote)
+	// && !has_quotes(curr->command))
 		return;
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
@@ -122,9 +124,11 @@ void split_argv_quotes_cmd(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	if ((!curr || !curr->command || get_argc(curr) == 1) && !has_quotes(curr->command))
+	
+	if ((!curr || !curr->command || get_argc(curr) == 1) && !curr->hasquote)
 		return;
 	i = has_quotes(curr->command) - ft_remove_quote(curr);
+	ft_printf("%d,,,,,,,,\n",i);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
@@ -159,24 +163,36 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 
 	//has_quotes에서 "가 2개 있고, 첫번 째 "앞에  '이 하나라도 없다면
 	//무조건 has_env 스위치 켜지도록 한다.
-	//doublequote 앞에 singlequote가 있거나, singlequote앞에 doublequote가 있을 경우 quote_type on
+	//doublequote 앞에 singlequote가 있으면  quote_type = 1
+	//singlequote앞에 doublequote가 있을 경우 quote_type = 2
 	//--여기까지 완료 --
+	
 	//hasenv==1이고, quote_type가 1이 아니고,
-	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환.
-	//==0이 아니면 ENV로 치환하지않음. 
+	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
 
-	//quote_type ==1일 경우 "" 지우면 안됨, quote_type == 2일 경우 ' 지우면 안됨
-
-		new->hasenv = 0;
-
+	//quote_type ==1일 경우 "" 지우면 안됨
+	//quote_type ==2일 경우 ' 지우면 안됨
+	new->hasquote = 1;
+	new->hasenv = 0;
+	get_quote_type(new);
 	if (ft_isquote(new->command[0]) && has_quotes(new) &&
 		(new->command[has_quotes(new)] == 0 ||
 		 new->command[has_quotes(new)] == ' '))
+	{	
+		if(new->hasenv == 1 && new->quote_type != 1)
+			dollar_exec_with_quote(new, minishell);
 		split_argv_quotes_cmd(new);
+	}
 	else
-		ft_printf("dtd");
-	// split_argv(new);
+		{
+
+			ft_printf("정신차려최서희\n");
+			ft_printf("'%d, %d'\n",new->hasenv, new->quote_type);
+			split_argv(new);
+			if(new->hasenv == 1 && new->quote_type != 1)
+				dollar_exec_with_quote(new, minishell);
+		}
 
 	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));
 	//if (new->option != NULL && new->option)

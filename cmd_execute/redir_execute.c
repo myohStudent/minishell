@@ -6,13 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 14:46:36 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 17:00:50 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		do_redir(t_minishell *minishell, t_cmd *scmd)
+int			do_redir(t_minishell *minishell, t_cmd *scmd)
 {
 	int		fd;
 
@@ -38,7 +38,7 @@ int		do_redir(t_minishell *minishell, t_cmd *scmd)
 	return (1);
 }
 
-int		do_dredir(t_minishell *minishell, t_cmd *scmd)
+int			do_dredir(t_minishell *minishell, t_cmd *scmd)
 {
 	int		fd;
 
@@ -64,7 +64,7 @@ int		do_dredir(t_minishell *minishell, t_cmd *scmd)
 	return (1);
 }
 
-int		do_bredir(t_minishell *minishell, t_cmd *scmd)
+int			do_bredir(t_minishell *minishell, t_cmd *scmd)
 {
 	int		fd;
 
@@ -84,15 +84,15 @@ int		do_bredir(t_minishell *minishell, t_cmd *scmd)
 		ft_printf("%s: command not found\n", scmd->command);
 		exit(127);
 	}
+	exec_else2(minishell, scmd, 0);
 	dup2(fd, 1);
 	close(fd);
-	exec_else2(minishell, scmd, 0);
 	return (1);
 }
 
-void	redir1(t_minishell *minishell, t_cmd *scmd)
+void		redir1(t_minishell *minishell, t_cmd *scmd)
 {
-	t_cmd *sscmd;
+	t_cmd	*sscmd;
 
 	sscmd = scmd;
 	while (sscmd && sscmd->next)
@@ -104,7 +104,6 @@ void	redir1(t_minishell *minishell, t_cmd *scmd)
 			sscmd->fd = do_dredir(minishell, scmd);
 		else if (scmd->type == BREDIR && sscmd->fd != -1)
 			sscmd->fd = do_bredir(minishell, scmd);
-		//sscmd = sscmd->next;
 		sscmd = sscmd->next;
 	}
 }

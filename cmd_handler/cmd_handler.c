@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/19 14:39:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 18:04:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,10 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 
 void	clear_single_cmd(t_cmd *cmd)
 {
-	ft_printf("cmd : /%s/\n", (cmd)->command);
     while ((cmd)->command != NULL)
     {
         if ((cmd)->command)
 			(cmd)->command = NULL;
-        // if (cmd->pipe_bin)
-        //     free_arr(cmd->pipe_bin);
-        // if (cmd->pipe_array)
-        //     free_arr(cmd->pipe_array);
         if ((cmd)->option)
 			(cmd)->option = NULL;
         if ((cmd)->type)
@@ -60,7 +55,6 @@ void	clear_single_cmd(t_cmd *cmd)
 
 void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
-  //  ft_printf("위잉위잉 cmd 청소시작 : /%s/\n", cmd->command);
     while (cmd)
     {
         if (cmd->command)
@@ -76,6 +70,7 @@ void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
         if (cmd->typestr)
             free(cmd->typestr);
 		cmd->fd = 0;
+		cmd->argc = 0;
         cmd = cmd->next;
     }
     free(cmd);
@@ -83,20 +78,18 @@ void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	if (check_token(minishell, curr) < 0 )
+	if (check_token(minishell, curr) < 0)
 		return (-1);
 	if (pipe_num > 0 || minishell->redir_num > 0)
 	{
 		parse3(minishell, curr);
-		ft_printf("pipe:%d, redir:%d\n", pipe_num, minishell->redir_num);
-
 		if (minishell->scmd && pipe_num > 0 && minishell->redir_num > 0)
 		{
-			ft_printf("감히 pipe와 redirection을 동시에 하려고 하다니... 그런 건 서브젝트에 없습니다.\n");
+			ft_printf("감히 pipe와 redirection을 동시에 하려고 하다니...그런 건 서브젝트에 없습니다.\n");
 			return (1);
 		}
 		if (minishell->scmd && pipe_num > 0)
-			exec_scmd(minishell); 
+			exec_scmd(minishell);
 		else 
 			exec_redir_scmd(minishell);
 		if (minishell->scmd)

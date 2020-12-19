@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   has_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/14 19:11:06 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/19 18:03:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,28 @@ int has_quotes(t_cmd *new)
 		if (ft_isquote(new->command[i]) == 2) //39
 			isdouble++;
 		i++;
+		if (isquote == 2 || isdouble == 2)
+			return (i);
+	}
+	return (0);
+}
+
+int get_quote_type(t_cmd *new)
+{
+	int isdouble;
+	int isquote;
+	int i;
+
+	isdouble = 0;
+	isquote = 0;
+	i = 0;
+	while (new->command[i])
+	{
+		if (ft_isquote(new->command[i]) == 1) //34
+			isquote++;
+		if (ft_isquote(new->command[i]) == 2) //39
+			isdouble++;
+		i++;
 		if (isdouble == 2 && (get_first_quote(new->command, 1) <
 		get_first_quote(new->command, 2)) || !get_first_quote(new->command, 1)) //'이 없거나, 있어도 "보다 늦게 나온다.
 			new->hasenv = 1;//env가 있다
@@ -131,41 +153,10 @@ int has_quotes(t_cmd *new)
 			new->quote_type = 1; //더블쿼트 지우면 안된다는 표시
 		if (isquote == 2 && get_first_quote(new->command, 2) &&
 		get_first_quote(new->command, 1) > get_first_quote(new->command, 2))
-				new->quote_type = 2; //싱글쿼트 지우면 안된다는 표시
+			new->quote_type = 2; //싱글쿼트 지우면 안된다는 표시
 		if (isquote == 2 || isdouble == 2)
 			return (i);
 	}
-}
-
-int ft_is_alnum(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || ft_isdigit(c))
-		return (1);
-	return (0);
-}
-
-int has_env(char *str)
-{
-	int i;
-	int cnt;
-
-	i = 0;
-	cnt = 0;
-	while (str[i])
-	{
-		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
-			return (0);
-		if (!ft_is_alnum(str[i]) && str[i] != '_' && str[i] != '=' && str[i] != '+' && str[i] != '\'' && str[i] != '\"')
-			return (0);
-		if ((str[i] == '\'' || str[i] == '\"') && cnt < 1)
-			return (0);
-		if (cnt == 0 && str[i] == '+' && str[i + 1] != '=')
-			return (0);
-		if (str[i] == '=')
-			cnt++;
-		i++;
-	}
-	if (cnt)
-		return (1);
+	new->hasquote = 0;
 	return (0);
 }

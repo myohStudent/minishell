@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 22:55:01 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/07 11:44:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 18:00:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void cmd_unset(t_cmd *curr, t_minishell *minishell)
 	i = 0;
 	if (curr->argc <= 1)
 		return ;
-	if (curr->argc > 1)
+	if (curr->argc > 1 && curr->argc != 42)
 	{
 		remove_env = ft_split(curr->option, ' ');
 		while(remove_env[i] != NULL)
