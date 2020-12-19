@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/18 21:17:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 11:06:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,15 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 					else if (temp[i] == '|')
 						type = PIPE;
 					else if (temp[i] == '>' && temp[i + 1] == '>')
+					{	
 						type = DREDIR;
+						i++;
+					}
 					else
 						type = BREDIR;
 					/////////////////////////////
 					//option parsing도 add_next_node에서
-					//ft_printf("parsing temp2:/%s/ /%s/\n", temp2, space_trim(temp2));
+					ft_printf("parsing temp2:/%s/ /%s/\n", temp2, space_trim(temp2));
 					add_next_node(head, space_trim(temp2), type);
 					minishell->cnt++;
 					free(temp2);
