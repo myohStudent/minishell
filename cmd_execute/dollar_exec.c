@@ -90,6 +90,7 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 	i = 0;
 	ft_printf("dollar exec with quote 들어옴 LOL \n");
 	return (0);
+	
 	if (curr->hasquote == 1)
 		return (0);
 	if (curr->command[0] == '$' && curr->command[1] == '?')

@@ -47,16 +47,27 @@ int ft_remove_quote(t_cmd *curr)
 	i = 0;
 	while (curr->command[i])
 	{
-		if (ft_isquote(curr->command[i]) == 1)
+		if (ft_isquote(curr->command[i]))
 			quotenum++;
 		i++;
 	}
 	temp = ft_strdup(curr->command);
 	free(curr->command);
-	curr->command = ft_trimchar(temp, '\'');
-	free(temp);
-	temp = ft_trimchar(curr->command, '\"');
-	free(curr->command);
+	if (curr->quote_type != 2)
+	{
+		curr->command = ft_trimchar(temp, '\'');
+		free(temp);
+	}
+	if (curr->quote_type != 1)
+	{
+		temp = ft_trimchar(curr->command, '\"');
+		free(curr->command);
+
+	}
+	if (quotenum > 2)
+		quotenum = 2;
+	// if (curr->quote_type == 2 || curr->quote_type == 1)
+	// 	quotenum -= 2;
 	curr->command = temp;
 	return (quotenum);
 }
@@ -125,12 +136,17 @@ void split_argv_quotes_cmd(t_cmd *curr)
 	i = 0;
 	curr->option = NULL;
 	
-	if ((!curr || !curr->command || get_argc(curr) == 1) && !curr->hasquote)
+	if ((!curr || !curr->command) && !curr->hasquote)
 		return;
-	i = has_quotes(curr->command) - ft_remove_quote(curr);
-	ft_printf("%d,,,,,,,,\n",i);
+	int d = has_quotes(curr);
+
+	int j = ft_remove_quote(curr);
+
+	i = d - j;
+	ft_printf(">>cmd[i] %c, hasquote %d, remove %d<<\n", curr->command[i], d, j);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
+
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
@@ -173,24 +189,28 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 
 	//quote_type ==1일 경우 "" 지우면 안됨
 	//quote_type ==2일 경우 ' 지우면 안됨
-	new->hasquote = 1;
+	
+	//그냥 split에서 옵션에서 쿼트 지워주는 함수 만들기
+	//'1 2 3 "4 5" 6' 일 경우 버그 
+	new->hasquote = 0;
 	new->hasenv = 0;
+	new->quote_type = 0;
 	get_quote_type(new);
 	if (ft_isquote(new->command[0]) && has_quotes(new) &&
 		(new->command[has_quotes(new)] == 0 ||
 		 new->command[has_quotes(new)] == ' '))
 	{	
+		ft_printf("'%d, %d'\n",new->hasenv, new->quote_type);
 		if(new->hasenv == 1 && new->quote_type != 1)
 			dollar_exec_with_quote(new, minishell);
+
 		split_argv_quotes_cmd(new);
 	}
 	else
 		{
-
 			ft_printf("정신차려최서희\n");
-			ft_printf("'%d, %d'\n",new->hasenv, new->quote_type);
 			split_argv(new);
-			if(new->hasenv == 1 && new->quote_type != 1)
+			if(new->hasenv == 1 && new->quote_type == 2)
 				dollar_exec_with_quote(new, minishell);
 		}
 
