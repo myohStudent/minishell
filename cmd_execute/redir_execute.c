@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 10:33:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 11:36:07 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int		do_redir(t_minishell *minishell, t_cmd *scmd)
 		g_command_nb = 127;
 		close(fd);
 		g_sigexit = 0;
-		exit(0); 
+		exit(0);
 	}
-	// if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
-	// 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
-	// 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
-	// 	ft_printf("%s: command not found\n", scmd->command);
+	if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
+	 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
+	 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
+	 	ft_printf("%s: command not found\n", scmd->command);
 	if (scmd->fd)
 		close(scmd->fd);
 	return (fd);
@@ -51,10 +51,10 @@ int		do_dredir(t_minishell *minishell, t_cmd *scmd)
 		g_sigexit = 0;
 		exit(0);
 	}
-	// if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
-	// 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
-	// 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
-	// 	ft_printf("%s: command not found\n", scmd->command);
+	if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
+		&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
+	 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
+	 	ft_printf("%s: command not found\n", scmd->command);
 	if (scmd->fd)
 		close(scmd->fd);
 	return (fd);
@@ -76,10 +76,10 @@ int		do_bredir(t_minishell *minishell, t_cmd *scmd)
 		g_sigexit = 0;
 		exit(0);
 	}
-	// if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
-	// 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
-	// 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
-	// 	ft_printf("%s: command not found\n", scmd->command);
+	if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command, "echo"))
+	 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
+	 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset")))
+	 	ft_printf("%s: command not found\n", scmd->command);
 	if (scmd->fd)
 		close(scmd->fd);
 	return (fd);
