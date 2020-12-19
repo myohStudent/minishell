@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/19 12:13:42 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 14:39:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	// else
-	// {
-	// 	ft_printf("%s: command not found\n", curr->command);
-	// 	g_command_nb = 127;
-	// }
+	else
+	{
+	 	ft_printf("%s: command not found\n", curr->command);
+	 	g_command_nb = 127;
+	}
 	return (1);
 }
 
@@ -60,7 +60,7 @@ void	clear_single_cmd(t_cmd *cmd)
 
 void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 {
-    ft_printf("위잉위잉 cmd 청소시작 : /%s/\n", cmd->command);
+  //  ft_printf("위잉위잉 cmd 청소시작 : /%s/\n", cmd->command);
     while (cmd)
     {
         if (cmd->command)

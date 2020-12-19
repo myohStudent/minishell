@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 12:13:31 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 14:42:58 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		//ft_printf("%s : command not found.\n", scmd->command);
 		exit(127);
 	}*/
-	exit(0);
+	//exit(0);
 	// else
 	// 	ft_printf("%s : command not found.\n", curr->command);
 	// else if ((!curr->prev || (curr->prev && !(curr->prev->type == PIPE))))
@@ -169,12 +169,11 @@ void	exec_redir_scmd(t_minishell *minishell)
 			else
 				dup2(scmd->fd, 0);
 			close(scmd->fd);
-			if (scmd->command)
-			 	exec_else2(minishell, scmd, pipe_fd);
+			// if (scmd->command)
+			//  	exec_else2(minishell, scmd, 0);
 			exit(1);
 		}
 		waitpid(pid, NULL, 0);
-		g_sigexit = 1;
 		scmd = scmd->next;
 	}
 	g_sigexit = 1;
