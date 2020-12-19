@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/19 00:46:16 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 12:11:29 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		main(int ac, char **av, char **env)
 	minishell.path = getcwd(NULL, 0);
 	while (1)
 	{
-		display_prompt();
+		display_prompt();	
 		signal(SIGINT, parent_signal_handler);
 		signal(SIGQUIT, parent_signal_handler);
 		if (g_sigexit != 1 && g_sigexit != 2)

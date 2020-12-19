@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 00:38:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/19 12:13:31 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		exit(0);
-	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
+	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)	
 		cmd_pwd(curr, minishell);
 	// else
 	// 	ft_printf("%s : command not found.\n", curr->command);
@@ -165,21 +165,20 @@ void	exec_redir_scmd(t_minishell *minishell)
 				scmd->fd = do_dredir(minishell, scmd);
 			//fd가 -1일 때 예외처리 안 해줬음(exit(-1)).
 			if (scmd->type == REDIR || scmd->type == DREDIR)
-				dup2(scmd->fd, 1);
+			 	dup2(scmd->fd, 1);
 			else
 				dup2(scmd->fd, 0);
 			close(scmd->fd);
-			if (scmd->command && scmd->fd != -1)
-			{
-				exec_else2(minishell, scmd, pipe_fd);
-				g_sigexit = 0;
-				exit(0);
-			}
-			waitpid(pid, NULL, 0);
+			if (scmd->command)
+			 	exec_else2(minishell, scmd, pipe_fd);
+			exit(1);
 		}
+		waitpid(pid, NULL, 0);
+		g_sigexit = 1;
 		scmd = scmd->next;
 	}
-	g_sigexit = 0;
+	g_sigexit = 1;
+	//exit(0);
 }
 
 void    exec_scmd(t_minishell *minishell)
