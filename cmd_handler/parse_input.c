@@ -55,7 +55,11 @@ int ft_remove_quote(t_cmd *curr)
 	free(curr->command);
 	if (curr->quote_type != 2)
 	{
+		ft_printf("temp >>>>%s<<<<\n",temp);
+		
 		curr->command = ft_trimchar(temp, '\'');
+		ft_printf("curr >>>>%s<<<<\n",curr->command);
+
 		free(temp);
 	}
 	if (curr->quote_type != 1)
@@ -64,6 +68,8 @@ int ft_remove_quote(t_cmd *curr)
 		free(curr->command);
 
 	}
+		ft_printf("curr >>>>%s<<<<\n",curr->command);
+
 	if (quotenum > 2)
 		quotenum = 2;
 	// if (curr->quote_type == 2 || curr->quote_type == 1)
@@ -71,6 +77,7 @@ int ft_remove_quote(t_cmd *curr)
 	curr->command = temp;
 	return (quotenum);
 }
+
 
 void split_argv(t_cmd *curr)
 {
@@ -87,6 +94,10 @@ void split_argv(t_cmd *curr)
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
 	i -= ft_remove_quote(curr);
+	ft_printf("i ------------- %d \n", i);
+
+	if (curr->quote_type == 2 || curr->quote_type == 1)
+		i = 0;
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
@@ -138,19 +149,25 @@ void split_argv_quotes_cmd(t_cmd *curr)
 	
 	if ((!curr || !curr->command) && !curr->hasquote)
 		return;
+	int lastquote = get_first_quote(curr->command+ 1,curr->quote_type);
 	int d = has_quotes(curr);
-
 	int j = ft_remove_quote(curr);
-
 	i = d - j;
-	ft_printf(">>cmd[i] %c, hasquote %d, remove %d<<\n", curr->command[i], d, j);
+	
+	if (curr->quote_type == 2 || curr->quote_type == 1)
+		i = lastquote;
+
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
 
+	// ft_printf(">>cmd %s, cmd[i] %c, i %d, hasquote %d, remove %d<<\n", curr->command, curr->command[i], i, d, j);
+	ft_printf(">>cmd: %s<<\n", curr->command);
+
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
+	ft_printf(">>cmd: %s<<\n", curr->command);
 	temp = ft_substr(curr->command, 0, i);
-	ft_printf(">>%s<<\n", temp);
+
 	ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));

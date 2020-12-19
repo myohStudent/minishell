@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 18:04:01 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/20 01:20:00 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int		check_token(t_minishell *minishell, t_cmd *curr);
 /*
 ** has_utils.c
 */
+int get_first_quote(char *command, int type);
 int			has_pipes(char *option);
 int			has_redirs(char *option);
 int			has_quotes(t_cmd *new);
