@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 17:51:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/21 14:51:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,8 @@ void			exec_scmd(t_minishell *minishell)
 			}
 			else if (scmd->type == LAST)
 			{
-				ft_printf("scmd->argc=%d\n", scmd->argc);
 				exec_else(minishell, scmd);
-				exit(127);
+				exit(1);
 			}
 			else
 				exit(1);

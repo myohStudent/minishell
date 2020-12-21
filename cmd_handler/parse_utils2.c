@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/21 12:27:43 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/21 14:50:34 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,32 @@ char			**ft_onesplit(char *s, char c)
 t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 {
 	char	**str;
-	char	*temp;
 	t_cmd	*new;
 
 	ft_printf("s:%s\n",s);
 	new = (t_cmd *)malloc(sizeof(t_cmd));
     new->next = target->next;
 	str = ft_split(s, ' ');
-	if (str[2])
+	ft_printf("str[0]:/%s/ str[1]:/%s/ str[2]:/%s/\n", str[0], str[1], str[2]);
+	new->command = ft_strdup(str[0]);
+	free(str[0]);
+	str[0] = NULL;
+	if (str[2] && str[1])
 	{
-		temp = ft_strjoin(str[1], " ");
+		str[0] = ft_strjoin(str[1], " ");
 		free(str[1]);
 		str[1] = NULL;
-		str[1] = ft_strjoin(temp, str[2]);
-		free(temp);
-		temp = NULL;
+		str[1] = ft_strjoin(str[0], str[2]);
+		free(str[2]);
+		free(str[0]);
+		ft_printf("str[1]:%s\n", str[1]);
 	}
-	ft_printf("str[0]:/%s/ str[1]:/%s/\n", str[0], str[1]);
-	if (str[1] != NULL)
+	if (str[1])
 	{
-		new->command = ft_strdup(str[0]);
 	 	new->option = ft_strdup(str[1]);
 		new->fd = 0;
+		free(str[1]);
 	}
-	else
-		new->command = ft_strdup(str[0]);
 	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset"))
 		{
 			if (!new->option)
@@ -70,12 +71,9 @@ t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 				new->argc = 42;
 		}
 	new->type = i;
-	ft_printf("cmd:/%s/ type:/%d/ opt:/%s/ argc:/%d/\n", new->command, new->type, new->option, new->argc);
 	target->next = new;
-	if (str[1])
-		free_arr(str);
-	else
-		free(str);
+	ft_printf("str[0]:/%s/ str[1]:/%s/ str[2]:/%s/\n", str[0], str[1], str[2]);
+	ft_printf("cmd:/%s/ type:/%d/ opt:/%s/ argc:/%d/\n", new->command, new->type, new->option, new->argc);
 	return (target);
 }
 
