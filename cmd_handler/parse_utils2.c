@@ -6,74 +6,63 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/21 14:50:34 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/21 16:58:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char			**ft_onesplit(char *s, char c)
+void			get_cmd_argc(t_cmd *new)
 {
-	int			i;
-	char		**res;
-
-	i = 0;
-	res = (char **)malloc(sizeof(char *) * 3);
-	while (i < ft_strlen(s))
-	{
-		if (s[i] == c)
-		{
-			res[0] = ft_substr(s, 0, i - 1);
-			res[1] = ft_substr(s, i + 1, ft_strlen(s));
-			return (res);
-		}
-		i++;
-	}
-	res[0] = strdup(s);
-	res[1] = NULL;
-	return (res);
-}
-
-t_cmd			*add_next_node(t_cmd *target, char *s, int i)
-{
-	char	**str;
-	t_cmd	*new;
-
-	ft_printf("s:%s\n",s);
-	new = (t_cmd *)malloc(sizeof(t_cmd));
-    new->next = target->next;
-	str = ft_split(s, ' ');
-	ft_printf("str[0]:/%s/ str[1]:/%s/ str[2]:/%s/\n", str[0], str[1], str[2]);
-	new->command = ft_strdup(str[0]);
-	free(str[0]);
-	str[0] = NULL;
-	if (str[2] && str[1])
-	{
-		str[0] = ft_strjoin(str[1], " ");
-		free(str[1]);
-		str[1] = NULL;
-		str[1] = ft_strjoin(str[0], str[2]);
-		free(str[2]);
-		free(str[0]);
-		ft_printf("str[1]:%s\n", str[1]);
-	}
-	if (str[1])
-	{
-	 	new->option = ft_strdup(str[1]);
-		new->fd = 0;
-		free(str[1]);
-	}
-	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset"))
-		{
 			if (!new->option)
 				new->argc = 1;
 			else
 				new->argc = 42;
-		}
+}
+
+char			*split_cmd(char *s)
+{
+	int			i;
+	char		*str;
+
+	i = 0;
+	while (s[i] && s[i] != ' ')
+		i++;
+	str = malloc(sizeof(char) * i);
+	str = ft_substr(s, 0, i);
+	str[i] = '\0';
+	ft_printf("str:/%s/\n", str);
+	return (str); 
+}
+
+char			*split_opt(char *s)
+{
+	int			i;
+	char		*str;
+
+	i = 0;
+	while (s[i] && s[i] != ' ')
+		i++;
+	str = malloc(sizeof(char) * (ft_strlen(s) - i));
+	str = ft_substr(s, i + 1, ft_strlen(s));
+	//s[ft_strlen(s)] = '\0';
+	ft_printf("str:/%s/\n", str);
+	return (str); 
+}
+
+t_cmd			*add_next_node(t_cmd *target, char *s, int i)
+{
+	t_cmd		*new;
+
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+    new->next = target->next;
+	new->command = ft_strdup(split_cmd(s));
+	new->option = ft_strdup(split_opt(s));
+	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset"))
+		get_cmd_argc(new);
 	new->type = i;
+	new->fd = 0;
 	target->next = new;
-	ft_printf("str[0]:/%s/ str[1]:/%s/ str[2]:/%s/\n", str[0], str[1], str[2]);
-	ft_printf("cmd:/%s/ type:/%d/ opt:/%s/ argc:/%d/\n", new->command, new->type, new->option, new->argc);
 	return (target);
 }
 
