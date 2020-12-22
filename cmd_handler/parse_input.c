@@ -198,17 +198,21 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//무조건 has_env 스위치 켜지도록 한다.
 	//doublequote 앞에 singlequote가 있으면  quote_type = 1
 	//singlequote앞에 doublequote가 있을 경우 quote_type = 2
+	
+	//quote_type ==1일 경우 "" 지우면 안됨
+	//quote_type ==2일 경우 ' 지우면 안됨
+	
+	//그냥 split에서 옵션에서 쿼트 지워주는 함수 만들기
+	//'1 2 3 "4 5" 6' 일 경우 버그 
 	//--여기까지 완료 --
 	
 	//hasenv==1이고, quote_type가 1이 아니고,
 	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
 
-	//quote_type ==1일 경우 "" 지우면 안됨
-	//quote_type ==2일 경우 ' 지우면 안됨
-	
-	//그냥 split에서 옵션에서 쿼트 지워주는 함수 만들기
-	//'1 2 3 "4 5" 6' 일 경우 버그 
+	//'12"34"56', "12'34'56", 'asdf"$HOME"asdf' 일 시 '가 안없어지는 버그있음
+	//"asdf 'asdf' asdf" 일 경우 안 나옴(결과값이 0 나옴) 
+	//"asdf '$HOME' asdf" 일 경우 안나옴(결과값이 0 나옴)
 	new->hasquote = 0;
 	new->hasenv = 0;
 	new->quote_type = 0;
@@ -217,7 +221,7 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 		(new->command[has_quotes(new)] == 0 ||
 		 new->command[has_quotes(new)] == ' '))
 	{	
-		ft_printf("'%d, %d'\n",new->hasenv, new->quote_type);
+		ft_printf("커맨드가 쿼트일 경우'%d, %d'\n",new->hasenv, new->quote_type);
 		if(new->hasenv == 1 && new->quote_type != 1)
 			dollar_exec_with_quote(new, minishell);
 
@@ -225,10 +229,10 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	}
 	else
 		{
-			ft_printf("정신차려최서희\n");
+			ft_printf("커맨드가 쿼트가 아닐 경우 \n");
 			split_argv(new);
-			if(new->hasenv == 1 && new->quote_type == 2)
-				dollar_exec_with_quote(new, minishell);
+			// if(new->hasenv == 1 && new->quote_type == 2)
+			// 	dollar_exec_with_quote(new, minishell);
 		}
 
 	//ft_printf("%s, %d, %d \n",new->command, (ft_strlen(new->command), word_end - word_start));

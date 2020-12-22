@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 17:54:44 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/20 01:24:38 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/23 00:49:07 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char				*ft_substr(char const *s, unsigned int start, size_t len)
 {
-
 	char			*str;
 	unsigned int	i;
 	unsigned int	j;
