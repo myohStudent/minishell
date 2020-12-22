@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/21 14:51:55 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 11:56:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 
 int cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
-	if (check_token(minishell, curr) < 0)
+	if (!check_token(minishell, curr))
 		return (-1);
 	if (pipe_num > 0 || minishell->redir_num > 0)
 	{
@@ -171,7 +171,7 @@ int cmd_handler(t_minishell *minishell)
 		if (curr->command)
 		{
 			if (!(cmd_executer(minishell, curr)))
-				return (-1);
+				break ;
 			t_cmd *next;
 			next = curr->next;
 			if (curr->next)
