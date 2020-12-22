@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/21 16:58:11 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:19:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 					}
 					else
 						type = BREDIR;
-					add_next_node(head, space_trim(temp2), type);
+					add_next_node(head, ft_trim(temp2), type);
 					minishell->cnt++;
 					free(temp2);
 					temp3 = ft_strdup(temp);
@@ -116,7 +116,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 			if (temp)
 			{
 				type = LAST;
-				head = add_next_node(head, space_trim(temp), type);
+				head = add_next_node(head, ft_trim(temp), type);
 				temp = NULL;
 			}
 		}
@@ -136,10 +136,6 @@ void			parse3(t_minishell *minishell, t_cmd *curr)
 	t_cmd		*scmd;
 
 	minishell->cnt = 1;
-	temp = ft_strjoin(curr->command, " ");
-	if (curr->option)
-		raw_input = ft_strjoin(temp, curr->option); // raw_input을 handler에서 이미 했던 거라 이따가 봐서 지웁시당 ㅠ
-	free(temp);
 	curr = curr->next;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
 	scmd = (t_cmd *)malloc(sizeof(t_cmd));

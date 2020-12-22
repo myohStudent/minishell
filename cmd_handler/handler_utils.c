@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/22 11:55:48 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:44:22 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,8 @@ char    *parse_space(char *s, char *space)
     return (ft_substr(s, 0, i + 1));
 }
 
-int         exceptions(char *input)
+int         exceptions2(char *input, int i)
 {
-    int     i;
-
-    i = 0;
-    if (input[i] == '|')
-    {
-        ft_printf("syntax error near unexpected token `|'\n");
-        free(input);
-        return (-1);
-    }
-    else if (input[i] == '>' || input[i] == '<')
-    {
-        ft_printf("syntax error near unexpected token `newline'\n");
-        free(input);
-        return (-1);
-    }
     while (input[i])
     {
         if (input[i] == '|' && input[i + 1] == '|')
@@ -75,7 +60,7 @@ int         exceptions(char *input)
             free(input);
             return (-1);
         }
-        else if (input[i] == '<' && input[i + 1] == '<')
+        else if (input[i] == '<' && (input[i + 1] == '<' || input[i + 1] == '>'))
         {
             ft_printf("syntax error near unexpected token `newline'\n");
             free(input);
@@ -92,23 +77,69 @@ int         exceptions(char *input)
     return (1);
 }
 
+int         exceptions(char *input)
+{
+    int     i;
+
+    i = 0;
+    if (!input)
+        return (-1);
+    if (input[i] == '|')
+    {
+        ft_printf("syntax error near unexpected token `|'\n");
+        free(input);
+        return (-1);
+    }
+    else if (input[i] == '>' || input[i] == '<')
+    {
+        ft_printf("syntax error near unexpected token `newline'\n");
+        free(input);
+        return (-1);
+    }
+    if (exceptions2(input, i) < 0)
+        return (-1);
+    return (1);
+}
+
+void        init_num(t_minishell *minishell)
+{
+    pipe_num = 0;
+    minishell->redir_num = 0;
+}
+
+int         check_last_token(char *input)
+{
+    char    *s;
+
+    s = ft_trim(input);
+    if (s[ft_strlen(s) -1] == '|' || s[ft_strlen(s) -1] == '>'
+        || s[ft_strlen(s) -1] == '<')
+    {
+        ft_printf("올바르게 다시 입력하세요\n");
+        free(input);
+        free(s);
+        return (-1);
+    }
+    free(raw_input);
+    raw_input = NULL;
+    raw_input = ft_strdup(s);
+    free(input);
+    input = NULL;
+    input = ft_strdup(s);
+    free(s);
+    return (1);
+}
+
 int         check_token(t_minishell *minishell, t_cmd *curr)
 {
-    char    *temp;
     char    *input;
     int     i;
 
-    pipe_num = 0;
-    minishell->redir_num = 0;
-    temp = ft_strjoin(curr->command, " ");
-    if (curr->option)
-        input = ft_strjoin(temp, curr->option);
-    else
-        input = ft_strdup(temp);
-    free(temp);
-    i = 0;
-    if (!input)
+    init_num(minishell);
+    input = ft_strdup(raw_input);
+    if (check_last_token(input) < 0)
         return (0);
+    i = 0;
     if (exceptions(input) < 0)
         return (0);
     while (input[i])
@@ -119,7 +150,6 @@ int         check_token(t_minishell *minishell, t_cmd *curr)
             minishell->redir_num++;
         i++;
     }
-    if (input)
-        free(input);
+    free(input);
     return (1);
 }

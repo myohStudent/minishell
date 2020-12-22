@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 18:04:16 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:23:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,60 +69,10 @@ void	flag_checker(char flag)
 			flags[0] = 1;
 		else if (flag == '<')
 			flags[2] = 1;
-		else if (flag == 3) // >>
+		else if (flag == 3)
 			flags[3] = 1; 
 	}
 }
-
-// int		parse_flag(t_cmd *curr, t_cmd *head,
-// 					t_minishell *minishell, char flag)
-// {
-// 	int		i;
-// 	int		j;
-// 	char		*temp;
-// 	char		*temp2;
-// 	char		*temp3;
-// 	t_cmd	*next;
-
-// 	flag_checker(flag);
-// 	i = 0;
-// 	temp = ft_strjoin(curr->command, " ");
-// 	temp = ft_strjoin(temp, curr->option);
-// 	ft_printf("%s\n", temp);
-// 	curr = curr->next;
-// 	head->next = NULL;
-// 	if (temp != NULL)
-// 	{
-// 		delete_space_flag(&temp, flag);
-// 		i = 0;
-// 		if (temp != NULL)
-// 		{
-// 			while (temp[i])
-// 			{
-// 				while (temp[i] == flag && temp[i + 1] != '\0')
-// 				{
-// 					temp2 = ft_substr(temp, 0, i);
-// 					//option 넣는 거랑 다른 부호 파싱이 여기 들어가야 함.
-// 					add_node(head, space_trim(temp2));
-// 					free(temp2);
-// 					free(temp);
-// 					temp = ft_substr(temp, i + 1, ft_strlen(temp) - i);
-// 					temp2 = NULL;
-// 					i = -1;
-// 				}
-// 				i++;
-// 			}
-// 			if (temp)
-// 			{
-// 				add_node(head, space_trim(temp));
-// 				temp = NULL;
-// 				free(temp);
-// 			}
-// 			free(temp2);
-// 		}
-// 	}
-// 	return (1);
-// }
 
 int		parse_flag(t_cmd *curr, t_cmd *head,
 					t_minishell *minishell, char flag)
@@ -150,8 +100,7 @@ int		parse_flag(t_cmd *curr, t_cmd *head,
 				{
 					
 					temp[2] = ft_substr(temp[1], 0, i);
-					//option 넣는 거랑 다른 부호 파싱이 여기 들어가야 함.
-					add_node(head, space_trim(temp[2]));
+					add_node(head, ft_trim(temp[2]));
 					free(temp[2]);
 					free(temp[1]);
 					temp[1] = NULL;
@@ -162,7 +111,7 @@ int		parse_flag(t_cmd *curr, t_cmd *head,
 				i++;
 			}
 			if (temp[1])
-				add_node(head, space_trim(temp[1]));
+				add_node(head, ft_trim(temp[1]));
 			free_arr(temp);
 		}
 	}

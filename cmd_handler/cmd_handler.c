@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/22 11:56:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 21:30:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,6 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	 	g_command_nb = 127;
 	}
 	return (1);
-}
-
-void	clear_single_cmd(t_cmd *cmd)
-{
-    while ((cmd)->command != NULL)
-    {
-        if ((cmd)->command)
-			(cmd)->command = NULL;
-        if ((cmd)->option)
-			(cmd)->option = NULL;
-        if ((cmd)->type)
-            (cmd)->type = 0;
-    }
 }
 
 void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
@@ -86,6 +73,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		if (minishell->scmd && pipe_num > 0 && minishell->redir_num > 0)
 		{
 			ft_printf("감히 pipe와 redirection을 동시에 하려고 하다니...그런 건 서브젝트에 없습니다.\n");
+			clear_scmd(minishell->scmd, minishell);
 			return (1);
 		}
 		if (minishell->scmd && pipe_num > 0)
@@ -172,7 +160,6 @@ int cmd_handler(t_minishell *minishell)
 		{
 			if (!(cmd_executer(minishell, curr)))
 				break ;
-			t_cmd *next;
 			next = curr->next;
 			if (curr->next)
 				free(curr);

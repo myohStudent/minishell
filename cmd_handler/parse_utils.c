@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/21 11:42:56 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:17:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,4 @@ char *ft_trimchar(char *str, char c)
 	}
 	res[currindex] = '\0';
 	return (res);
-}
-
-char		*space_trim(char *s)
-{
-	int		len;
-	char	*t;
-	char	*end;
-	char	*begin;
-
-	begin = ft_strdup(s);
-    while (*begin != '\0')
-    {
-        if (ft_isspace(*begin))
-          	begin++;
-        else
-        {  
-          s = ft_strdup(begin);
-          break;
-        }  
-    }
-	t = ft_strdup(s);
-	len = ft_strlen(s);
-	end = t + len - 1;
-	while (end != t && ft_isspace(*end))
-        end--;
-    *(end + 1) = '\0';
-    s = ft_strdup(t);
-    return (s);
 }
