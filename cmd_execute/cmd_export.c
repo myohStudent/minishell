@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:06:43 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 11:28:32 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 15:22:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void envadd_back(t_env *list, char **newenv, t_minishell *minishell)
 		list = list->next;
 		i++;
 	}
-	ft_printf("[%s %s]\n",list->variable,list->value);
+	//ft_printf("[%s %s]\n",list->variable,list->value);
 	new_node->next = NULL;
 	list->next = new_node;
 }
@@ -108,7 +108,7 @@ int ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
 		// ft_printf("%s, %s\n", list->variable, list->value);
 		if (ft_strcmp(list->variable, split_new_env[0]) == 0)
 		{
-			ft_printf("%s\n", list->variable);
+			//ft_printf("%s\n", list->variable);
 			if (list->value)
 				free(list->value);
 			list->value = ft_strdup(split_new_env[1]);
@@ -134,7 +134,7 @@ int ft_update_env(t_minishell *minishell, char **split_new_env)
 	return (0);
 }
 
-int cmd_export(t_cmd *curr, t_minishell *minishell)
+void	cmd_export(t_cmd *curr, t_minishell *minishell)
 {
 	char **new_env;
 	char **split_new_env;

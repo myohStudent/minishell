@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 11:22:25 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 16:44:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void			create_pipe_array(t_minishell *minishell)
 	i = 0;
 }
 
-void			exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
+void			exec_else2(t_minishell *minishell, t_cmd *curr)
 {
 	if (ft_strncmp(curr->command, "cd\0", 3) == 0)
 		cmd_cd(curr, minishell);
@@ -74,6 +74,8 @@ char			*add_dir(t_minishell *minishell, char *command)
 		return (ft_strdup("export"));
 	else if ((ft_compare(command, "env")))
 		return (ft_strdup("env"));
+	else if ((ft_compare(command, "exit")))
+		return (ft_strdup("exit"));
 	return (NULL);
 }
 
@@ -151,7 +153,8 @@ void			exec_scmd(t_minishell *minishell)
 			if (scmd->type != LASTPIPE &&
 				!(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
 				!(ft_compare(command, "cd")) && !(ft_compare(command, "echo")) &&
-				!(ft_compare(command, "env")) && !(ft_compare(command, "export")))
+				!(ft_compare(command, "env")) && !(ft_compare(command, "export")) &&
+				!(ft_compare(command, "exit")))
 			{
 				ft_printf("%s:command not found\n", scmd->command);
 				exit(127);

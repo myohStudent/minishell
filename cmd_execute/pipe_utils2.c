@@ -6,13 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:33:16 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 10:34:03 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:23:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*open_directory(char *path, char *command)
+char				*open_directory(char *path, char *command)
 {
 	DIR				*dir;
 	struct dirent	*dent;
@@ -35,10 +35,10 @@ char	*open_directory(char *path, char *command)
 	return (NULL);
 }
 
-char	*get_bin(t_minishell *minishell, char *command)
+char				*get_bin(t_minishell *minishell, char *command)
 {
-	char	*ret;
-	int		i;
+	char			*ret;
+	int				i;
 
 	if (!command)
 		return (NULL);
@@ -59,11 +59,11 @@ char	*get_bin(t_minishell *minishell, char *command)
 	return (ret);
 }
 
-char	**store_commands(t_cmd *scmd, t_minishell *minishell)
+char				**store_commands(t_cmd *scmd, t_minishell *minishell)
 {
-	char	**store;
-	t_cmd	*temp;
-	int		i;
+	char			**store;
+	t_cmd			*temp;
+	int				i;
 
 	i = 1;
 	if (!scmd->command)

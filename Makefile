@@ -27,7 +27,6 @@ EXE_FILE	=	cmd_env.c \
 				cmd_echo.c \
 				pipe_utils.c \
 				pipe_utils2.c \
-				quote_utils.c \
 				redir_execute.c \
 				dollar_exec.c \
 				cmd_export.c \

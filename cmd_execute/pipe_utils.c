@@ -6,25 +6,27 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 10:35:31 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:22:39 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void		add_node(t_cmd *target, char *s)
+void			add_node(t_cmd *target, char *s)
 {
-	t_cmd *new = (t_cmd *)malloc(sizeof(t_cmd));  
+	t_cmd 		*new;
+
+	new = (t_cmd *)malloc(sizeof(t_cmd));
     new->next = target->next;
     new->command = ft_strdup(s);
     target->next = new;
 }
 
-t_cmd		*reverse_node(t_cmd *head)
+t_cmd			*reverse_node(t_cmd *head)
 {
-    t_cmd *p;
-	t_cmd *q;
-	t_cmd *r;
+    t_cmd		*p;
+	t_cmd		*q;
+	t_cmd		*r;
 
     p = head->next;
 	q = NULL;
@@ -40,9 +42,9 @@ t_cmd		*reverse_node(t_cmd *head)
     return (q);
 }
 
-void	delete_space_flag(char **temp, char flag)
+void			delete_space_flag(char **temp, char flag)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	if (*temp)
@@ -59,7 +61,7 @@ void	delete_space_flag(char **temp, char flag)
 	}
 }
 
-void	flag_checker(char flag)
+void			flag_checker(char flag)
 {
 	if (flag)
 	{

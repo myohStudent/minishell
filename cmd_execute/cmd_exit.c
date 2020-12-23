@@ -6,24 +6,55 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 16:29:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:15:14 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		cmd_exit(t_cmd *curr, t_minishell *minishell)
+void		exit_clear(t_cmd *curr, t_minishell *minishell)
 {
-	if (curr->argc == 1 || curr->argc == 2)
-	{	ft_putstr_fd("\n[Process Completed]\0", 1);
-		g_command_nb = 1;
-		exit(1);
-	}
-	else
+	clear_scmd(curr, minishell);
+	exit(1);
+}
+
+void		digit_exit(t_cmd *curr, t_minishell *minishell)
+{
+	int		i;
+
+	i = 0;
+	while (curr->option[i])
 	{
-		ft_putstr_fd("\nexit: too many arguments\0", 1);
-		ft_putstr_fd("\n", 1);
-		g_command_nb = 127;
-		return (-1);
+		if (!(ft_isdigit(curr->option[i])))
+		{
+			ft_printf("%s: $s: a numeric argument required\n",
+			curr->command, curr->option);
+			exit_clear(curr, minishell);
+		}
+		i++;
+	}
+}
+
+void		cmd_exit(t_cmd *curr, t_minishell *minishell)
+{
+	int		i;
+
+	i = 0;
+	if (curr->argc == 1 || curr->argc == 2)
+	{
+		g_command_nb = 1;
+		if (curr->option)
+			digit_exit(curr, minishell);
+		ft_putstr_fd("\nexit\n", 1);
+		exit_clear(curr, minishell);
+	}
+	else if (curr->argc == 0)
+		;
+	else 
+	{
+	 	ft_putstr_fd("\nexit: too many arguments\0", 1);
+	 	ft_putstr_fd("\n", 1);
+	 	g_command_nb = 255;
+	 	exit_clear(curr, minishell);
 	}
 }

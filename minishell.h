@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 11:26:37 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:18:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int	print_export(t_env *env);
 ** cmd_export.c
 */ 
 int			ft_strcmp(const char *s1, const char *s2);
-int 		cmd_export(t_cmd *curr, t_minishell *minishell);
+void 		cmd_export(t_cmd *curr, t_minishell *minishell);
+
 /*
 ** cmd_echo.c
 */
@@ -159,7 +160,8 @@ char		*ft_trimchar(char *str, char c);
 char		*space_trim(char *s);
 void		parse3(t_minishell *minishell, t_cmd *curr);
 void		get_cmd_argc(t_cmd *new);
-
+t_cmd		*add_next_node(t_cmd *target, char *s, int i);
+int			parse_flags(t_cmd *head, t_minishell *minishell);
 /*
 ** cmd_unset.c
 */
@@ -195,7 +197,7 @@ void		clear_single_cmd(t_cmd *cmd);
 ** cmd_handler2.c
 */
 void		exec_piperedir(t_minishell *minishell);
-void		exec_else2(t_minishell *minishell, t_cmd *scmd, int pipe_fd[2]);
+void		exec_else2(t_minishell *minishell, t_cmd *scmd);
 void		exec_scmd(t_minishell *minishell);
 void		create_pipe_array(t_minishell *minishell);
 void		exec_redir_scmd(t_minishell *minishell);
@@ -203,8 +205,9 @@ void		exec_redir_scmd(t_minishell *minishell);
 /*
 ** cmd_exit.c
 */
-int			cmd_exit(t_cmd *curr, t_minishell *minishell);
+void		cmd_exit(t_cmd *curr, t_minishell *minishell);
 void		clear_env(t_env *env);
+void		exit_clear(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** parse_input.c
@@ -233,7 +236,6 @@ char		*open_directory(char *path, char *command);
 /*
 ** redir_execute.c
 */
-void		redir1(t_minishell *minishell, t_cmd *cmd);
 int			do_redir(t_minishell *minishell, t_cmd *scmd);
 int			do_dredir(t_minishell *minishell, t_cmd *scmd);
 int			do_bredir(t_minishell *minishell, t_cmd *scmd);

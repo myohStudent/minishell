@@ -6,13 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/23 10:37:24 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:25:55 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int exec_else(t_minishell *minishell, t_cmd *curr)
+int			exec_else(t_minishell *minishell, t_cmd *curr)
 {
 	// 할일 : 명령어별로 함수 분할하기. 함수마다 노드가 비어있는 경우 return -1 처리하기.
 	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
@@ -40,7 +40,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-int		cmd_executer(t_minishell *minishell, t_cmd *curr)
+int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	if (!check_token(minishell, curr))
 		return (-1);
@@ -69,15 +69,15 @@ int		cmd_executer(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-int cmd_handler(t_minishell *minishell)
+int				cmd_handler(t_minishell *minishell)
 {
-	char buf[2];
-	char *input;
-	t_cmd *curr;
-	t_cmd *next;
-	int b;
-	struct stat *buf_stat;
-	char temp[15];
+	char		buf[2];
+	char		*input;
+	t_cmd		*curr;
+	t_cmd		*next;
+	int			b;
+	struct stat	*buf_stat;
+	char		temp[15];
 
 	//init
 	minishell->cmd_num = 0;

@@ -6,12 +6,11 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 10:42:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 15:11:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void        init_num(t_minishell *minishell)
 {
