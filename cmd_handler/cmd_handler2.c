@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/21 14:51:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 11:22:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void			exec_else2(t_minishell *minishell, t_cmd *curr, int pipe_fd[2])
 		exit(0);
 	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 		cmd_pwd(curr, minishell);
+	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
+		cmd_echo(curr, minishell);
 }
 
 char			*add_dir(t_minishell *minishell, char *command)
@@ -82,7 +84,7 @@ void			exec_redir_scmd(t_minishell *minishell)
 	int stat;
 
 	scmd = minishell->scmd;
-	while (scmd->command && scmd->type != LAST)
+	while (scmd->command && scmd->type != LASTREDIR)
 	{
 		if ((pid = fork()) == 0)
 		{
@@ -129,7 +131,9 @@ void			exec_scmd(t_minishell *minishell)
 	create_pipe_array(minishell);
 	while (g_cmd_array[i] && scmd->command)
 	{
-		command = add_dir(minishell, g_cmd_array[i]);
+		command = add_dir(minishell, scmd->command);
+		//command = add_dir(minishell, g_cmd_array[i]);
+		//ft_printf("gcmd:/%s/, opt:/%s/, type:/%d/\n", g_cmd_array[i], scmd->option, scmd->type);
 		if (pipe(pipe_fd) < 0)
 		{
 			free_command(command);
@@ -144,15 +148,15 @@ void			exec_scmd(t_minishell *minishell)
 		{
 			dup2(pipe_fd[0], 0);
 			close(pipe_fd[1]);
-			if (scmd->type != LAST &&
+			if (scmd->type != LASTPIPE &&
 				!(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
 				!(ft_compare(command, "cd")) && !(ft_compare(command, "echo")) &&
-				!(ft_compare(command, "env")) && !(ft_compare(command, "echo")))
+				!(ft_compare(command, "env")) && !(ft_compare(command, "export")))
 			{
 				ft_printf("%s:command not found\n", scmd->command);
 				exit(127);
 			}
-			else if (scmd->type == LAST)
+			else if (scmd->type == LASTPIPE)
 			{
 				exec_else(minishell, scmd);
 				exit(1);
@@ -171,6 +175,4 @@ void			exec_scmd(t_minishell *minishell)
 		close_fds(pipe_fd);
 	}
 	clear_scmd(minishell->scmd, minishell);
-	free_arr(g_cmd_array);
-	g_cmd_array = NULL;
 }

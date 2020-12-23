@@ -10,9 +10,11 @@ CMD_FILE	=	cmd_handler.c \
 				cmd_handler2.c \
 				parse_input.c \
 				handler_utils.c \
+				handler_utils2.c \
 				has_utils.c \
 				parse_utils.c \
 				parse_utils2.c \
+				parse_utils3.c \
 
 CMD		= $(addprefix $(CMD_DIR)/, $(CMD_FILE))
 OBJ_CMD = $(CMD:%.c=%.o)
@@ -24,6 +26,7 @@ EXE_FILE	=	cmd_env.c \
 				cmd_cd.c \
 				cmd_echo.c \
 				pipe_utils.c \
+				pipe_utils2.c \
 				quote_utils.c \
 				redir_execute.c \
 				dollar_exec.c \

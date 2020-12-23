@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/22 21:30:45 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 10:37:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,7 @@ int exec_else(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
-{
-    while (cmd)
-    {
-        if (cmd->command)
-            ft_strdel(&cmd->command);
-        if (cmd->pipe_bin)
-            ft_strdel(&cmd->pipe_bin);
-        if (cmd->pipe_array)
-            free_arr(cmd->pipe_array);
-        if (cmd->option)
-            ft_strdel(&cmd->option);
-        if (cmd->type)
-            cmd->type = 0;
-        if (cmd->typestr)
-            free(cmd->typestr);
-		cmd->fd = 0;
-		cmd->argc = 0;
-        cmd = cmd->next;
-    }
-    free(cmd);
-}
-
-int cmd_executer(t_minishell *minishell, t_cmd *curr)
+int		cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	if (!check_token(minishell, curr))
 		return (-1);
@@ -88,8 +65,7 @@ int cmd_executer(t_minishell *minishell, t_cmd *curr)
 		if (!(exec_else(minishell, curr)))
 			return (-1); 
 	}
-	free(raw_input);
-	raw_input = NULL;
+	free_globals();
 	return (1);
 }
 

@@ -6,19 +6,12 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/22 22:19:30 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/23 11:43:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void			get_cmd_argc(t_cmd *new)
-{
-			if (!new->option)
-				new->argc = 1;
-			else
-				new->argc = 42;
-}
 
 char			*split_cmd(char *s)
 {
@@ -31,7 +24,6 @@ char			*split_cmd(char *s)
 	str = malloc(sizeof(char) * i);
 	str = ft_substr(s, 0, i);
 	str[i] = '\0';
-	ft_printf("str:/%s/\n", str);
 	return (str); 
 }
 
@@ -45,8 +37,8 @@ char			*split_opt(char *s)
 		i++;
 	str = malloc(sizeof(char) * (ft_strlen(s) - i));
 	str = ft_substr(s, i + 1, ft_strlen(s));
-	//s[ft_strlen(s)] = '\0';
-	ft_printf("str:/%s/\n", str);
+	if (ft_compare(str, ""))
+		str = NULL;
 	return (str); 
 }
 
@@ -58,10 +50,12 @@ t_cmd			*add_next_node(t_cmd *target, char *s, int i)
     new->next = target->next;
 	new->command = ft_strdup(split_cmd(s));
 	new->option = ft_strdup(split_opt(s));
-	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset"))
-		get_cmd_argc(new);
 	new->type = i;
+	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset")
+	|| ft_compare(new->command, "cd"))
+		get_cmd_argc(new);
 	new->fd = 0;
+	ft_printf("cmd:/%s/ opt:/%s/ argc:/%d/\n",new->command, new->option, new->argc);
 	target->next = new;
 	return (target);
 }
@@ -115,7 +109,10 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 			}
 			if (temp)
 			{
-				type = LAST;
+				if (type == PIPE)
+					type = LASTPIPE;
+				else //if (type == REDIR || type == BREDIR || type == DREDIR)
+					type = LASTREDIR;
 				head = add_next_node(head, ft_trim(temp), type);
 				temp = NULL;
 			}
