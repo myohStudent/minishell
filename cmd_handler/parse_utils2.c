@@ -6,11 +6,33 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 17:17:44 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/24 21:48:59 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void			last_input(char *temp, int type, t_cmd *head)
+{
+	if (temp)
+	{
+		if (type == PIPE)
+			type = LASTPIPE;
+		else
+			type = LASTREDIR;
+		head = add_next_node(head, ft_trim(temp), type);
+		temp = NULL;
+	}
+}
+
+void			free_temp(char *temp, char *temp2)
+{
+	if (temp && temp != NULL)
+		free(temp);
+	if (temp2 && temp2 != NULL)
+		free(temp2);
+
+}
 
 int				parse_flags(t_cmd *head, t_minishell *minishell)
 {
@@ -56,20 +78,9 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 				}
 				i++;
 			}
-			if (temp)
-			{
-				if (type == PIPE)
-					type = LASTPIPE;
-				else
-					type = LASTREDIR;
-				head = add_next_node(head, ft_trim(temp), type);
-				temp = NULL;
-			}
+			last_input(temp, type, head);
 		}
 	}
-	if (temp)
-		free(temp);
-	if (temp2)
-		free(temp2);
+	free_temp(temp, temp2);
 	return (1);
 }
