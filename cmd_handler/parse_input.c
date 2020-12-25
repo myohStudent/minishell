@@ -231,6 +231,7 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//[OK]echo 'asdf'; echo "asdf"; echo "asdf'asdf'asdf"; echo "asdf 'asdf' asdf"; echo 'asdf"asdf"asdf'; echo 'asdf "asdf" asdf';
 	//[OK]asdf"$HOME"; asdf'$HOME'; 'asdf$HOME'; '$HOME asdf'
 	//[OK]'12"34"56'; "12'34'56"; 'asdf"$HOME"asdf'; "asfd$HOME"
+	//[OK]"$HOMEasdf"; asdf$HOMEasd
 	
 	//hasenv==1이고, quote_type가 1이 아니고,
 	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
@@ -239,8 +240,8 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//[SF]"$HOME"asdf; '$HOME'asdf;  //이게 커맨드인가 아닌가 판별을 잘 못함
 	//[SF]'asdf 'asdf' asdf' "asdf "asdf" asdf"
 	 
-	//[bug]"$HOMEasdf"; "$HOME asdf"
-	//[bug]asdf"$HOME"asdf; asdf$HOMEasd ; "asdf'$HOME'asdf"
+	//[bug] "$HOME asdf"
+	//[bug]asdf"$HOME"asdf;  ; "asdf'$HOME'asdf"
 	//[bug]"asdf"asdf"asdf" 'asdf'asdf'asdf'
 	
 	new->hasquote = 0;
@@ -250,17 +251,19 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	if (ft_isquote(new->command[0]) && has_quotes(new) &&
 		(new->command[has_quotes(new)] == 0 ||
 		 new->command[has_quotes(new)] == ' '))
-	{	
+	{
 		ft_printf("커맨드가 쿼트일 경우'%d, %d'\n",new->hasenv, new->quote_type);
 		if(new->hasenv == 1 && new->quote_type != 1)
-			dollar_exec_with_quote(new, minishell);
+			dollar_exec_with_quote(new, minishell); //세그폴트남
 
 		split_argv_quotes_cmd(new);
 	}
 	else
-		{
-			ft_printf("커맨드가 쿼트가 아닐 경우 \n");
+	{
+			ft_printf("커맨드가 쿼트가 아닐 경우'%d, %d'\n",new->hasenv, new->quote_type);
 			split_argv(new);
+			// if(new->hasenv == 1 && new->quote_type != 1)
+			// 	dollar_exec_with_quote(new, minishell);
 			// if(new->hasenv == 1 && new->quote_type == 2)
 			// 	dollar_exec_with_quote(new, minishell);
 		}
