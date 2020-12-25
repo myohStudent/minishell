@@ -45,36 +45,41 @@ int ft_remove_quote(t_cmd *curr)
 
 	quotenum = 0;
 	i = 0;
+		ft_printf("type >>>>%d<<<< 1\n",curr->quote_type);
+
 	while (curr->command[i])
 	{
 		if (ft_isquote(curr->command[i]))
 			quotenum++;
 		i++;
 	}
-	temp = ft_strdup(curr->command);
-	free(curr->command);
-	if (curr->quote_type != 2)
+	if (curr->quote_type > 0)
 	{
-		ft_printf("temp >>>>%s<<<<\n",temp);
-		
-		curr->command = ft_trimchar(temp, '\'');
-		ft_printf("curr >>>>%s<<<<\n",curr->command);
-
-		free(temp);
+		if (curr->quote_type == 1)
+			temp = ft_trimchar(curr->command, '\'');
+		if (curr->quote_type == 2)
+			temp = ft_trimchar(curr->command, '\"');
+		free(curr->command);
+		curr->command = ft_strdup(temp);
 	}
-	if (curr->quote_type != 1)
+	if (curr->quote_type == 0)
 	{
 		temp = ft_trimchar(curr->command, '\"');
 		free(curr->command);
-
+		ft_printf("---temp >>>>%s<<<< 2\n",temp);
+		
+		curr->command = ft_trimchar(temp, '\'');
+		free(temp);
+		ft_printf("curr >>>>%s<<<< 1\n",curr->command);
 	}
-		ft_printf("curr >>>>%s<<<<\n",curr->command);
 
+	ft_printf("curr >>>>%s<<<< 4\n",curr->command);
 	if (quotenum > 2)
 		quotenum = 2;
 	// if (curr->quote_type == 2 || curr->quote_type == 1)
 	// 	quotenum -= 2;
-	curr->command = temp;
+	//asdf 'asdf'시 curr->command에 들어간 값이 밖에서 적용이 안됨
+
 	return (quotenum);
 }
 
@@ -87,19 +92,27 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	// ft_printf("-----------------------------------%d\n",has_quotes(curr));
-	if ((!curr || !curr->command || get_argc(curr) == 1) && curr->hasquote)
+	ft_printf("-----------------------------------%d\n",curr->hasquote);
+	if (!curr || !curr->command || (get_argc(curr) == 1 && curr->hasquote == 0))
 	// && !has_quotes(curr->command))
 		return;
+	//'asdf"$HOME"asdf' segfault
+	ft_printf("i ------------- %d, type %d  str %s\n", i, curr->quote_type,curr->command);
+
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
-	i -= ft_remove_quote(curr);
-	ft_printf("i ------------- %d \n", i);
 
-	if (curr->quote_type == 2 || curr->quote_type == 1)
+	i -= ft_remove_quote(curr);
+	ft_printf("i ------------- %d, type %d  str %s\n", i, curr->quote_type,curr->command);
+
+	if (i < 0)
+		// curr->quote_type == 2 || curr->quote_type == 1)
 		i = 0;
+	ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
+	ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
+
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
@@ -108,8 +121,10 @@ void split_argv(t_cmd *curr)
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));
 	ft_printf(">>%s<<\n", curr->option);
+	//이부분 free 오류
 	free(curr->command);
 	curr->command = ft_strdup(temp);
+	//이부분 free 오류
 	free(temp);
 	temp = 0;
 	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
@@ -204,15 +219,30 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	
 	//그냥 split에서 옵션에서 쿼트 지워주는 함수 만들기
 	//'1 2 3 "4 5" 6' 일 경우 버그 
+	
+	//'12"34"56', "12'34'56", 'asdf"$HOME"asdf' 일 시 '가 안없어지는 버그있음
+	//"asdf 'asdf' asdf" 일 경우 안 나옴(나오긴 나오는데 실행값이 0 나옴) 
+	//"asdf '$HOME' asdf" 일 경우 안나옴(나오긴 나오는데 실행값이 0 나옴)
+	//echo 'ㅁㄴㅇㄹ', echo "asdf" -> remove 쿼트에 진입 안해서 따로 판별값을 줘야될듯
 	//--여기까지 완료 --
+
+	//입력값
+	//[OK]"asdf 'asdf' asdf"; "asdf '$HOME' asdf"; 'asdf "$HOME" asdf'; 
+	//[OK]echo 'asdf'; echo "asdf"; echo "asdf'asdf'asdf"; echo "asdf 'asdf' asdf"; echo 'asdf"asdf"asdf'; echo 'asdf "asdf" asdf';
+	//[OK]asdf"$HOME"; asdf'$HOME'; 'asdf$HOME'; '$HOME asdf'
+	//[OK]'12"34"56'; "12'34'56"; 'asdf"$HOME"asdf'; "asfd$HOME"
 	
 	//hasenv==1이고, quote_type가 1이 아니고,
 	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
 
-	//'12"34"56', "12'34'56", 'asdf"$HOME"asdf' 일 시 '가 안없어지는 버그있음
-	//"asdf 'asdf' asdf" 일 경우 안 나옴(결과값이 0 나옴) 
-	//"asdf '$HOME' asdf" 일 경우 안나옴(결과값이 0 나옴)
+	//[SF]"$HOME"asdf; '$HOME'asdf;  //이게 커맨드인가 아닌가 판별을 잘 못함
+	//[SF]'asdf 'asdf' asdf' "asdf "asdf" asdf"
+	 
+	//[bug]"$HOMEasdf"; "$HOME asdf"
+	//[bug]asdf"$HOME"asdf; asdf$HOMEasd ; "asdf'$HOME'asdf"
+	//[bug]"asdf"asdf"asdf" 'asdf'asdf'asdf'
+	
 	new->hasquote = 0;
 	new->hasenv = 0;
 	new->quote_type = 0;
