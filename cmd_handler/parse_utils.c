@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 17:22:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/25 10:38:13 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,10 @@ void		parse3(t_minishell *minishell, t_cmd *curr)
 		else
 			break ;
 	}
+}
+
+void		too_many_tokens(t_minishell *minishell)
+{
+	ft_printf("pipe와 redirection을 동시에 하지 마시오\n");
+	clear_scmd(minishell->scmd, minishell);
 }

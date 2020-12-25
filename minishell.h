@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 17:18:38 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/25 10:38:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void        cmd_echo(t_cmd *curr, t_minishell *minishell);
 /*
 ** handler_utils.c handler_utils2.c
 */
-int			arr_len(char **env);
 void		free_arr(char **arr);
 char		*parse_space(char *s, char *space);
 int			check_token(t_minishell *minishell, t_cmd *curr);
@@ -158,6 +157,7 @@ int			ft_isquote(char c);
 */
 char		*ft_trimchar(char *str, char c);
 char		*space_trim(char *s);
+void		too_many_tokens(t_minishell *minishell);
 void		parse3(t_minishell *minishell, t_cmd *curr);
 void		get_cmd_argc(t_cmd *new);
 t_cmd		*add_next_node(t_cmd *target, char *s, int i);
