@@ -111,9 +111,9 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 	int j;
 	int envindex;
 	char	*temp;
-	t_cmd *envcmd;
 
 	i = 0;
+	env = minishell->env_list;
 	while (curr->command[i] != '$' && curr->command[i])
 		i++;
 	if (!curr->command[i])
@@ -132,7 +132,7 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 		envindex = 0;
 		while (env && envindex < minishell->env_currnb)
 		{
-			if (ft_strncmp(env->variable, curr->command + i + 1, j) == 0)
+			if (ft_strncmp(env->variable, curr->command + i + 1, j - (i + 2)) == 0)
 			{
 				char *startstr;
 				// if (i != 0)
@@ -153,15 +153,16 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 					curr->command = ft_strdup(temp);
 					free(temp);
 				}
-				//curr->command + i + ft_strlen(env->variable) + 1);
-			}
-			else
-				envcmd->command = ft_strdup(env->value);				
-			envcmd->argc = 1;
+				// curr->command + i + ft_strlen(env->variable) + 1);
+
+				// envcmd->command = ft_strdup(env->value);		
 				
+			}
+			
 			envindex++;
 			env = env->next;
 		}
+		ft_printf(">>>>>>>>exec command<<<<<< %s\n",curr->command);
 	}
 
 	if (curr->option) // $asdf pwd 일 때 뒷 옵션이 명령어로 인식되어 수행된다, pipe불가

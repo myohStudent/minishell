@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/25 19:02:00 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/27 10:34:40 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,11 @@ int get_quote_type(t_cmd *new)
 		if (ft_isquote(new->command[i]) == 2) //39
 			isdouble++;
 		i++;
-		ft_printf("(%d %d)",new->hasenv,isdouble);
+		// ft_printf("(%d %d)",new->hasenv,isdouble);
 		if (isdouble == 2 && ((get_first_quote(new->command, 1) <
 		get_first_quote(new->command, 2)) || !get_first_quote(new->command, 1))) //'이 없거나, 있어도 "보다 늦게 나온다.
 			new->hasenv = 1;//env가 있다
-		ft_printf("(%d %d)\n",new->hasenv,isdouble);
+		// ft_printf("(%d %d)\n",new->hasenv,isdouble);
 
 		if (isdouble == 2 && 
 		get_first_quote(new->command, 1) > -1 && //문제시 이거 주석처리할것
