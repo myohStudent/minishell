@@ -227,30 +227,32 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//--여기까지 완료 --
 
 	//입력값
-	//[OK]"asdf 'asdf' asdf"; "asdf '$HOME' asdf"; 'asdf "$HOME" asdf'; 
+	//[OK]"asdf 'asdf' asdf"; "$HOME asdf";
 	//[OK]echo 'asdf'; echo "asdf"; echo "asdf'asdf'asdf"; echo "asdf 'asdf' asdf"; echo 'asdf"asdf"asdf'; echo 'asdf "asdf" asdf';
 	//[OK]asdf"$HOME"; asdf'$HOME'; 'asdf$HOME'; '$HOME asdf'
 	//[OK]'12"34"56'; "12'34'56"; 'asdf"$HOME"asdf'; "asfd$HOME"
-	//[OK]"$HOMEasdf"; asdf$HOMEasd
+	//[OK]"$HOMEasdf"; asdf$HOMEasd; asdf"$HOME"asdf
+	//[OK]asdfasdf"$HOME"; "$HOME"asdf;
+	//[OK]'asdf "$HOME" asdf';
+	//[OK] 'asdf'asdf'asdf'; "asdf"asdf"asdf";
 	
+
 	//hasenv==1이고, quote_type가 1이 아니고,
 	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
 
-	//[SF]"$HOME"asdf; '$HOME'asdf;  //이게 커맨드인가 아닌가 판별을 잘 못함
-	//[SF]'asdf 'asdf' asdf' "asdf "asdf" asdf"
-	 
-	//[bug] "$HOME asdf"
-	//[bug]asdf"$HOME"asdf;  ; "asdf'$HOME'asdf"
-	//[bug]"asdf"asdf"asdf" 'asdf'asdf'asdf'
+	//[bug]'asdf 'asdf' asdf'; "asdf "asdf" asdf
+	//[bug] "asdf'$HOME'asdf"　"asdf '$HOME' asdf";//hasenv가 켜져야되는데 안켜짐
+	//[bug]'$HOME'asdf;
+	//띄어쓰기 없으면 판별을 못함
 	
 	new->hasquote = 0;
 	new->hasenv = 0;
 	new->quote_type = 0;
 	get_quote_type(new);
-	if (ft_isquote(new->command[0]) && has_quotes(new) &&
-		(new->command[has_quotes(new)] == 0 ||
-		 new->command[has_quotes(new)] == ' '))
+	if (ft_isquote(new->command[0]) && has_quotes(new))
+	//  && (new->command[has_quotes(new)] == 0 ||
+	// 	 new->command[has_quotes(new)] == ' '))
 	{
 		ft_printf("커맨드가 쿼트일 경우'%d, %d'\n",new->hasenv, new->quote_type);
 		if(new->hasenv == 1 && new->quote_type != 1)
@@ -260,6 +262,9 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	}
 	else
 	{
+
+		if(new->hasenv == 1 && new->quote_type != 1)
+			dollar_exec_with_quote(new, minishell); //세그폴트남
 			ft_printf("커맨드가 쿼트가 아닐 경우'%d, %d'\n",new->hasenv, new->quote_type);
 			split_argv(new);
 			// if(new->hasenv == 1 && new->quote_type != 1)

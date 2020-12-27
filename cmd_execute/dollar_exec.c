@@ -103,6 +103,19 @@ int		dollar_exec(t_cmd *curr, t_minishell *minishell)
 	return (0);
 }
 
+int get_next_space(char *str)
+{
+	int i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			return (i);
+		i++;
+	}
+	return (get_first_quote(str, 2));
+}
 
 int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 {
@@ -119,7 +132,10 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 	if (!curr->command[i])
 		return (0);
 	ft_printf(">>>>>>>>>>exec with quote<<<<<<<<<<\n");
-	j = has_quotes(curr);
+	// "$HOME asdf"
+	j = get_next_space(curr->command + i);
+	ft_printf("[%d　%d]\n",i, j);
+
 	if (curr->command[i] == '$' && curr->command[i + 1] == '?')
 	{
 		ft_putstr_fd(ft_itoa(g_command_nb), 1);
@@ -132,27 +148,24 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 		envindex = 0;
 		while (env && envindex < minishell->env_currnb)
 		{
-			if (ft_strncmp(env->variable, curr->command + i + 1, j - (i + 2)) == 0)
+			ft_printf("[%s %d : %c %c]\n",env->variable, envindex, curr->command[i + 1], curr->command[j - 1]);
+
+			if (ft_strncmp(env->variable, curr->command + i + 1, j - 1) == 0)
 			{
 				char *startstr;
 				// if (i != 0)
 				// 	envcmd->command = ft_strjoin(ft_substr(curr->command, 0, i), env->value);
-				if (i != 0)
-				{
-					temp = ft_substr(curr->command, 0, i);
-					startstr = ft_strjoin(temp, env->value);
-					free(temp);
-				}
-				else 
-					startstr = curr->command;
-				if (curr->command[j] != '\"')
-				{
-					temp = ft_substr(curr->command, j + 1, ft_strlen(curr->command) - j + 1 );
-					char *endstr = ft_strjoin(startstr, curr->command);
-					free(curr->command);
-					curr->command = ft_strdup(temp);
-					free(temp);
-				}
+				// asdf"$HOME"; "$HOME asdf"; asdfasdf"$HOME";
+
+				temp = ft_substr(curr->command, 0, i);
+				startstr = ft_strjoin(temp, env->value);
+				free(temp);
+				temp = ft_substr(curr->command, j + i, ft_strlen(curr->command) - (j + i) );
+				ft_printf("))))))%s(((((\n",temp);
+				free(curr->command);
+				curr->command = ft_strjoin(startstr, temp);
+				free(temp);
+				break;
 				// curr->command + i + ft_strlen(env->variable) + 1);
 
 				// envcmd->command = ft_strdup(env->value);		
