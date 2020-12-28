@@ -12,6 +12,8 @@ CMD_FILE	=	cmd_handler.c \
 				handler_utils.c \
 				handler_utils2.c \
 				has_utils.c \
+				quote_utils.c \
+				parse_quote.c \
 				parse_utils.c \
 				parse_utils2.c \
 				parse_utils3.c \

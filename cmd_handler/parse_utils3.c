@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:04:26 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 17:11:35 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 00:07:57 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 	|| ft_compare(new->command, "cd") || ft_compare(new->command, "exit"))
 		get_cmd_argc(new);
 	new->fd = 0;
-	//ft_printf("cmd:/%s/ opt:/%s/ argc:/%d/\n",new->command, new->option, new->argc);
 	target->next = new;
 	return (target);
 }

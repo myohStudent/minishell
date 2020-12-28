@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/25 10:38:48 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 00:19:00 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define LASTREDIR 8
 
 extern int 			errno;
-char				*home_dir;
+char				*g_home_dir;
 int					g_command_nb;
 char				*raw_input;
 int					pipe_num;
@@ -93,8 +93,6 @@ typedef struct	 	s_minishell
 	int				cmd_num;
 	int				pipe_num;
 	int				redir_num;
-	//char			**environ; // 환경변수 파이프 execve용
- // 명령어 파이프 execve용
 	int				forked;
 	int				quote[2];
 	int				env_currnb; // current number
@@ -108,8 +106,8 @@ void		welcome_shell(void);
 //void		ft_exit(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
-int		dollar_exec(t_cmd *curr, t_minishell *minishell);
-int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell);
+int			dollar_exec(t_cmd *curr, t_minishell *minishell);
+int			dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell);
 void		parent_signal_handler(int signo);
 void		controld_exit(char *input);
 
@@ -234,18 +232,26 @@ void		get_path(t_env *list, t_minishell *minishell);
 char		*open_directory(char *path, char *command);
 
 /*
+** parse_quote.c
+*/ 
+int ft_remove_quote(t_cmd *curr);
+void split_argv_quotes_cmd(t_cmd *curr);
+
+/*
+** quote_utils.c
+*/
+
+int ft_isquote(char c);
+int get_first_quote(char *command, int type);
+int has_quotes(t_cmd *new);
+int get_quote_type(t_cmd *new);
+
+/*
 ** redir_execute.c
 */
 int			do_redir(t_minishell *minishell, t_cmd *scmd);
 int			do_dredir(t_minishell *minishell, t_cmd *scmd);
 int			do_bredir(t_minishell *minishell, t_cmd *scmd);
 
-/*
-** quote_utils.c
-*/
-
-int			which_quote(char *input, t_minishell *minishell);
-void		prompt_quote(t_minishell *minishell);
-int			in_quotes(char *s, int p);
 
 #endif

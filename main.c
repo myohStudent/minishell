@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/22 20:29:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/28 23:41:14 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			init_env(char **env, t_minishell *minishell, t_env *env_list)
 	{
 		str = ft_split(env[i], '=');
 		if (ft_strncmp(str[0], "HOME\0", 5) == 0)
-			home_dir = ft_strdup(str[1]);
+			g_home_dir = ft_strdup(str[1]);
 		env_list->variable = ft_strdup(str[0]);
 		env_list->value = ft_strdup(str[1]);
 		if (env[i + 1])
@@ -130,7 +130,7 @@ int				main(int ac, char **av, char **env)
 	clear_env(minishell.env_list);
 	free_arr(envp_list);
 	free(minishell.path);
-	free(home_dir);
+	free(g_home_dir);
 	free(raw_input);
 	return (0);
 }

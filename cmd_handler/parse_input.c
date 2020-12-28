@@ -19,70 +19,14 @@ int get_argc(t_cmd *curr)
 		i--;
 	}
 	curr->argc++;
-	ft_printf("%d\n", curr->argc);
 	return (curr->argc);
 }
 
 void tild_handler(t_minishell *minishell, t_cmd *curr)
 {
-	int i;
-
 	if (curr->option[0] == '~' && (ft_isspace(curr->option[1]) || curr->option[1] == '/' || curr->option[1] == 0))
-	{
-		ft_printf("if 1 진입\n");
-		curr->option = ft_strjoin(home_dir, curr->option + 1);
-		ft_printf("> %s < \n", curr->option);
-		//new = ft_strjoin(new, ft_substr(curr->option, i + 1, ft_strlen(curr->option) - i + 1));
-		//curr->option = ft_strdup(new);
-	}
+		curr->option = ft_strjoin(g_home_dir, curr->option + 1);
 }
-
-int ft_remove_quote(t_cmd *curr)
-{
-	char *temp;
-	int quotenum;
-	int i;
-
-	quotenum = 0;
-	i = 0;
-		ft_printf("type >>>>%d<<<< 1\n",curr->quote_type);
-
-	while (curr->command[i])
-	{
-		if (ft_isquote(curr->command[i]))
-			quotenum++;
-		i++;
-	}
-	if (curr->quote_type > 0)
-	{
-		if (curr->quote_type == 1)
-			temp = ft_trimchar(curr->command, '\'');
-		if (curr->quote_type == 2)
-			temp = ft_trimchar(curr->command, '\"');
-		free(curr->command);
-		curr->command = ft_strdup(temp);
-	}
-	if (curr->quote_type == 0)
-	{
-		temp = ft_trimchar(curr->command, '\"');
-		free(curr->command);
-		ft_printf("---temp >>>>%s<<<< 2\n",temp);
-		
-		curr->command = ft_trimchar(temp, '\'');
-		free(temp);
-		ft_printf("curr >>>>%s<<<< 1\n",curr->command);
-	}
-
-	ft_printf("curr >>>>%s<<<< 4\n",curr->command);
-	if (quotenum > 2)
-		quotenum = 2;
-	// if (curr->quote_type == 2 || curr->quote_type == 1)
-	// 	quotenum -= 2;
-	//asdf 'asdf'시 curr->command에 들어간 값이 밖에서 적용이 안됨
-
-	return (quotenum);
-}
-
 
 void split_argv(t_cmd *curr)
 {
@@ -92,13 +36,8 @@ void split_argv(t_cmd *curr)
 
 	i = 0;
 	curr->option = NULL;
-	ft_printf("-----------------------------------%d\n",curr->hasquote);
 	if (!curr || !curr->command || (get_argc(curr) == 1 && curr->hasquote == 0))
-	// && !has_quotes(curr->command))
 		return;
-	//'asdf"$HOME"asdf' segfault
-	ft_printf("i ------------- %d, type %d  str %s\n", i, curr->quote_type,curr->command);
-
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
 
@@ -151,47 +90,6 @@ char *check_copy(char const *s, unsigned int start, size_t len)
 	a[i] = '\0';
 	ft_printf("%d, %s))\n", i, a);
 	return (a);
-}
-
-void split_argv_quotes_cmd(t_cmd *curr)
-{
-	int i;
-	char *temp;
-	int len;
-
-	i = 0;
-	curr->option = NULL;
-	
-	if ((!curr || !curr->command) && !curr->hasquote)
-		return;
-	int lastquote = get_first_quote(curr->command+ 1,curr->quote_type);
-	int d = has_quotes(curr);
-	int j = ft_remove_quote(curr);
-	i = d - j;
-	
-	if (curr->quote_type == 2 || curr->quote_type == 1)
-		i = lastquote;
-
-	while (!(ft_isspace(curr->command[i])) && curr->command[i])
-		i++;
-
-	// ft_printf(">>cmd %s, cmd[i] %c, i %d, hasquote %d, remove %d<<\n", curr->command, curr->command[i], i, d, j);
-	ft_printf(">>cmd: %s<<\n", curr->command);
-
-	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
-	len = ft_strlen(curr->command);
-	ft_printf(">>cmd: %s<<\n", curr->command);
-	temp = ft_substr(curr->command, 0, i);
-
-	ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
-	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
-	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));
-	ft_printf(">>%s<<\n", curr->option);
-	free(curr->command);
-	curr->command = ft_strdup(temp);
-	free(temp);
-	temp = 0;
-	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 }
 
 void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)

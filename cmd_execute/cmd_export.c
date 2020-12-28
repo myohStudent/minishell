@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:06:43 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 15:22:39 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 00:01:32 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void copy_env(t_minishell *minishell, t_env *export_list, t_env *env)
+void			copy_env(t_minishell *minishell, t_env *export_list, t_env *env)
 {
 	if (env == NULL)
 		return ;
@@ -42,13 +42,13 @@ int			    ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
-void sort_env(t_minishell *minishell)
+void			sort_env(t_minishell *minishell)
 {
-	int i;
-	int j;
-	t_env 	*prev_node;
-	t_env 	*curr_node;
-	t_env	*next_node;
+	int			i;
+	int			j;
+	t_env		*prev_node;
+	t_env		*curr_node;
+	t_env		*next_node;
 
 	i = minishell->env_currnb;
 	while (i)
@@ -77,10 +77,11 @@ void sort_env(t_minishell *minishell)
 	}
 }
 
-void envadd_back(t_env *list, char **newenv, t_minishell *minishell)
+void			envadd_back(t_env *list, char **newenv, t_minishell *minishell)
 {
-	t_env *new_node;
-	int i;
+	t_env		*new_node;
+	int			i;
+	
 	i = 0;
 	new_node = (t_env *)malloc(sizeof(t_env));
 	new_node->variable = ft_strdup(newenv[0]);
@@ -93,22 +94,20 @@ void envadd_back(t_env *list, char **newenv, t_minishell *minishell)
 		list = list->next;
 		i++;
 	}
-	//ft_printf("[%s %s]\n",list->variable,list->value);
 	new_node->next = NULL;
 	list->next = new_node;
 }
 
-int ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
+int				ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
 {
-	int i = 0;
+	int			i;
+	
+	i = 0;
 	while(list && i < minishell->env_currnb)
 	{
-		// ft_printf("%d < %d ",i,minishell->env_currnb);
 		i++;
-		// ft_printf("%s, %s\n", list->variable, list->value);
 		if (ft_strcmp(list->variable, split_new_env[0]) == 0)
 		{
-			//ft_printf("%s\n", list->variable);
 			if (list->value)
 				free(list->value);
 			list->value = ft_strdup(split_new_env[1]);
@@ -119,10 +118,10 @@ int ft_cmp_to_update(t_env *list, char **split_new_env,t_minishell *minishell)
 	return (0);
 }
 
-int ft_update_env(t_minishell *minishell, char **split_new_env)
+int				ft_update_env(t_minishell *minishell, char **split_new_env)
 {
-	t_env *env;
-	t_env *export;
+	t_env		*env;
+	t_env		*export;
 
 	env = minishell->env_list;
 	export = minishell->export_list;
@@ -134,11 +133,11 @@ int ft_update_env(t_minishell *minishell, char **split_new_env)
 	return (0);
 }
 
-void	cmd_export(t_cmd *curr, t_minishell *minishell)
+void			cmd_export(t_cmd *curr, t_minishell *minishell)
 {
-	char **new_env;
-	char **split_new_env;
-	int i;
+	char		**new_env;
+	char		**split_new_env;
+	int			i;
 
 	i = 0;
 	if(!minishell->export_list)
