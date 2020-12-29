@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/25 11:19:50 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 18:08:57 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char			*add_dir(t_minishell *minishell, char *command)
 		return (ft_strdup("env"));
 	else if ((ft_compare(command, "exit")))
 		return (ft_strdup("exit"));
-	return (NULL);
+	return (ft_strdup(command));
 }
 
 void			exec_redir_scmd(t_minishell *minishell)

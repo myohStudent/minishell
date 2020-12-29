@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/25 10:38:13 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 18:09:10 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		parse3(t_minishell *minishell, t_cmd *curr)
 	head->next = NULL;
 	i = 0;
 	parse_flags(head, minishell);
+	scmd = head->next;
 	scmd = head->next;
 	scmd = reverse_node(head);
 	minishell->scmd = scmd;

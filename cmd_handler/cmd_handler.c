@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/28 23:51:43 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/29 18:38:59 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,24 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
+void		ft_clear(char *input, t_minishell *minishell,
+			t_cmd *curr)
+{
+	if (curr)
+		clear_scmd(curr, minishell);
+	curr = NULL;
+	free(input);
+	input = NULL;
+	minishell->cmd = 0;
+	g_sigexit = 0;
+}
+
+void			buf_init(char *buf1, char *buf2, char **input)
+{
+	buf1= ' ';
+	buf2 = '\0';
+	*input = ft_strdup("");
+}
 int				cmd_handler(t_minishell *minishell)
 {
 	char		buf[2];
@@ -73,18 +91,14 @@ int				cmd_handler(t_minishell *minishell)
 	t_cmd		*next;
 	int			b;
 	struct stat	*buf_stat;
-	char		temp[15];
+	char		temp;
 
-	minishell->cmd_num = 0;
-	minishell->forked = 0;
-	buf[0] = ' ';
-	buf[1] = '\0';
-	input = ft_strdup("");
+	buf_init(buf[0], buf[1], &input);
 	while (buf[0] != '\n')
 	{
 		b = read(STDIN_FILENO, buf, 1);
 		if (buf[0] != '\n')
-			input = ft_strjoin(input, buf);
+			input = ft_strjoin_free(input, buf);
 		if (fstat(b, buf_stat) < 0 && b == 0)
 			controld_exit(input);
 	}
@@ -103,12 +117,6 @@ int				cmd_handler(t_minishell *minishell)
 			curr = next;
 		}
     }
-	if (curr)
-		clear_scmd(curr, minishell);
-	curr = NULL;
-	free(input);
-	input = NULL;
-	minishell->cmd = 0;
-	g_sigexit = 0;
+	ft_clear(input, minishell, curr);
 	return (1);
 }

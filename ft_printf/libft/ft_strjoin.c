@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 17:31:54 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/07 21:59:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 11:25:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,26 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-char	*ft_strjoin_free(char *s1, const char *s2)
-{
-	char	*tmp;
 
-	tmp = s1;
-	s1 = ft_strjoin(s1, s2);
-	free(tmp);
-	return (s1);
+char	*ft_strjoin_free(char *s1, char const *s2)
+{
+	int		size;
+	int		i;
+	int		j;
+	char	*dst;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	size = ft_strlen(s1) + ft_strlen(s2) + 1;
+	if ((dst = ft_calloc(sizeof(char), size)) == NULL)
+		return (NULL);
+	i = -1;
+	while (*(s1 + ++i))
+		*(dst + i) = *(s1 + i);
+	j = -1;
+	while (*(s2 + ++j))
+		*(dst + i + j) = *(s2 + j);
+	*(dst + i + j) = '\0';
+	free((char*)s1);
+	return (dst);
 }

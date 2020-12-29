@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 00:19:00 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/29 18:16:54 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ typedef struct		s_cmd
 	int				argc;
 	int				type;
 	char			*typestr;
-	char			*pipe_bin; //execve용
-	char			**pipe_array; //execve용
+	char			*pipe_bin;
+	char			**pipe_array;
 	int				fdin;
 	int				fdout;
 	int				fd;
@@ -93,7 +93,6 @@ typedef struct	 	s_minishell
 	int				cmd_num;
 	int				pipe_num;
 	int				redir_num;
-	int				forked;
 	int				quote[2];
 	int				env_currnb; // current number
 	t_env			*env_list; // env용 연결 리스트!
