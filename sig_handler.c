@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 15:13:49 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 22:06:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void		ft_exit()
 
 void		controld_exit(char *input)
 {
-	free(input); 
+	free(input);
+	input = NULL;
 	g_command_nb = 130;
 	write(1, "\b\b  \b\b exit!\n", 14);
 	exit(1);
@@ -47,7 +48,9 @@ void		clear_env(t_env *env)
 	if (env && env->variable != NULL)
 	{
 		free(env->variable);
+		env->variable = NULL;
 		free(env->value);
+		env->value = NULL;
 		env = env->next;
 	}
 }

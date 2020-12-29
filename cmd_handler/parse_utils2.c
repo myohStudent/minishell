@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 18:08:20 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:00:43 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void			last_input(char *temp, int type, t_cmd *head)
 		else
 			type = LASTREDIR;
 		head = add_next_node(head, ft_trim(temp), type);
-		temp = NULL;
 	}
 }
 
@@ -78,8 +77,14 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 	if (temp != NULL)
 		all_parse(head, temp, temp2, temp3, i, type);
 	if (temp && temp != NULL)
+	{
 		free(temp);
+		temp = NULL;
+	}
 	if (temp2 && temp2 != NULL)
+	{
 		free(temp2);
+		temp2 = NULL;
+	}
 	return (1);
 }

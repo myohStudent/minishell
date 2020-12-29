@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/29 18:38:59 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:25:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 		return (-1);
 	if (pipe_num > 0 || minishell->redir_num > 0)
 	{
-		parse3(minishell, curr);
+		minishell-> scmd = parse3(minishell, curr);
 		if (minishell->scmd && pipe_num > 0 && minishell->redir_num > 0)
 		{
 			too_many_tokens(minishell);
@@ -68,11 +68,11 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 void		ft_clear(char *input, t_minishell *minishell,
 			t_cmd *curr)
 {
-	if (curr)
-		clear_scmd(curr, minishell);
+	clear_scmd(curr, minishell);
 	curr = NULL;
 	free(input);
 	input = NULL;
+	clear_scmd(minishell->cmd, minishell);
 	minishell->cmd = 0;
 	g_sigexit = 0;
 }
@@ -83,6 +83,7 @@ void			buf_init(char *buf1, char *buf2, char **input)
 	buf2 = '\0';
 	*input = ft_strdup("");
 }
+
 int				cmd_handler(t_minishell *minishell)
 {
 	char		buf[2];
@@ -91,7 +92,6 @@ int				cmd_handler(t_minishell *minishell)
 	t_cmd		*next;
 	int			b;
 	struct stat	*buf_stat;
-	char		temp;
 
 	buf_init(buf[0], buf[1], &input);
 	while (buf[0] != '\n')

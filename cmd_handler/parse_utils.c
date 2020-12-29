@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 18:09:10 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:26:36 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,19 @@ char		*ft_trimchar(char *str, char c)
 	return (res);
 }
 
-void		parse3(t_minishell *minishell, t_cmd *curr)
+t_cmd		*parse3(t_minishell *minishell, t_cmd *curr)
 {
 	int		i;
-	char	*temp;
 	t_cmd	*head;
-	t_cmd	*scmd;
 
 	minishell->cnt = 1;
 	curr = curr->next;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
-	scmd = (t_cmd *)malloc(sizeof(t_cmd));
+	minishell->scmd = (t_cmd *)malloc(sizeof(t_cmd));
 	head->next = NULL;
 	i = 0;
 	parse_flags(head, minishell);
-	scmd = head->next;
-	scmd = head->next;
-	scmd = reverse_node(head);
-	minishell->scmd = scmd;
-	while (scmd != NULL)
-	{
-		if (scmd->next)
-			scmd = scmd->next;
-		else
-			break ;
-	}
+	return (reverse_node(head));
 }
 
 void		too_many_tokens(t_minishell *minishell)

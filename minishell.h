@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 18:16:54 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:25:51 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,13 @@ void		parent_signal_handler(int signo);
 void		controld_exit(char *input);
 
 /*
+** init.c
+*/
+void			get_envp(char **env, int i);
+void			init_env(char **env, t_minishell *minishell, t_env *env_list);
+void			get_path(t_env *list, t_minishell *minishell);
+
+/*
 ** cmd_env.c
 */
 int			print_env(t_env *env);
@@ -155,7 +162,7 @@ int			ft_isquote(char c);
 char		*ft_trimchar(char *str, char c);
 char		*space_trim(char *s);
 void		too_many_tokens(t_minishell *minishell);
-void		parse3(t_minishell *minishell, t_cmd *curr);
+t_cmd		*parse3(t_minishell *minishell, t_cmd *curr);
 void		get_cmd_argc(t_cmd *new);
 t_cmd		*add_next_node(t_cmd *target, char *s, int i);
 int			parse_flags(t_cmd *head, t_minishell *minishell);

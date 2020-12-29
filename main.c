@@ -3,81 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/28 23:41:14 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/29 21:42:49 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "./minishell.h"
-
-void			init_env(char **env, t_minishell *minishell, t_env *env_list)
-{
-	int			i;
-	char		**str;
-
-	i = 0;
-	minishell->env_currnb = 0;
-	while (env[i])
-	{
-		str = ft_split(env[i], '=');
-		if (ft_strncmp(str[0], "HOME\0", 5) == 0)
-			g_home_dir = ft_strdup(str[1]);
-		env_list->variable = ft_strdup(str[0]);
-		env_list->value = ft_strdup(str[1]);
-		if (env[i + 1])
-		{
-			env_list->next = (t_env *)malloc(sizeof(t_env));
-			env_list = env_list->next;
-		}
-		free_arr(str);
-		minishell->env_currnb++;
-		i++;
-	}
-	env_list->next = NULL;
-	ft_printf("%d\n",minishell->env_currnb);
-}
-
-void			get_path(t_env *list, t_minishell *minishell)
-{
-	char		**bin;
-	char		*temp;
-	int			i;
-	t_env		*l;
-
-	l = list;
-	i = 0;
-	temp = NULL;
-	while (l && i < minishell->env_currnb)
-	{
-		if (ft_strcmp(l->variable, "PATH") == 0)
-		{
-			temp = ft_strdup(l->value);
-			break ;
-		}
-		l = l->next;
-		i++;
-	}
-	if (temp)
-	{
-		bin = ft_split(temp, ':');
-		free(temp);
-	}
-	i = 0;
-	while (bin[i])
-		i++;
-	pipe_bin = NULL;
-	pipe_bin = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (bin && bin[i])
-	{
-		pipe_bin[i] = ft_strjoin(bin[i], "/");
-		free(bin[i]);
-		i++;
-	}
-}
 
 void			display_prompt(void)
 {
@@ -94,20 +28,6 @@ void			display_prompt(void)
 	ft_putstr_fd("\033[0m", 1);
 }
 
-void			get_envp(char **env, int i)
-{
-	int		 	j;
-
-	j = 0;
-	envp_list = (char **)malloc(sizeof(char *) * i);
-	while (j < i)
-	{
-		envp_list[j] = ft_strdup(env[j]);
-		j++;
-	}
-	envp_list[j] = NULL;
-}
-
 int				main(int ac, char **av, char **env)
 {
 	t_minishell	minishell;
@@ -118,7 +38,6 @@ int				main(int ac, char **av, char **env)
 	get_path(minishell.env_list, &minishell);
 	get_envp(env, minishell.env_currnb);
 	minishell.path = getcwd(NULL, 0);
-	g_sigexit = 0;
 	while (1)
 	{
 		display_prompt();

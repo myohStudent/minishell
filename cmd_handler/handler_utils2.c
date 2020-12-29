@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/23 15:11:03 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:30:19 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int         check_last_token(char *input)
         || s[ft_strlen(s) -1] == '<')
     {
         ft_printf("올바르게 다시 입력하세요\n");
-        free(input);
-        free(s);
+        ft_strdel(input);
+        ft_strdelh(s);
         return (-1);
     }
     free(raw_input);
@@ -38,6 +38,7 @@ int         check_last_token(char *input)
     input = NULL;
     input = ft_strdup(s);
     free(s);
+    s = NULL;
     return (1);
 }
 
@@ -62,6 +63,7 @@ int         check_token(t_minishell *minishell, t_cmd *curr)
         i++;
     }
     free(input);
+    input = NULL;
     return (1);
 }
 
@@ -96,5 +98,4 @@ void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
 		cmd->argc = 0;
         cmd = cmd->next;
     }
-    free(cmd);
 }

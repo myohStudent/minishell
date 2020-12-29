@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 18:08:57 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 22:19:41 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void			create_pipe_array(t_minishell *minishell)
 {
 	t_cmd		*scmd;
-	char		*temp;
 	int			i;
 
 	i = pipe_num;
@@ -48,7 +47,7 @@ void			exec_else2(t_minishell *minishell, t_cmd *curr)
 	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
-		exit(0);
+		cmd_unset(curr, minishell);
 	else if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 		cmd_pwd(curr, minishell);
 	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
