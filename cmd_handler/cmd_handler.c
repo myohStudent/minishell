@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/29 23:25:52 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:49:55 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int			exec_else(t_minishell *minishell, t_cmd *curr)
 	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
 		cmd_pwd(curr, minishell);
 	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
+	{
 		if (cmd_cd(curr, minishell) < 0)
 			return (-1);
+	}
 	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
 		cmd_echo(curr, minishell);
 	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
@@ -77,7 +79,7 @@ void		ft_clear(char *input, t_minishell *minishell,
 	g_sigexit = 0;
 }
 
-void			buf_init(char *buf1, char *buf2, char **input)
+void			buf_init(char buf1, char buf2, char **input)
 {
 	buf1= ' ';
 	buf2 = '\0';

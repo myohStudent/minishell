@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 23:30:19 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/29 23:50:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int         check_last_token(char *input)
         || s[ft_strlen(s) -1] == '<')
     {
         ft_printf("올바르게 다시 입력하세요\n");
-        ft_strdel(input);
-        ft_strdelh(s);
+        free(input);
+        free(s);
         return (-1);
     }
     free(raw_input);
