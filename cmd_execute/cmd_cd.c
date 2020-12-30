@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 18:17:11 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/28 23:41:02 by seohchoi         ###   ########.fr       */
+/*   Updated: 2020/12/30 11:01:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		cmd_cd(t_cmd *curr, t_minishell *minishell)
 	{
 		if (curr->argc >= 2)
 		{
-			if (chdir(curr->option) < 0) //경로가 실제 존재하는지 체크합니다.
+			if (chdir(curr->option) < 0)
 			{
 				ft_printf("cd: %s\n", strerror(errno));
 				g_command_nb = 1;

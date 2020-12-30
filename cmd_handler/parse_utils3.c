@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:04:26 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 22:42:05 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/30 11:40:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void			get_cd_export(t_cmd *new)
 {
 	if (ft_compare(new->command, "cd"))
 	{
-        if (ft_compare(new->option, "") && new->type < 3 && new->type != LASTPIPE)
+        if (ft_compare(new->option, "") && new->type > 3 && new->type != LASTPIPE)
 			new->argc = 1;
 	}
 	if (ft_compare(new->command, "export"))
 	{
 		if (new->type == LASTPIPE)
 		{
-			if (new->option == NULL)
-			 	new->argc = 1; 
+			if (ft_compare(new->option, ""))
+			 	new->argc = 1;
 			else
 				new->argc = 42;
 		}
 		else if (new->type > 3)
 		{
-            if (new->option != NULL)
+            if (!ft_compare(new->option, ""))
                 new->argc = 2;
             else
                 new->argc = 1;

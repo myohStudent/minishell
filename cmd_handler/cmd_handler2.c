@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 22:19:41 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/30 10:58:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void			exec_scmd(t_minishell *minishell)
 	while (g_cmd_array[i] && scmd->command)
 	{
 		command = add_dir(minishell, scmd->command);
-		ft_printf("gcmd:/%s/, opt:/%s/, type:/%d/\n", g_cmd_array[i], scmd->option, scmd->type);
+		ft_printf("gcmd:/%s/, opt:/%s/, type:/%d/ argc:/%d/\n", g_cmd_array[i], scmd->option, scmd->type, scmd->argc);
 		if (pipe(pipe_fd) < 0)
 		{
 			free_command(command);
