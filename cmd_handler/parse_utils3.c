@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:04:26 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 11:40:23 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/30 18:13:50 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void			get_cd_export(t_cmd *new)
 	{
 		if (new->type == LASTPIPE)
 		{
-			if (ft_compare(new->option, ""))
+			if (new->option == NULL)
 			 	new->argc = 1;
 			else
 				new->argc = 42;
@@ -77,12 +77,14 @@ char			*split_opt(char *s)
 	char		*str;
 
 	i = 0;
-	while (s[i] && s[i] != '\0' && s[i] != ' ')
-		i++;
-	if (ft_strlen(s) == i)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s) - i));
-	str = ft_substr(s, i + 1, ft_strlen(s));
+	while (*s && *s != '\0' && *s != ' ')
+	 	s++;
+	str = ft_trim(s);
+	if (ft_compare(str, ""))
+	{
+		free(str);
+		str = NULL;
+	}
 	return (str);
 }
 
@@ -93,7 +95,7 @@ t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 	new = (t_cmd *)malloc(sizeof(t_cmd));
     new->next = target->next;
 	new->command = ft_strdup(split_cmd(s));
-	new->option = ft_strdup(split_opt(s));
+	new->option = split_opt(s);
 	new->type = i;
 	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset")
 	|| ft_compare(new->command, "cd") || ft_compare(new->command, "exit"))

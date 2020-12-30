@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/30 12:09:37 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/30 16:50:04 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void		ft_clear(char *input, t_minishell *minishell,
 	// if (minishell->cmd) 
 	//  	clear_scmd(minishell->cmd, minishell);
 	//얘가 minishell->cmd가 지금 누수중인데 프리를 시키면 가끔 not allocated 에러가 뜨는 경우가 있습니다! 
-	//근데 이유가 다른 데서 누수된 거 때문에 그런 것 같아요!
+	//근데 다른 데서 누수된 거 때문에 그런 것 같아요!
 	minishell->cmd = 0;
 	g_sigexit = 0;
 }

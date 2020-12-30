@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 10:58:17 by myoh             ###   ########.fr       */
+/*   Updated: 2020/12/30 17:00:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void			exec_redir_scmd(t_minishell *minishell)
 
 	scmd = minishell->scmd;
 	while (scmd->command && scmd->type != LASTREDIR)
-	{
+	{	ft_printf("scmd:/%s/, opt:/%s/, type:/%d/ argc:/%d/\n", scmd->command, scmd->option, scmd->type, scmd->argc);
 		if ((pid = fork()) == 0)
 		{
 			if (scmd->type == REDIR && scmd->fd != -1)
