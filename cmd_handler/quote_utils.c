@@ -77,7 +77,10 @@ int get_quote_type(t_cmd *new)
 		if (isquote == 2 && 
 		get_first_quote(new->command, 2) > -1 && //문제시 이거 주석처리할것
 		get_first_quote(new->command, 1) > get_first_quote(new->command, 2))
+		{
 			new->quote_type = 2; //싱글쿼트 지우면 안된다는 표시
+			new->hasenv = 1;//env가 있다
+		}
 		if (isquote == 2 || isdouble == 2)
 		{
 			new->hasquote = 1;

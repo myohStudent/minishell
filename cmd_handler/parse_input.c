@@ -40,33 +40,31 @@ void split_argv(t_cmd *curr)
 		return;
 	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) && curr->command[has_quotes(curr->command)] != ' ')
 		i = has_quotes(curr->command);
-
 	i -= ft_remove_quote(curr);
-	ft_printf("i ------------- %d, type %d  str %s\n", i, curr->quote_type,curr->command);
-
+	// ft_printf("i ------------- %d, type %d  str %s\n", i, curr->quote_type,curr->command);
 	if (i < 0)
-		// curr->quote_type == 2 || curr->quote_type == 1)
 		i = 0;
-	ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
+	// curr->quote_type == 2 || curr->quote_type == 1)
+	// ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
-	ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
-
+	//ft_printf("i ------------- %d, type %d \n", i, curr->quote_type);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
-	ft_printf(">>%s<<\n", temp);
-	ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
+	// ft_printf(">>%s<<\n", temp);
+	// ft_printf("%d, %d, %d, %d \n", i + 1, ft_strlen(curr->command), (ft_strlen(curr->command) - i), len);
 	//ft_printf("len : %d  str : %s\n",ft_strlen(curr->command), curr->command);
 	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));
-	ft_printf(">>%s<<\n", curr->option);
+	// ft_printf(">>%s<<\n", curr->option);
+
 	//이부분 free 오류
 	free(curr->command);
 	curr->command = ft_strdup(temp);
 	//이부분 free 오류
 	free(temp);
 	temp = 0;
-	ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
+	// ft_printf("cmd:%s, opt:%s, argc:%d|\n", curr->command, curr->option, curr->argc);
 }
 
 char *check_copy(char const *s, unsigned int start, size_t len)
@@ -76,11 +74,7 @@ char *check_copy(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	if (!(a = (char *)malloc(sizeof(char) * ((int)len))))
-	{
-		ft_printf("리턴널 일어남\n");
 		return (NULL);
-	}
-	ft_printf("((%d, %d, ", start, len);
 	while (i < (int)len)
 	{
 		a[i] = s[(int)start];
@@ -129,20 +123,22 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	//[OK]echo 'asdf'; echo "asdf"; echo "asdf'asdf'asdf"; echo "asdf 'asdf' asdf"; echo 'asdf"asdf"asdf'; echo 'asdf "asdf" asdf';
 	//[OK]asdf"$HOME"; asdf'$HOME'; 'asdf$HOME'; '$HOME asdf'
 	//[OK]'12"34"56'; "12'34'56"; 'asdf"$HOME"asdf'; "asfd$HOME"
-	//[OK]"$HOMEasdf"; asdf$HOMEasd; asdf"$HOME"asdf
-	//[OK]asdfasdf"$HOME"; "$HOME"asdf;
+	//[OK]"$HOMEasdf"; asdf$HOMEasd; 
+	//[OK]asdfasdf"$HOME"; '$HOME'asdf;
 	//[OK]'asdf "$HOME" asdf';
 	//[OK] 'asdf'asdf'asdf'; "asdf"asdf"asdf";
+	//[bug] "$HOME"asdf; asdf"$HOME"asdf
 	
 
 	//hasenv==1이고, quote_type가 1이 아니고,
 	//"하고 str[1]이 $이면 ENV와 strcmp해서 ==0인경우 ENV로 치환. (dollar_exec)
 	//quotes가 "ㄴㅁㅁㄴㄹㅇ'$HOME'ㅁㄴㅇㄹㅁㄹ" 인 경우 무시하고 환경변수로 치환해도됨.
 
-	//[bug]'asdf 'asdf' asdf'; "asdf "asdf" asdf
-	//[bug] "asdf'$HOME'asdf"　"asdf '$HOME' asdf";//hasenv가 켜져야되는데 안켜짐
-	//[bug]'$HOME'asdf;
-	//띄어쓰기 없으면 판별을 못함
+	//[bug]'asdf 'asdf' asdf'; "asdf "asdf" asdf"
+
+	//[bug] "asdf '$HOME' asdf"; 
+	
+	//"asdf'$HOME'asdf"
 	
 	new->hasquote = 0;
 	new->hasenv = 0;
@@ -153,11 +149,13 @@ void set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end)
 	// 	 new->command[has_quotes(new)] == ' '))
 	{
 		ft_printf("커맨드가 쿼트일 경우'%d, %d'\n",new->hasenv, new->quote_type);
+		new->argc = 0;
 		if(new->hasenv == 1 && new->quote_type != 1)
 			dollar_exec_with_quote(new, minishell); //세그폴트남
 
 		split_argv_quotes_cmd(new);
 	}
+	//"asdf '$HOME' asdf"; "asdf'$HOME'asdf"
 	else
 	{
 

@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:35:27 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/28 23:54:58 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/02 17:55:54 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,15 @@ int get_next_space(char *str)
 	{
 		if (ft_isspace(str[i]))
 			return (i);
+		if (ft_isquote(str[i]))
+			return (i);
 		i++;
 	}
-	return (get_first_quote(str, 2));
+	return (-1);
+	// if (get_first_quote(str, 2) < get_first_quote(str, 1) || get_first_quote(str, 1) < 0)
+	// 	return (get_first_quote(str, 2));
+	// else
+	// 	return (get_first_quote(str, 1));
 }
 
 int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
@@ -134,8 +140,10 @@ int		dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell)
 		envindex = 0;
 		while (env && envindex < minishell->env_currnb)
 		{
+			// ft_printf(">>>>>>>>>>>%s %d<<<<<<<<<<<\n", curr->command + i + 1, j - 1);
 			if (ft_strncmp(env->variable, curr->command + i + 1, j - 1) == 0)
 			{
+
 				temp = ft_substr(curr->command, 0, i);
 				startstr = ft_strjoin(temp, env->value);
 				free(temp);
