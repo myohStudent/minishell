@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   welcome_shell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 17:39:14 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/19 15:10:01 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 20:20:49 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,5 @@ void	welcome_shell(void)
 	*      Welcome to the world of Minishell!     * \n\
 	*                                             * \n\
 	*********************************************** \n\
-	\n\e[0;0m"
-	);
+	\n\e[0;0m");
 }

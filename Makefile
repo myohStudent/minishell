@@ -8,6 +8,7 @@ SRCS	=	main.c \
 CMD_DIR	=	./cmd_handler
 CMD_FILE	=	cmd_handler.c \
 				cmd_handler2.c \
+				cmd_handler3.c \
 				parse_input.c \
 				handler_utils.c \
 				handler_utils2.c \

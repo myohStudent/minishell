@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:33:16 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 17:03:59 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 20:26:40 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char				*get_bin(t_minishell *minishell, char *command)
 	if (is_char_here('/', command) >= 0)
 		return (ft_strdup(command));
 	if (!g_pipe_bin)
-	 	return (ft_strjoin("/bin/", command));
+		return (ft_strjoin("/bin/", command));
 	i = 0;
 	while (g_pipe_bin && g_pipe_bin[i])
 	{

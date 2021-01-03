@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 17:06:54 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 21:26:16 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			sub_input(char **temp, char *temp3, int i, int type)
 	free(*temp);
 	*temp = NULL;
 	if (type == 6)
-	 	*temp = ft_substr(temp3, i + 2, ft_strlen(temp3) - i - 1);
+		*temp = ft_substr(temp3, i + 2, ft_strlen(temp3) - i - 1);
 	else
 		*temp = ft_substr(temp3, i + 1, ft_strlen(temp3) - i);
 	free(temp3);

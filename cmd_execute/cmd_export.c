@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:06:43 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 17:01:08 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 20:36:14 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void			envadd_back(t_env *list, char **newenv, t_minishell *minishell)
 	list->next = new_node;
 }
 
-int				ft_cmp_to_update(t_env *list, char **split_new_env, t_minishell *minishell)
+int				ft_cmp_to_update(t_env *list, char **split_new_env,
+				t_minishell *minishell)
 {
 	int			i;
 

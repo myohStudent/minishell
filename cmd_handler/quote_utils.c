@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/03 21:30:46 by myoh              #+#    #+#             */
+/*   Updated: 2021/01/03 21:32:48 by seohchoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-int ft_isquote(char c)
+int	ft_isquote(char c)
 {
 	if (c == '\'')
 		return (1);
@@ -9,7 +21,7 @@ int ft_isquote(char c)
 	return (0);
 }
 
-int get_first_quote(char *command, int type)
+int	get_first_quote(char *command, int type)
 {
 	int i;
 
@@ -18,7 +30,7 @@ int get_first_quote(char *command, int type)
 		return (-1);
 	while (command[i])
 	{
-		if (ft_isquote(command[i]) == type) //34
+		if (ft_isquote(command[i]) == type)
 			return (i);
 		// ft_printf("> %d", i);
 		i++;
@@ -26,7 +38,7 @@ int get_first_quote(char *command, int type)
 	return (-1);
 }
 
-int has_quotes(t_cmd *new)
+int	has_quotes(t_cmd *new)
 {
 	int isdouble;
 	int isquote;
@@ -38,10 +50,10 @@ int has_quotes(t_cmd *new)
 	while (new->command[i])
 	{
 		if (new->quote_type != 2) //싱글쿼트가 안쪽에있는게 아닐경우
-			if (ft_isquote(new->command[i]) == 1) //34
+			if (ft_isquote(new->command[i]) == 1)
 				isquote++;
 		if (new->quote_type != 1)
-			if (ft_isquote(new->command[i]) == 2) //39
+			if (ft_isquote(new->command[i]) == 2)
 				isdouble++;
 		i++;
 		if (isquote == 2 || isdouble == 2)
@@ -50,7 +62,7 @@ int has_quotes(t_cmd *new)
 	return (0);
 }
 
-int get_quote_type(t_cmd *new)
+int	get_quote_type(t_cmd *new)
 {
 	int isdouble;
 	int isquote;
@@ -61,20 +73,20 @@ int get_quote_type(t_cmd *new)
 	i = 0;
 	while (new->command[i])
 	{
-		if (ft_isquote(new->command[i]) == 1) //34
+		if (ft_isquote(new->command[i]) == 1)
 			isquote++;
-		if (ft_isquote(new->command[i]) == 2) //39
+		if (ft_isquote(new->command[i]) == 2)
 			isdouble++;
 		i++;
 		if (isdouble == 2 && ((get_first_quote(new->command, 1) <
 		get_first_quote(new->command, 2)) || !get_first_quote(new->command, 1))) //'이 없거나, 있어도 "보다 늦게 나온다.
 			new->hasenv = 1;//env가 있다
-		if (isdouble == 2 && 
+		if (isdouble == 2 &&
 		get_first_quote(new->command, 1) > -1 && //문제시 이거 주석처리할것
 		get_first_quote(new->command, 1) <
 		get_first_quote(new->command, 2))
 			new->quote_type = 1; //더블쿼트 지우면 안된다는 표시
-		if (isquote == 2 && 
+		if (isquote == 2 &&
 		get_first_quote(new->command, 2) > -1 && //문제시 이거 주석처리할것
 		get_first_quote(new->command, 1) > get_first_quote(new->command, 2))
 		{
@@ -85,7 +97,7 @@ int get_quote_type(t_cmd *new)
 		{
 			new->hasquote = 1;
 			return (i);
-		}	
+		}
 	}
 	new->hasquote = 0;
 	return (0);

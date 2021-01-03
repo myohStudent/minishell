@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/03 17:04:39 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 20:48:36 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int			exec_else(t_minishell *minishell, t_cmd *curr)
-{
-	if (ft_strncmp(curr->command, "pwd\0", 4) == 0)
-		cmd_pwd(curr, minishell);
-	else if (ft_strncmp(curr->command, "cd\0", 3) == 0)
-	{
-		if (cmd_cd(curr, minishell) < 0)
-			return (-1);
-	}
-	else if (ft_strncmp(curr->command, "echo\0", 5) == 0)
-		cmd_echo(curr, minishell);
-	else if (ft_strncmp(curr->command, "exit\0", 5) == 0)
-		cmd_exit(curr, minishell);
-	else if (ft_strncmp(curr->command, "env\0", 4) == 0)
-		print_env(minishell->env_list);
-	else if (ft_strncmp(curr->command, "export\0", 7) == 0)
-		cmd_export(curr, minishell);
-	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
-		cmd_unset(curr, minishell);
-	else
-	{
-	 	ft_printf("%s: command not found\n", curr->command);
-	 	g_command_nb = 127;
-	}
-	return (1);
-}
 
 int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
@@ -45,7 +18,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 		return (-1);
 	if (g_pipe_num > 0 || minishell->redir_num > 0)
 	{
-		minishell-> scmd = parse3(minishell, curr);
+		minishell->scmd = parse3(minishell, curr);
 		if (minishell->scmd && g_pipe_num > 0 && minishell->redir_num > 0)
 		{
 			too_many_tokens(minishell);
@@ -61,7 +34,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 	else if (g_pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))
-			return (-1); 
+			return (-1);
 	}
 	free_globals();
 	return (1);
@@ -77,28 +50,25 @@ void		ft_clear(char *input, t_minishell *minishell,
 	while (minishell->cmd)
 	{
 		minishell->cmd->argc = 0;
-		free(minishell->cmd->command);
+		if (minishell->cmd->command)
+			free(minishell->cmd->command);
 		if (minishell->cmd->option)
 			free(minishell->cmd->option);
 		free(minishell->cmd);
 		minishell->cmd = minishell->cmd->next;
 	}
-	// if (minishell->cmd) 
-	//  	clear_scmd(minishell->cmd, minishell);
-	//얘가 minishell->cmd가 지금 누수중인데 프리를 시키면 가끔 not allocated 에러가 뜨는 경우가 있습니다! 
-	//근데 다른 데서 누수된 거 때문에 그런 것 같아요!
 	minishell->cmd = 0;
 	g_sigexit = 0;
 }
 
-void			buf_init(char buf1, char buf2, char **input)
+void		buf_init(char buf1, char buf2, char **input)
 {
-	buf1= ' ';
+	buf1 = ' ';
 	buf2 = '\0';
 	*input = ft_strdup("");
 }
 
-int				cmd_handler(t_minishell *minishell)
+int			cmd_handler(t_minishell *minishell)
 {
 	char		buf[2];
 	char		*input;
@@ -120,7 +90,7 @@ int				cmd_handler(t_minishell *minishell)
 	parse_cmd(minishell, minishell->cmd, input);
 	curr = minishell->cmd->next;
 	while (curr != NULL && *input != 0)
-    {
+	{
 		if (curr->command)
 		{
 			if (!(cmd_executer(minishell, curr)))
@@ -130,7 +100,7 @@ int				cmd_handler(t_minishell *minishell)
 				free(curr);
 			curr = next;
 		}
-    }
+	}
 	ft_clear(input, minishell, curr);
 	return (1);
 }

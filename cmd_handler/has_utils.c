@@ -6,15 +6,15 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 23:53:45 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 00:06:28 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/03 21:17:49 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int is_char_here(char c, char *str)
+int		is_char_here(char c, char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -26,16 +26,16 @@ int is_char_here(char c, char *str)
 	return (-1);
 }
 
-int is_instr(char c, char *str)
+int		is_instr(char c, char *str)
 {
 	if (is_char_here(c, str) >= 0)
 		return (1);
 	return (0);
 }
 
-int has_pipes(char *option)
+int		has_pipes(char *option)
 {
-	int res;
+	int	res;
 
 	res = 0;
 	if (!option)
@@ -50,9 +50,9 @@ int has_pipes(char *option)
 	return (res);
 }
 
-int has_redirs(char *option)
+int		has_redirs(char *option)
 {
-	int res;
+	int	res;
 
 	res = 0;
 	if (!option)
@@ -67,9 +67,9 @@ int has_redirs(char *option)
 	return (res);
 }
 
-int has_dollar(char *str)
+int		has_dollar(char *str)
 {
-	int res;
+	int	res;
 
 	res = 0;
 	while (str[res])
@@ -79,6 +79,5 @@ int has_dollar(char *str)
 		res++;
 	}
 	ft_printf("$있는가: %d\n", res);
-
 	return (0);
 }

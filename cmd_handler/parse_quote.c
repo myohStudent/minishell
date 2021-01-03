@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_quote.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/03 21:20:24 by myoh              #+#    #+#             */
+/*   Updated: 2021/01/03 21:22:30 by seohchoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-int ft_remove_quote(t_cmd *curr)
+int			ft_remove_quote(t_cmd *curr)
 {
-	char *temp;
-	int quotenum;
-	int i;
+	char	*temp;
+	int		quotenum;
+	int		i;
 
 	quotenum = 0;
 	i = 0;
@@ -35,21 +47,20 @@ int ft_remove_quote(t_cmd *curr)
 	return (quotenum);
 }
 
-void split_argv_quotes_cmd(t_cmd *curr)
+void		split_argv_quotes_cmd(t_cmd *curr)
 {
-	int i;
-	char *temp;
-	int len;
-    int lastquote;
-    int d;
-    int j;
+	int		i;
+	char	*temp;
+	int		len;
+	int		lastquote;
+	int		d;
+	int		j;
 
 	i = 0;
 	curr->option = NULL;
-	
 	if ((!curr || !curr->command) && !curr->hasquote)
-		return;
-	lastquote = get_first_quote(curr->command+ 1,curr->quote_type);
+		return ;
+	lastquote = get_first_quote(curr->command + 1, curr->quote_type);
 	d = has_quotes(curr);
 	j = ft_remove_quote(curr);
 	i = d - j;

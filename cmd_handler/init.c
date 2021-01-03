@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 21:25:44 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 17:06:19 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 20:40:13 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void			init_env(char **env, t_minishell *minishell, t_env *env_list)
 
 	i = 0;
 	minishell->env_currnb = 0;
-    g_sigexit = 0;
+	g_sigexit = 0;
 	while (env[i])
 	{
 		str = ft_split(env[i], '=');
@@ -38,17 +38,18 @@ void			init_env(char **env, t_minishell *minishell, t_env *env_list)
 	}
 	env_list->next = NULL;
 }
-char            **get_binfromtemp(char *temp)
-{
-    char        **bin;
 
-    if (temp)
+char			**get_binfromtemp(char *temp)
+{
+	char		**bin;
+
+	if (temp)
 	{
 		bin = ft_split(temp, ':');
 		free(temp);
 		temp = NULL;
 	}
-    return (bin);
+	return (bin);
 }
 
 void			get_path(t_env *list, t_minishell *minishell)
@@ -69,7 +70,7 @@ void			get_path(t_env *list, t_minishell *minishell)
 		}
 		l = l->next;
 	}
-    bin = get_binfromtemp(temp);
+	bin = get_binfromtemp(temp);
 	i = 0;
 	while (bin[i])
 		i++;
@@ -77,12 +78,12 @@ void			get_path(t_env *list, t_minishell *minishell)
 	i = -1;
 	while (bin && bin[++i])
 		g_pipe_bin[i] = ft_strjoin(bin[i], "/");
-    free_arr(bin);
+	free_arr(bin);
 }
 
 void			get_envp(char **env, int i)
 {
-	int		 	j;
+	int			j;
 
 	j = 0;
 	g_envp_list = (char **)malloc(sizeof(char *) * i);
