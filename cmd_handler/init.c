@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 21:25:44 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 10:22:43 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 16:08:51 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void			get_path(t_env *list, t_minishell *minishell)
 	i = 0;
 	while (bin[i])
 		i++;
-	pipe_bin = malloc(sizeof(char *) * (i + 1));
+	g_pipe_bin = malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (bin && bin[++i])
-		pipe_bin[i] = ft_strjoin(bin[i], "/");
+		g_pipe_bin[i] = ft_strjoin(bin[i], "/");
     free_arr(bin);
 }
 
@@ -85,11 +85,11 @@ void			get_envp(char **env, int i)
 	int		 	j;
 
 	j = 0;
-	envp_list = (char **)malloc(sizeof(char *) * i);
+	g_envp_list = (char **)malloc(sizeof(char *) * i);
 	while (j < i)
 	{
-		envp_list[j] = ft_strdup(env[j]);
+		g_envp_list[j] = ft_strdup(env[j]);
 		j++;
 	}
-	envp_list[j] = NULL;
+	g_envp_list[j] = NULL;
 }

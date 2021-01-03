@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 15:52:51 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 22:06:20 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 15:45:24 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_exit()
+void		ft_exit(void)
 {
 	exit(1);
 }
@@ -32,13 +32,13 @@ void		parent_signal_handler(int signo)
 	{
 		write(1, "\b\b  \b\b", 7);
 		g_command_nb = 1;
-		write(1,"\n", 1);
+		write(1, "\n", 1);
 		display_prompt();
 		g_sigexit = 1;
 	}
 	else if (SIGQUIT == signo)
 	{
-		write(1,"\b\b  \b\b", 7);
+		write(1, "\b\b  \b\b", 7);
 		g_sigexit = 2;
 	}
 }

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 13:55:47 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 16:19:12 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 # include "./ft_printf/inc/ft_printf.h"
 # include "./ft_printf/libft/libft.h"
@@ -42,24 +42,24 @@
 # define LASTPIPE 7
 # define LASTREDIR 8
 
-extern int 			errno;
+extern int			errno;
 char				*g_home_dir;
 int					g_command_nb;
-char				*raw_input;
-int					pipe_num;
+char				*g_input;
+int					g_pipe_num;
 int					g_sigexit;
-int					flags[10];
+int					g_flags[10];
 char				**g_cmd_array;
 int					g_pid;
-char				**pipe_bin;
-char				**envp_list;
+char				**g_pipe_bin;
+char				**g_envp_list;
 
 typedef struct		s_env
 {
 	char			*variable;
 	char			*value;
 	struct s_env	*next;
-} 						t_env;
+}					t_env;
 
 typedef struct		s_cmd
 {
@@ -80,13 +80,13 @@ typedef struct		s_cmd
 	char			*command;
 	char			*option;
 	char			**argv;
-	char			**option_av; //옵션이 다중인자일 시 스페이스로 나뉜 인자를 이 이중배열에 담는다
+	char			**option_av;
 	struct s_list	*env_list;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
-}						t_cmd;
+}					t_cmd;
 
-typedef struct	 	s_minishell
+typedef struct		s_minishell
 {
 	char			*path;
 	int				cnt;
@@ -94,12 +94,12 @@ typedef struct	 	s_minishell
 	int				pipe_num;
 	int				redir_num;
 	int				quote[2];
-	int				env_currnb; // current number
-	t_env			*env_list; // env용 연결 리스트!
+	int				env_currnb;
+	t_env			*env_list;
 	t_env			*export_list;
 	t_cmd			*cmd;
-	t_cmd			*scmd; //cmd 복제
-} 						t_minishell;
+	t_cmd			*scmd;
+}					t_minishell;
 
 void		welcome_shell(void);
 void		*ft_memalloc(size_t size);
@@ -125,16 +125,17 @@ int			print_env(t_env *env);
 int			print_export(t_env *env);
 
 /*
-** cmd_export.c
-*/ 
+** cmd_export.c, cmd_export2.c
+*/
 
 int			ft_strcmp(const char *s1, const char *s2);
-void 		cmd_export(t_cmd *curr, t_minishell *minishell);
+void		cmd_export(t_cmd *curr, t_minishell *minishell);
+void		copy_env(t_minishell *minishell, t_env *export_list, t_env *env);
 
 /*
 ** cmd_echo.c
 */
-void        cmd_echo(t_cmd *curr, t_minishell *minishell);
+void		cmd_echo(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** handler_utils.c handler_utils2.c
@@ -145,7 +146,7 @@ char		*parse_space(char *s, char *space);
 int			check_token(t_minishell *minishell, t_cmd *curr);
 void		free_globals(void);
 void		clear_scmd(t_cmd *cmd, t_minishell *minishell);
-int         exceptions(char *input);
+int			exceptions(char *input);
 
 /*
 ** has_utils.c
@@ -187,6 +188,7 @@ void		cmd_pwd(t_cmd *curr, t_minishell *minishell);
 /*
 ** cmd_cd.c
 */
+
 int			cmd_cd(t_cmd *curr, t_minishell *minishell);
 
 /*
@@ -231,7 +233,8 @@ void		exit_clear(t_cmd *curr, t_minishell *minishell);
 
 int			get_argc(t_cmd *curr);
 void		split_argv(t_cmd *curr);
-void		set_node(t_minishell *minishell, t_cmd *new, char *data, int word_end);
+void		set_node(t_minishell *minishell, t_cmd *new, char *data,
+			int word_end);
 t_cmd		*create_node(t_minishell *minishell, char *data, int word_len);
 int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 
@@ -241,7 +244,8 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 
 void		add_node(t_cmd *target, char *s);
 t_cmd		*reverse_node(t_cmd *head);
-int			parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell, char flag);
+int			parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell,
+			char flag);
 void		delete_space_flag(char **temp, char flag);
 void		flag_checker(char flag);
 char		**store_commands(t_cmd *scmd, t_minishell *minishell);

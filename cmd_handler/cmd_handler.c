@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/03 14:18:06 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 16:09:42 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,25 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 {
 	if (!check_token(minishell, curr))
 		return (-1);
-	if (pipe_num > 0 || minishell->redir_num > 0)
+	if (g_pipe_num > 0 || minishell->redir_num > 0)
 	{
 		minishell-> scmd = parse3(minishell, curr);
-		if (minishell->scmd && pipe_num > 0 && minishell->redir_num > 0)
+		if (minishell->scmd && g_pipe_num > 0 && minishell->redir_num > 0)
 		{
 			too_many_tokens(minishell);
 			return (1);
 		}
-		if (minishell->scmd && pipe_num > 0)
+		if (minishell->scmd && g_pipe_num > 0)
 			exec_scmd(minishell);
 		else
 			exec_redir_scmd(minishell);
 		if (minishell->scmd)
 			clear_scmd(minishell->scmd, minishell);
 	}
-	else if (pipe_num == 0 && dollar_exec(curr, minishell) == 0)
+	else if (g_pipe_num == 0 && dollar_exec(curr, minishell) == 0)
 	{
 		if (!(exec_else(minishell, curr)))
-			return (-1); 
+			return (-1);
 	}
 	free_globals();
 	return (1);
@@ -83,9 +83,9 @@ void		ft_clear(char *input, t_minishell *minishell,
 		free(minishell->cmd);
 		minishell->cmd = minishell->cmd->next;
 	}
-	// if (minishell->cmd) 
+	// if (minishell->cmd)
 	//  	clear_scmd(minishell->cmd, minishell);
-	//얘가 minishell->cmd가 지금 누수중인데 프리를 시키면 가끔 not allocated 에러가 뜨는 경우가 있습니다! 
+	//얘가 minishell->cmd가 지금 누수중인데 프리를 시키면 가끔 not allocated 에러가 뜨는 경우가 있습니다!
 	//근데 다른 데서 누수된 거 때문에 그런 것 같아요!
 	minishell->cmd = 0;
 	g_sigexit = 0;
@@ -131,6 +131,6 @@ int				cmd_handler(t_minishell *minishell)
 			curr = next;
 		}
     }
-	ft_clear(input, minishell, curr);
+	// ft_clear(input, minishell, curr);
 	return (1);
 }
