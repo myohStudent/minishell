@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 18:17:11 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 11:01:25 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 16:59:03 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int		cmd_cd(t_cmd *curr, t_minishell *minishell)
 {
-	ft_printf("cd opt:%s, argc:%d\n",curr->option, curr->argc);
 	if (curr->argc == 1)
 	{
 		if (chdir(g_home_dir) < 0)

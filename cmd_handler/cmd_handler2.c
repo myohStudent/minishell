@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 17:00:32 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:05:06 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void			create_pipe_array(t_minishell *minishell)
 	t_cmd		*scmd;
 	int			i;
 
-	i = pipe_num;
+	i = g_pipe_num;
 	if (!(g_cmd_array = (char **)malloc(sizeof(char *) * (i + 2))))
 	{
 		ft_printf("no array\n");
@@ -25,7 +25,7 @@ void			create_pipe_array(t_minishell *minishell)
 	}
 	scmd = minishell->scmd;
 	i = 0;
-	while (scmd->command && i <= pipe_num)
+	while (scmd->command && i <= g_pipe_num)
 	{
 		g_cmd_array[i] = ft_strdup(scmd->command);
 		i++;

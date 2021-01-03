@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 23:00:43 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:06:54 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 	char		*temp2;
 	char		*temp3;
 
-	temp = ft_strdup(raw_input);
+	temp = ft_strdup(g_input);
 	i = -1;
 	if (temp != NULL)
 		all_parse(head, temp, temp2, temp3, i, type);

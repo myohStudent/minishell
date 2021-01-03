@@ -33,6 +33,7 @@ EXE_FILE	=	cmd_env.c \
 				redir_execute.c \
 				dollar_exec.c \
 				cmd_export.c \
+				cmd_export2.c \
 				cmd_unset.c \
 
 EXE		= $(addprefix $(EXE_DIR)/, $(EXE_FILE))

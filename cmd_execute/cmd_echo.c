@@ -6,13 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 21:51:14 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 18:06:36 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 16:59:21 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-	
-void        cmd_echo(t_cmd *curr, t_minishell *minishell)
+
+void		cmd_echo(t_cmd *curr, t_minishell *minishell)
 {
 	if (curr->option && ft_strncmp(curr->option, "-n", 2) == 0)
 	{
@@ -24,7 +24,7 @@ void        cmd_echo(t_cmd *curr, t_minishell *minishell)
 		}
 		else if (curr->option[2] != ' ')
 			ft_printf("%s", curr->option);
-		else 
+		else
 			ft_printf("%s", curr->option + 3);
 	}
 	else if (curr->option && ft_strncmp(curr->option, "$?\0", 3) == 0)

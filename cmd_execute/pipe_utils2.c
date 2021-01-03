@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:33:16 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 14:02:35 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:03:59 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ char				*get_bin(t_minishell *minishell, char *command)
 		return (NULL);
 	if (is_char_here('/', command) >= 0)
 		return (ft_strdup(command));
-	if (!pipe_bin)
+	if (!g_pipe_bin)
 	 	return (ft_strjoin("/bin/", command));
 	i = 0;
-	while (pipe_bin &&pipe_bin[i])
+	while (g_pipe_bin && g_pipe_bin[i])
 	{
-		ret = open_directory(pipe_bin[i], command);
+		ret = open_directory(g_pipe_bin[i], command);
 		if (ret)
 			return (ret);
 		i++;

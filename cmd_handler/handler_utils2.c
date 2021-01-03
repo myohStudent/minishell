@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 14:09:25 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:05:48 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void        init_num(t_minishell *minishell)
 {
-    pipe_num = 0;
+    g_pipe_num = 0;
     minishell->redir_num = 0;
 }
 
@@ -31,9 +31,9 @@ int         check_last_token(char *input)
         free(s);
         return (-1);
     }
-    free(raw_input);
-    raw_input = NULL;
-    raw_input = ft_strdup(s);
+    free(g_input);
+    g_input = NULL;
+    g_input = ft_strdup(s);
     free(input);
     input = NULL;
     input = ft_strdup(s);
@@ -48,7 +48,7 @@ int         check_token(t_minishell *minishell, t_cmd *curr)
     int     i;
 
     init_num(minishell);
-    input = ft_strdup(raw_input);
+    input = ft_strdup(g_input);
     i = 0;
     if (exceptions(input) < 0)
         return (0);
@@ -57,7 +57,7 @@ int         check_token(t_minishell *minishell, t_cmd *curr)
     while (input[i])
     {
         if (input[i] == '|')
-            pipe_num++;
+           g_pipe_num++;
         else if (input[i] == '>' || input[i] == '<')
             minishell->redir_num++;
         i++;
@@ -69,8 +69,8 @@ int         check_token(t_minishell *minishell, t_cmd *curr)
 
 void	free_globals(void)
 {
-	free(raw_input);
-	raw_input = NULL;
+	free(g_input);
+	g_input = NULL;
 	if (g_cmd_array)
 	{
 		free_arr(g_cmd_array);

@@ -191,7 +191,7 @@ t_cmd *create_node(t_minishell *minishell, char *data, int word_len)
 
 int parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 {
-	raw_input = ft_strdup(input);
+	g_input = ft_strdup(input);
 	/*int		start;
 	int		i;
 	char	*temp;

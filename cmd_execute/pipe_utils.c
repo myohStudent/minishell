@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 14:05:09 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:03:36 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ void			flag_checker(char flag)
 	if (flag)
 	{
 		if (flag == '>')
-			flags[1] = 1;
+			g_flags[1] = 1;
 		else if (flag == '|')
-			flags[0] = 1;
+			g_flags[0] = 1;
 		else if (flag == '<')
-			flags[2] = 1;
+			g_flags[2] = 1;
 		else if (flag == 3)
-			flags[3] = 1; 
+			g_flags[3] = 1; 
 	}
 }

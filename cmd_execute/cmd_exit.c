@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 17:14:53 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 09:55:57 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 17:00:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void		cmd_exit(t_cmd *curr, t_minishell *minishell)
 	}
 	else if (curr->argc == 0)
 		;
-	else 
+	else
 	{
-	 	ft_putstr_fd("\nexit: too many arguments\0", 1);
-	 	ft_putstr_fd("\n", 1);
-	 	g_command_nb = 255;
-	 	exit_clear(curr, minishell);
+		ft_putstr_fd("\nexit: too many arguments\0", 1);
+		ft_putstr_fd("\n", 1);
+		g_command_nb = 255;
+		exit_clear(curr, minishell);
 	}
 }
