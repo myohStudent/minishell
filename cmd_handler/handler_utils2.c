@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 23:50:32 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 14:09:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,12 @@ void    clear_scmd(t_cmd *cmd, t_minishell *minishell)
     while (cmd)
     {
         if (cmd->command)
-            ft_strdel(&cmd->command);
+        {
+            free(cmd->command);
+            cmd->command = NULL;
+        }
         if (cmd->pipe_bin)
-            ft_strdel(&cmd->pipe_bin);
+            free(cmd->pipe_bin);
         if (cmd->pipe_array)
             free_arr(cmd->pipe_array);
         if (cmd->option)

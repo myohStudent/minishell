@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 09:50:32 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 14:05:09 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void			add_node(t_cmd *target, char *s)
 {
 	t_cmd 		*new;
 
-	new = (t_cmd *)malloc(sizeof(t_cmd));
     new->next = target->next;
     new->command = ft_strdup(s);
     target->next = new;

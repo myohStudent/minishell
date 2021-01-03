@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:33:16 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 09:51:37 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 14:02:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char				**store_commands(t_cmd *scmd, t_minishell *minishell)
 		i++;
 	}
 	free(temp);
+	temp = NULL;
 	store[i] = NULL;
 	return (store);
 }

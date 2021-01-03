@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/29 23:25:51 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 13:55:47 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ int					g_pid;
 char				**pipe_bin;
 char				**envp_list;
 
-typedef struct s_env
+typedef struct		s_env
 {
 	char			*variable;
 	char			*value;
 	struct s_env	*next;
-} 					t_env;
+} 						t_env;
 
 typedef struct		s_cmd
 {
@@ -84,7 +84,7 @@ typedef struct		s_cmd
 	struct s_list	*env_list;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
-}							t_cmd;
+}						t_cmd;
 
 typedef struct	 	s_minishell
 {
@@ -99,10 +99,9 @@ typedef struct	 	s_minishell
 	t_env			*export_list;
 	t_cmd			*cmd;
 	t_cmd			*scmd; //cmd 복제
-} 					t_minishell;
+} 						t_minishell;
 
 void		welcome_shell(void);
-//void		ft_exit(void);
 void		*ft_memalloc(size_t size);
 void		display_prompt(void);
 int			dollar_exec(t_cmd *curr, t_minishell *minishell);
@@ -113,19 +112,22 @@ void		controld_exit(char *input);
 /*
 ** init.c
 */
-void			get_envp(char **env, int i);
-void			init_env(char **env, t_minishell *minishell, t_env *env_list);
-void			get_path(t_env *list, t_minishell *minishell);
+
+void		get_envp(char **env, int i);
+void		init_env(char **env, t_minishell *minishell, t_env *env_list);
+void		get_path(t_env *list, t_minishell *minishell);
 
 /*
 ** cmd_env.c
 */
+
 int			print_env(t_env *env);
-int	print_export(t_env *env);
+int			print_export(t_env *env);
 
 /*
 ** cmd_export.c
 */ 
+
 int			ft_strcmp(const char *s1, const char *s2);
 void 		cmd_export(t_cmd *curr, t_minishell *minishell);
 
@@ -137,6 +139,7 @@ void        cmd_echo(t_cmd *curr, t_minishell *minishell);
 /*
 ** handler_utils.c handler_utils2.c
 */
+
 void		free_arr(char **arr);
 char		*parse_space(char *s, char *space);
 int			check_token(t_minishell *minishell, t_cmd *curr);
@@ -147,6 +150,7 @@ int         exceptions(char *input);
 /*
 ** has_utils.c
 */
+
 int			get_first_quote(char *command, int type);
 int			has_pipes(char *option);
 int			has_redirs(char *option);
@@ -159,6 +163,7 @@ int			ft_isquote(char c);
 /*
 ** parse_utils, parse_utils2.c, parse_utils3.c
 */
+
 char		*ft_trimchar(char *str, char c);
 char		*space_trim(char *s);
 void		too_many_tokens(t_minishell *minishell);
@@ -166,14 +171,17 @@ t_cmd		*parse3(t_minishell *minishell, t_cmd *curr);
 void		get_cmd_argc(t_cmd *new);
 t_cmd		*add_next_node(t_cmd *target, char *s, int i);
 int			parse_flags(t_cmd *head, t_minishell *minishell);
+
 /*
 ** cmd_unset.c
 */
+
 void		cmd_unset(t_cmd *curr, t_minishell *minishell);
 
 /*
 ** cmd_pwd.c
 */
+
 void		cmd_pwd(t_cmd *curr, t_minishell *minishell);
 
 /*
@@ -184,6 +192,7 @@ int			cmd_cd(t_cmd *curr, t_minishell *minishell);
 /*
 ** sig_handler.c
 */
+
 int			get_fork(void);
 int			set_fork(int current_fork);
 void		parent_signal_handler(int signo);
@@ -191,6 +200,7 @@ void		parent_signal_handler(int signo);
 /*
 ** cmd_handler.c
 */
+
 int			cmd_handler(t_minishell *minishell);
 int			has_pipes(char *option);
 int			cmd_executer(t_minishell *minishell, t_cmd *curr);
@@ -200,6 +210,7 @@ void		clear_single_cmd(t_cmd *cmd);
 /*
 ** cmd_handler2.c
 */
+
 void		exec_piperedir(t_minishell *minishell);
 void		exec_else2(t_minishell *minishell, t_cmd *scmd);
 void		exec_scmd(t_minishell *minishell);
@@ -209,6 +220,7 @@ void		exec_redir_scmd(t_minishell *minishell);
 /*
 ** cmd_exit.c
 */
+
 void		cmd_exit(t_cmd *curr, t_minishell *minishell);
 void		clear_env(t_env *env);
 void		exit_clear(t_cmd *curr, t_minishell *minishell);
@@ -239,25 +251,26 @@ char		*open_directory(char *path, char *command);
 
 /*
 ** parse_quote.c
-*/ 
-int ft_remove_quote(t_cmd *curr);
-void split_argv_quotes_cmd(t_cmd *curr);
+*/
+
+int			ft_remove_quote(t_cmd *curr);
+void		split_argv_quotes_cmd(t_cmd *curr);
 
 /*
 ** quote_utils.c
 */
 
-int ft_isquote(char c);
-int get_first_quote(char *command, int type);
-int has_quotes(t_cmd *new);
-int get_quote_type(t_cmd *new);
+int			ft_isquote(char c);
+int			get_first_quote(char *command, int type);
+int			has_quotes(t_cmd *new);
+int			get_quote_type(t_cmd *new);
 
 /*
 ** redir_execute.c
 */
+
 int			do_redir(t_minishell *minishell, t_cmd *scmd);
 int			do_dredir(t_minishell *minishell, t_cmd *scmd);
 int			do_bredir(t_minishell *minishell, t_cmd *scmd);
-
 
 #endif

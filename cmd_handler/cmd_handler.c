@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/03 09:54:56 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 14:18:06 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void		ft_clear(char *input, t_minishell *minishell,
 	input = NULL;
 	while (minishell->cmd)
 	{
+		minishell->cmd->argc = 0;
+		free(minishell->cmd->command);
+		if (minishell->cmd->option)
+			free(minishell->cmd->option);
 		free(minishell->cmd);
 		minishell->cmd = minishell->cmd->next;
 	}

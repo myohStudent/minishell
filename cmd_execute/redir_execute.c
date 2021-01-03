@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 17:44:47 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 09:52:15 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 14:00:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int			do_redir(t_minishell *minishell, t_cmd *scmd)
 	 	&& !(ft_compare(scmd->command, "env")) && !(ft_compare(scmd->command, "cd"))
 	 	&& !(ft_compare(scmd->command, "export")) && !(ft_compare(scmd->command, "unset"))
 		&& !(ft_compare(scmd->command, "exit")))
-	{	
+	{
 		 ft_printf("%s: command not found\n", scmd->command);
 		 g_sigexit = 1;
 		 exit(127);
