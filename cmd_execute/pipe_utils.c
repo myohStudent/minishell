@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2020/12/30 09:55:54 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 09:50:32 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ t_cmd			*reverse_node(t_cmd *head)
 		head->next = q;
     }
     return (q);
-	clear_scmd(p, NULL);
-	clear_scmd(r, NULL);
 }
 
 void			delete_space_flag(char **temp, char flag)

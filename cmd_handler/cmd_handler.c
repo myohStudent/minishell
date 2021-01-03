@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/30 16:50:04 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/03 09:54:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 		}
 		if (minishell->scmd && pipe_num > 0)
 			exec_scmd(minishell);
-		else 
+		else
 			exec_redir_scmd(minishell);
 		if (minishell->scmd)
 			clear_scmd(minishell->scmd, minishell);
