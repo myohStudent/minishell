@@ -6,43 +6,50 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:06:43 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 20:36:14 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 01:55:43 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void			sort_env_one(t_minishell *minishell, int i)
+{
+	t_env		*prev_node;
+	t_env		*curr_node;
+	t_env		*next_node;
+	int			j;
+
+	j = 0;
+	curr_node = minishell->export_list;
+	prev_node = NULL;
+	while (j < i && curr_node->next)
+	{
+		if (ft_strcmp(curr_node->variable, curr_node->next->variable) > 0)
+		{
+			next_node = curr_node;
+			curr_node = curr_node->next;
+			next_node->next = curr_node->next;
+			curr_node->next = next_node;
+			if (prev_node != NULL)
+				prev_node->next = curr_node;
+			else if (prev_node == NULL)
+				minishell->export_list = curr_node;
+		}
+		prev_node = curr_node;
+		curr_node = curr_node->next;
+		j++;
+	}
+}
+
 void			sort_env(t_minishell *minishell)
 {
 	int			i;
 	int			j;
-	t_env		*prev_node;
-	t_env		*curr_node;
-	t_env		*next_node;
 
 	i = minishell->env_currnb;
 	while (i)
 	{
-		j = 0;
-		curr_node = minishell->export_list;
-		prev_node = NULL;
-		while (j < i && curr_node->next)
-		{
-			if (ft_strcmp(curr_node->variable, curr_node->next->variable) > 0)
-			{
-				next_node = curr_node;
-				curr_node = curr_node->next;
-				next_node->next = curr_node->next;
-				curr_node->next = next_node;
-				if (prev_node != NULL)
-					prev_node->next = curr_node;
-				else if (prev_node == NULL)
-					minishell->export_list = curr_node;
-			}
-			prev_node = curr_node;
-			curr_node = curr_node->next;
-			j++;
-		}
+		sort_env_one(minishell, i);
 		i--;
 	}
 }
@@ -89,25 +96,9 @@ int				ft_cmp_to_update(t_env *list, char **split_new_env,
 	return (0);
 }
 
-int				ft_update_env(t_minishell *minishell, char **split_new_env)
-{
-	t_env		*env;
-	t_env		*export;
-
-	env = minishell->env_list;
-	export = minishell->export_list;
-	if (ft_cmp_to_update(env, split_new_env, minishell) == 1)
-	{
-		ft_cmp_to_update(export, split_new_env, minishell);
-		return (1);
-	}
-	return (0);
-}
-
 void			cmd_export(t_cmd *curr, t_minishell *minishell)
 {
 	char		**new_env;
-	char		**split_new_env;
 	int			i;
 
 	i = 0;
@@ -124,16 +115,8 @@ void			cmd_export(t_cmd *curr, t_minishell *minishell)
 		new_env = ft_split(curr->option, ' ');
 		while (new_env[i] != NULL)
 		{
-			ft_printf("\n[%s]\n", new_env[i]);
-			split_new_env = ft_split(new_env[i], '=');
-			if (ft_update_env(minishell, split_new_env) == 0)
-			{
-				envadd_back(minishell->export_list, split_new_env, minishell);
-				envadd_back(minishell->env_list, split_new_env, minishell);
-				minishell->env_currnb++;
-			}
+			add_new_env(minishell, new_env[i]);
 			i++;
-			free_arr(split_new_env);
 		}
 		free_arr(new_env);
 	}

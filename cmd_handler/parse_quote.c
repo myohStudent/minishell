@@ -6,26 +6,31 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 21:20:24 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:22:30 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 01:32:09 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int			get_quote_num(t_cmd *curr)
+{
+	int		i;
+	int		quotenum;
+
+	i = 0;
+	quotenum = 0;
+	while (curr->command[i])
+		if (ft_isquote(curr->command[i++]))
+			quotenum++;
+	return (quotenum);
+}
+
 int			ft_remove_quote(t_cmd *curr)
 {
 	char	*temp;
 	int		quotenum;
-	int		i;
 
-	quotenum = 0;
-	i = 0;
-	while (curr->command[i])
-	{
-		if (ft_isquote(curr->command[i]))
-			quotenum++;
-		i++;
-	}
+	quotenum = get_quote_num(curr);
 	if (curr->quote_type > 0)
 	{
 		if (curr->quote_type == 1)
@@ -51,7 +56,6 @@ void		split_argv_quotes_cmd(t_cmd *curr)
 {
 	int		i;
 	char	*temp;
-	int		len;
 	int		lastquote;
 	int		d;
 	int		j;
@@ -68,11 +72,10 @@ void		split_argv_quotes_cmd(t_cmd *curr)
 		i = lastquote;
 	while (!(ft_isspace(curr->command[i])) && curr->command[i])
 		i++;
-	len = ft_strlen(curr->command);
 	temp = ft_substr(curr->command, 0, i);
-	curr->option = ft_substr(curr->command, i + 1, len - (i + 1));
+	curr->option = ft_substr(curr->command, i + 1, \
+	ft_strlen(curr->command) - (i + 1));
 	free(curr->command);
 	curr->command = ft_strdup(temp);
 	free(temp);
-	temp = 0;
 }

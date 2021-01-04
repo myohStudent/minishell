@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:24:01 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 01:34:24 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ char		*ft_trimchar(char *str, char c)
 	i = 0;
 	currindex = 0;
 	while (str[i])
-	{
-		if (str[i] != c)
+		if (str[i++] != c)
 			currindex++;
-		i++;
-	}
 	res = (char *)malloc(sizeof(char) * (currindex + 1));
 	i = 0;
 	currindex = 0;
@@ -40,6 +37,13 @@ char		*ft_trimchar(char *str, char c)
 	}
 	res[currindex] = '\0';
 	return (res);
+}
+
+void		tild_handler(t_minishell *minishell, t_cmd *curr)
+{
+	if (curr->option[0] == '~' && (ft_isspace(curr->option[1]) || \
+	curr->option[1] == '/' || curr->option[1] == 0))
+		curr->option = ft_strjoin(g_home_dir, curr->option + 1);
 }
 
 t_cmd		*parse3(t_minishell *minishell, t_cmd *curr)

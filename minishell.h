@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 20:58:31 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 01:58:38 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,15 @@ int					print_export(t_env *env);
 ** cmd_export.c, cmd_export2.c
 */
 
+void				envadd_back(t_env *list, char **newenv, t_minishell *minishell);
+int					ft_cmp_to_update(t_env *list, char **split_new_env,
+					t_minishell *minishell);
 int					ft_strcmp(const char *s1, const char *s2);
 void				cmd_export(t_cmd *curr, t_minishell *minishell);
 void				copy_env(t_minishell *minishell, t_env *export_list,
 					t_env *env);
+int					ft_update_env(t_minishell *minishell, char **split_new_env);
+void				add_new_env(t_minishell *minishell, char *new_env);
 
 /*
 ** cmd_echo.c
@@ -167,6 +172,7 @@ int					ft_isquote(char c);
 ** parse_utils, parse_utils2.c, parse_utils3.c
 */
 
+void				tild_handler(t_minishell *minishell, t_cmd *curr);
 char				*ft_trimchar(char *str, char c);
 char				*space_trim(char *s);
 void				too_many_tokens(t_minishell *minishell);
