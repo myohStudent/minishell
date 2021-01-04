@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/04 20:23:24 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 21:18:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 void		ft_clear(char *input, t_minishell *minishell,
 			t_cmd *curr)
 {
-	clear_scmd(curr, minishell);
 	curr = NULL;
 	free(input);
 	input = NULL;
@@ -52,53 +51,54 @@ void		ft_clear(char *input, t_minishell *minishell,
 			free(minishell->cmd->command);
 		if (minishell->cmd->option)
 			free(minishell->cmd->option);
-		free(minishell->cmd);
+		if (minishell->cmd)
+			free(minishell->cmd);
 		minishell->cmd = minishell->cmd->next;
 	}
 	minishell->cmd = 0;
 	g_sigexit = 0;
 }
 
-void		buf_init(char buf1, char buf2, char **input)
+void		buf_init(char buf1, char buf2, char **input,
+			t_minishell *minishell)
 {
 	buf1 = ' ';
 	buf2 = '\0';
 	*input = ft_strdup("");
+	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
+}
+
+void		controld(int b, char *input)
+{
+	if (fstat(b, g_stat) < 0 && b == 0)
+		controld_exit(input);
 }
 
 int			cmd_handler(t_minishell *minishell)
 {
 	char		buf[2];
-	char		*input;
-	t_cmd		*curr;
-	t_cmd		*next;
 	int			b;
-	struct stat	*buf_stat;
 
-	buf_init(buf[0], buf[1], &input);
+	buf_init(buf[0], buf[1], &g_input, minishell);
 	while (buf[0] != '\n')
 	{
 		b = read(STDIN_FILENO, buf, 1);
 		if (buf[0] != '\n')
-			input = ft_strjoin_free(input, buf);
-		if (fstat(b, buf_stat) < 0 && b == 0)
-			controld_exit(input);
+			g_input = ft_strjoin_free(g_input, buf);
+		controld(b, g_input);
 	}
-	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	parse_cmd(minishell, minishell->cmd, input);
-	curr = minishell->cmd->next;
-	while (curr != NULL && *input != 0)
+	parse_cmd(minishell, minishell->cmd, g_input);
+	while (minishell->cmd->next != NULL)
 	{
-		if (curr->command)
+		if (minishell->cmd->next->command)
 		{
-			if (!(cmd_executer(minishell, curr)))
+			if (!(cmd_executer(minishell, minishell->cmd->next)))
 				break ;
-			next = curr->next;
-			if (curr->next)
-				free(curr);
-			curr = next;
+			if (minishell->cmd->next->next)
+				free(minishell->cmd->next);
+			minishell->cmd->next = minishell->cmd->next->next;
 		}
 	}
-	ft_clear(input, minishell, curr);
+	ft_clear(g_input, minishell, minishell->cmd->next);
 	return (1);
 }

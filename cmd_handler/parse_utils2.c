@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:26:16 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 22:06:36 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void			sub_input(char **temp, char *temp3, int i, int type)
 }
 
 void			all_parse(t_cmd *head, char *temp, char *temp2, char *temp3,
-				int i, int type)
+				int i)
 {
 	while (temp[++i])
 	{
@@ -45,29 +45,28 @@ void			all_parse(t_cmd *head, char *temp, char *temp2, char *temp3,
 		{
 			temp2 = ft_substr(temp, 0, i);
 			if (temp[i] == '>' && temp[i + 1] != '>')
-				type = REDIR;
+				g_type = REDIR;
 			else if (temp[i] == '|')
-				type = PIPE;
+				g_type = PIPE;
 			else if (temp[i] == '>' && temp[i + 1] == '>')
 			{
-				type = DREDIR;
+				g_type = DREDIR;
 				i++;
 			}
 			else
-				type = BREDIR;
-			add_next_node(head, ft_trim(temp2), type);
+				g_type = BREDIR;
+			add_next_node(head, ft_trim(temp2), g_type);
 			free(temp2);
-			sub_input(&temp, temp3, i, type);
+			sub_input(&temp, temp3, i, g_type);
 			i = -1;
 		}
 	}
-	last_input(temp, type, head);
+	last_input(temp, g_type, head);
 }
 
 int				parse_flags(t_cmd *head, t_minishell *minishell)
 {
 	int			i;
-	int			type;
 	char		*temp;
 	char		*temp2;
 	char		*temp3;
@@ -75,7 +74,7 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 	temp = ft_strdup(g_input);
 	i = -1;
 	if (temp != NULL)
-		all_parse(head, temp, temp2, temp3, i, type);
+		all_parse(head, temp, temp2, temp3, i);
 	if (temp && temp != NULL)
 	{
 		free(temp);

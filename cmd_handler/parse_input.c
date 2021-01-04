@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 01:03:31 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/04 20:19:01 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 21:17:01 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int			parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input)
 	int		start;
 	int		end;
 
-	g_input = ft_strdup(input);
 	start = 0;
 	end = 0;
 	if (!input)

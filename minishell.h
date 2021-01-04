@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 18:17:35 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 22:03:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define LASTREDIR 8
 
 extern int			errno;
+struct stat			*g_stat;
 char				*g_home_dir;
 int					g_command_nb;
 char				*g_input;
@@ -50,7 +51,10 @@ int					g_pipe_num;
 int					g_sigexit;
 int					g_flags[10];
 char				**g_cmd_array;
-int					g_pid;
+int					g_pid[2];
+int					g_pipe_fd[2];
+char				*g_temp;
+int					g_type;
 char				**g_pipe_bin;
 char				**g_envp_list;
 
@@ -231,8 +235,8 @@ void				create_pipe_array(t_minishell *minishell);
 void				free_command(char *command);
 void				close_fds(int pipe_fd[2]);
 char				*add_dir(t_minishell *minishell, char *command);
-void				big_pipe(int pid[2], int pipe_fd[2], char *command,
-					t_minishell *minishell, t_cmd *scmd);
+void				big_pipe(char *command, t_minishell *minishell,
+					t_cmd *scmd);
 /*
 ** cmd_handler3.c
 */

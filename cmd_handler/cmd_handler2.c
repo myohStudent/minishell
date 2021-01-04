@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 20:59:00 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 22:01:52 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,16 @@ void			close_fds(int pipe_fd[2])
 	close(pipe_fd[1]);
 }
 
-void			big_pipe(int pid[2], int pipe_fd[2], char *command,
-		t_minishell *minishell, t_cmd *scmd)
+void			big_pipe(char *command, t_minishell *minishell, t_cmd *scmd)
 {
-	if (pid[0] == -1)
+	if (g_pid[0] == 0)
 	{
-		free_command(command);
-		return ;
-	}
-	if (pid[0] == 0)
-	{
-		dup2(pipe_fd[0], 0);
-		close(pipe_fd[1]);
-		if (scmd->type != LASTPIPE &&
+		dup2(g_pipe_fd[0], 0);
+		close(g_pipe_fd[1]);
+		if (scmd->type != LASTPIPE && !(ft_compare(command, "exit")) &&
 		!(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
 		!(ft_compare(command, "cd")) && !(ft_compare(command, "echo")) &&
-		!(ft_compare(command, "env")) && !(ft_compare(command, "export")) &&
-		!(ft_compare(command, "exit")))
+		!(ft_compare(command, "env")) && !(ft_compare(command, "export")))
 		{
 			ft_printf("%s:command not found\n", scmd->command);
 			exit(127);
@@ -82,7 +75,7 @@ void			big_pipe(int pid[2], int pipe_fd[2], char *command,
 	}
 	else
 	{
-		close(pipe_fd[0]);
+		close(g_pipe_fd[0]);
 		wait(NULL);
 	}
 }

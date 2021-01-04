@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 20:46:41 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:04:32 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 22:00:28 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void			exec_redir_scmd(t_minishell *minishell)
 	scmd = minishell->scmd;
 	while (scmd->command && scmd->type != LASTREDIR)
 	{
-		ft_printf("scmd:/%s/, opt:/%s/, type:/%d/ argc:/%d/\n",
-			scmd->command, scmd->option, scmd->type, scmd->argc);
 		if ((pid = fork()) == 0)
 		{
 			if (scmd->type == REDIR && scmd->fd != -1)
@@ -111,8 +109,6 @@ void			exec_redir_scmd(t_minishell *minishell)
 
 void			exec_scmd(t_minishell *minishell)
 {
-	int			pipe_fd[2];
-	pid_t		pid[2];
 	int			i;
 	t_cmd		*scmd;
 	char		*command;
@@ -123,18 +119,17 @@ void			exec_scmd(t_minishell *minishell)
 	while (g_cmd_array[i] && scmd->command)
 	{
 		command = add_dir(minishell, scmd->command);
-		ft_printf("gcmd:/%s/, opt:/%s/, type:/%d/ argc:/%d/\n",
-			g_cmd_array[i], scmd->option, scmd->type, scmd->argc);
-		if (pipe(pipe_fd) < 0)
+		if (pipe(g_pipe_fd) < 0)
 		{
 			free_command(command);
 			return ;
 		}
-		pid[0] = fork();
-		big_pipe(pid, pipe_fd, command, minishell, scmd);
+		g_pid[0] = fork();
+		if (g_pid[0] != -1)
+			big_pipe(command, minishell, scmd);
 		i++;
 		scmd = scmd->next;
 		free_command(command);
-		close_fds(pipe_fd);
+		close_fds(g_pipe_fd);
 	}
 }
