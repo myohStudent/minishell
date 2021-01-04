@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 01:58:38 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 18:17:35 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,16 @@ typedef struct		s_minishell
 void				welcome_shell(void);
 void				*ft_memalloc(size_t size);
 void				display_prompt(void);
-int					dollar_exec(t_cmd *curr, t_minishell *minishell);
-int					dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell);
 void				parent_signal_handler(int signo);
 void				controld_exit(char *input);
+
+/*
+**	dollar_exec
+*/
+int					dollar_exec(t_cmd *curr, t_minishell *minishell);
+int					dollar_exec_with_quote(t_cmd *curr, t_minishell *minishell);
+int					dollar_question(void);
+int					ft_strsearch(char *str, char c);
 
 /*
 ** init.c

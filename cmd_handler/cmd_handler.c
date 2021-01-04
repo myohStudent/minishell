@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/04 02:05:51 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 20:23:24 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 			clear_scmd(minishell->scmd, minishell);
 	}
 	else if (g_pipe_num == 0 && dollar_exec(curr, minishell) == 0)
-	{
 		if (!(exec_else(minishell, curr)))
 			return (-1);
-	}
 	free_globals();
 	return (1);
 }

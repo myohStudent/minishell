@@ -33,6 +33,7 @@ EXE_FILE	=	cmd_env.c \
 				pipe_utils2.c \
 				redir_execute.c \
 				dollar_exec.c \
+				dollar_exec_with_quote.c \
 				cmd_export.c \
 				cmd_export2.c \
 				cmd_unset.c \

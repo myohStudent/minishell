@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 01:03:31 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/04 01:12:59 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/04 20:19:01 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void		split_argv(t_cmd *curr)
 	curr->option = NULL;
 	if (!curr || !curr->command || (get_argc(curr) == 1 && curr->hasquote == 0))
 		return ;
-	if (ft_isquote(curr->command[0]) && has_quotes(curr->command) \
-	&& curr->command[has_quotes(curr->command)] != ' ')
-		i = has_quotes(curr->command);
+	if (ft_isquote(curr->command[0]) && has_quotes(curr) \
+	&& curr->command[has_quotes(curr)] != ' ')
+		i = has_quotes(curr);
 	i -= ft_remove_quote(curr);
 	if (i < 0)
 		i = 0;
