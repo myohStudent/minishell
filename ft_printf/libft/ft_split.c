@@ -6,15 +6,15 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 20:17:53 by myoh              #+#    #+#             */
-/*   Updated: 2020/11/22 17:02:08 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/05 22:32:41 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned int    fstrlcpy(char *dst, const char *src, size_t dstsize)
+static unsigned int			fstrlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t		i;
+	size_t					i;
 
 	i = 0;
 	if (dst == 0 || src == 0)
@@ -37,15 +37,15 @@ static unsigned int    fstrlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-static unsigned int      imsi_count(char const *s, char c)
+static unsigned int				imsi_count(char const *s, char c)
 {
-    unsigned int         nb;
-    unsigned int         i;
+	unsigned int				nb;
+	unsigned int				i;
 
 	i = 0;
 	nb = 0; 
-    if (s[i] == '\0')
-        return (0);
+	if (s[i] == '\0')
+		return (0);
 	while (s[i] && s[i] == c)
 		i++;
 	while (s[i])
@@ -64,11 +64,11 @@ static unsigned int      imsi_count(char const *s, char c)
 	return (nb);
 }
 
-static void             count_words(char **str, unsigned int *wordcount, char c)
+static void						count_words(char **str, unsigned int *wordcount, char c)
 {
-    unsigned int        i;
-    
-    *str += *wordcount;
+	unsigned int				i;
+	
+	*str += *wordcount;
 	*wordcount = 0;
 	i = 0;
 	while (**str && **str == c)
@@ -82,30 +82,30 @@ static void             count_words(char **str, unsigned int *wordcount, char c)
 	}
 }
 
-char                    **ft_split(char const *s, char c)
+char							**ft_split(char const *s, char c)
 {
-    unsigned int        i;
-    unsigned int        cnt;
-    unsigned int        wordcount;
-    char                **new;
-    char                *str;
+	unsigned int				i;
+	unsigned int 				cnt;
+	unsigned int				wordcount;
+	char						**new;
+	char						*str;
 
-    i = 0;
-    if (!s)
-        return (NULL);
-    cnt = imsi_count(s, c);
-    if (!(new = malloc(sizeof(char *) * (cnt + 1))))
-        return (NULL);
-    str = (char *)s;
-    wordcount  = 0;
-    while (i < cnt)
-    {
-        count_words(&str, &wordcount, c);
-        if (!(new[i] = malloc(sizeof(char) * (wordcount + 1))))
-        {
-            free(new);
+	i = 0;
+	if (!s)
+		return (NULL);
+	cnt = imsi_count(s, c);
+	if (!(new = malloc(sizeof(char *) * (cnt + 1))))
+		return (NULL);
+	str = (char *)s;
+	wordcount  = 0;
+	while (i < cnt)
+	{
+		count_words(&str, &wordcount, c);
+		if (!(new[i] = malloc(sizeof(char) * (wordcount + 1))))
+		{
+			free(new);
 			return (NULL);
-        }
+		}
 		fstrlcpy(new[i], str, wordcount + 1);
 		i++;
 	}

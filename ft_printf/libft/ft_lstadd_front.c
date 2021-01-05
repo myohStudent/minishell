@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 14:18:24 by myoh              #+#    #+#             */
-/*   Updated: 2020/10/31 21:48:36 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/05 22:31:45 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_lstadd_front(t_list **upc, t_list *new)
 {
 	if (!*upc || !new || !upc)
 		return ;
-	else 
+	else
 	{
-		new->next = *upc; //노드 1 연결
-		*upc = new; //시작노드는 new가 됨
+		new->next = *upc;
+		*upc = new;
 	}
 }

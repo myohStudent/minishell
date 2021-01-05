@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 17:31:54 by seohchoi          #+#    #+#             */
-/*   Updated: 2020/12/29 11:25:47 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/05 22:13:10 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-
-char	*ft_strjoin_free(char *s1, char const *s2)
+char		*ft_strjoin_free(char *s1, char const *s2)
 {
 	int		size;
 	int		i;

@@ -6,12 +6,11 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 21:27:58 by myoh              #+#    #+#             */
-/*   Updated: 2020/09/26 21:57:48 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/05 22:18:48 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 
 void	ft_putstr_fd(char *s, int fd)
 {
