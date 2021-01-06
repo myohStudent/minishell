@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 14:07:30 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 16:38:09 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ char				*g_input;
 int					g_pipe_num;
 int					g_sigexit;
 int					g_flags[10];
-char				**g_cmd_array;
 int					g_pid[2];
 int					g_pipe_fd[2];
 char				*g_temp;
 int					g_type;
+char				**g_cmd_array;
 char				**g_pipe_bin;
 char				**g_envp_list;
 
@@ -275,10 +275,8 @@ int					parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell,
 					char flag);
 void				delete_space_flag(char **temp, char flag);
 void				flag_checker(char flag);
-char				**store_commands(t_cmd *scmd, t_minishell *minishell);
 char				*get_bin(t_minishell *minishell, char *command);
 void				get_path(t_env *list, t_minishell *minishell);
-char				*open_directory(char *path, char *command);
 
 /*
 ** parse_quote.c

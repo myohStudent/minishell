@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 11:59:44 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 16:43:14 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ int			check_token(t_minishell *minishell, t_cmd *curr)
 
 void		free_globals(void)
 {
-	free(g_input);
-	g_input = NULL;
+	if (g_input)
+	{
+		free(g_input);
+		g_input = NULL;
+	}
 	if (g_cmd_array)
 	{
 		free_arr(g_cmd_array);
@@ -87,12 +90,11 @@ void		clear_scmd(t_cmd *cmd, t_minishell *minishell)
 			free(cmd->command);
 			cmd->command = NULL;
 		}
-		if (cmd->pipe_bin)
-			free(cmd->pipe_bin);
-		if (cmd->pipe_array)
-			free_arr(cmd->pipe_array);
 		if (cmd->option)
-			ft_strdel(&cmd->option);
+		{
+			free(cmd->option);
+			cmd->option = NULL;
+		}
 		if (cmd->type)
 			cmd->type = 0;
 		cmd->fd = 0;

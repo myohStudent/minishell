@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 20:46:41 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 11:58:49 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 16:42:33 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,26 +109,19 @@ void			exec_scmd(t_minishell *minishell)
 {
 	int			i;
 	t_cmd		*scmd;
-	char		*command;
 
 	i = 0;
 	scmd = minishell->scmd;
 	create_pipe_array(minishell);
 	while (g_cmd_array[i] && scmd->command)
 	{
-		command = add_dir(minishell, scmd->command);
 		if (pipe(g_pipe_fd) < 0)
-		{
-			free_command(command);
 			return ;
-		}
 		g_pid[0] = fork();
 		if (g_pid[0] != -1)
-			big_pipe(command, minishell, scmd);
+			big_pipe(scmd->command, minishell, scmd);
 		i++;
 		scmd = scmd->next;
-		free_command(command);
-		command = NULL;
 		close_fds(g_pipe_fd);
 	}
 }

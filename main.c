@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/03 16:57:13 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 16:42:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int				main(int ac, char **av, char **env)
 	welcome_shell();
 	minishell.env_list = (t_env *)malloc(sizeof(t_env));
 	init_env(env, &minishell, minishell.env_list);
-	get_path(minishell.env_list, &minishell);
 	get_envp(env, minishell.env_currnb);
 	minishell.path = getcwd(NULL, 0);
 	while (1)
