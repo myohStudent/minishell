@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 11:45:38 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 14:07:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct		s_cmd
 	int				cnt;
 	int				argc;
 	int				type;
-	char			*typestr;
 	char			*pipe_bin;
 	char			**pipe_array;
 	int				fdin;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:16:07 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/06 11:59:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ void		clear_scmd(t_cmd *cmd, t_minishell *minishell)
 			ft_strdel(&cmd->option);
 		if (cmd->type)
 			cmd->type = 0;
-		if (cmd->typestr)
-			free(cmd->typestr);
 		cmd->fd = 0;
 		cmd->argc = 0;
 		cmd = cmd->next;
