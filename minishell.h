@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 22:03:23 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/06 10:59:02 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ int					print_export(t_env *env);
 ** cmd_export.c, cmd_export2.c
 */
 
-void				envadd_back(t_env *list, char **newenv, t_minishell *minishell);
+void				envadd_back(t_env *list, char **newenv,
+					t_minishell *minishell);
 int					ft_cmp_to_update(t_env *list, char **split_new_env,
 					t_minishell *minishell);
 int					ft_strcmp(const char *s1, const char *s2);

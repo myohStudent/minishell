@@ -3,56 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/02 20:17:53 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/05 22:32:41 by seohchoi         ###   ########.fr       */
+/*   Created: 2021/01/06 11:17:23 by myoh              #+#    #+#             */
+/*   Updated: 2021/01/06 11:22:35 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned int			fstrlcpy(char *dst, const char *src, size_t dstsize)
+size_t				ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	size_t					i;
+	unsigned int	i;
 
 	i = 0;
-	if (dst == 0 || src == 0)
+	if (!dst || !src)
 		return (0);
-	if (dstsize == 0)
+	if (size > 0)
 	{
-		while (src[i])
+		while (--size && src[i])
+		{
+			dst[i] = src[i];
 			i++;
-		return (i);
+		}
+		dst[i] = '\0';
 	}
-	i = 0;
-	while (src[i] && i < dstsize - 1)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
 	while (src[i])
 		i++;
 	return (i);
 }
 
-static unsigned int				imsi_count(char const *s, char c)
+char				**ft_free(char **s)
 {
-	unsigned int				nb;
-	unsigned int				i;
+	int				i;
 
 	i = 0;
-	nb = 0; 
-	if (s[i] == '\0')
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
+	s = NULL;
+	return (NULL);
+}
+
+int					ft_get_nb_strs(char const *s, char c)
+{
+	unsigned int	i;
+	unsigned int	nb_strs;
+
+	if (!s[0])
 		return (0);
+	i = 0;
+	nb_strs = 0;
 	while (s[i] && s[i] == c)
 		i++;
 	while (s[i])
 	{
 		if (s[i] == c)
 		{
-			nb++;
+			nb_strs++;
 			while (s[i] && s[i] == c)
 				i++;
 			continue ;
@@ -60,55 +71,53 @@ static unsigned int				imsi_count(char const *s, char c)
 		i++;
 	}
 	if (s[i - 1] != c)
-		nb++;
-	return (nb);
+		nb_strs++;
+	return (nb_strs);
 }
 
-static void						count_words(char **str, unsigned int *wordcount, char c)
+static void			ft_get_next_s(char **next_s, unsigned int *next_s_len,
+					char c)
 {
-	unsigned int				i;
-	
-	*str += *wordcount;
-	*wordcount = 0;
+	unsigned int i;
+
+	*next_s += *next_s_len;
+	*next_s_len = 0;
 	i = 0;
-	while (**str && **str == c)
-		(*str)++;
-	while ((*str)[i])
+	while (**next_s && **next_s == c)
+		(*next_s)++;
+	while ((*next_s)[i])
 	{
-		if ((*str)[i] == c)
+		if ((*next_s)[i] == c)
 			return ;
-		(*wordcount)++;
+		(*next_s_len)++;
 		i++;
 	}
 }
 
-char							**ft_split(char const *s, char c)
+char				**ft_split(char const *s, char c)
 {
-	unsigned int				i;
-	unsigned int 				cnt;
-	unsigned int				wordcount;
-	char						**new;
-	char						*str;
+	char			**res;
+	char			*next_s;
+	unsigned int	next_s_len;
+	unsigned int	nb_strs;
+	unsigned int	i;
 
-	i = 0;
 	if (!s)
 		return (NULL);
-	cnt = imsi_count(s, c);
-	if (!(new = malloc(sizeof(char *) * (cnt + 1))))
+	nb_strs = ft_get_nb_strs(s, c);
+	if (!(res = (char **)malloc(sizeof(char *) * (nb_strs + 1))))
 		return (NULL);
-	str = (char *)s;
-	wordcount  = 0;
-	while (i < cnt)
+	i = 0;
+	next_s = (char *)s;
+	next_s_len = 0;
+	while (i < nb_strs)
 	{
-		count_words(&str, &wordcount, c);
-		if (!(new[i] = malloc(sizeof(char) * (wordcount + 1))))
-		{
-			free(new);
-			return (NULL);
-		}
-		fstrlcpy(new[i], str, wordcount + 1);
+		ft_get_next_s(&next_s, &next_s_len, c);
+		if (!(res[i] = (char *)malloc(sizeof(char) * (next_s_len + 1))))
+			return (ft_free(res));
+		ft_strlcpy(res[i], next_s, next_s_len + 1);
 		i++;
 	}
-	new[i] = NULL;
-	return (new);
+	res[i] = NULL;
+	return (res);
 }
