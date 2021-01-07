@@ -6,11 +6,20 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 14:05:43 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 11:39:26 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void			free_temp(char *temp)
+{
+	if (temp)
+	{
+		free(temp);
+		temp = NULL;
+	}
+}
 
 void			last_input(char *temp, int type, t_cmd *head)
 {
@@ -27,13 +36,12 @@ void			last_input(char *temp, int type, t_cmd *head)
 void			sub_input(char *temp3, int i, int type)
 {
 	temp3 = ft_strdup(g_temp);
-	free(g_temp);
-	g_temp = NULL;
+	free_temp(g_temp);
 	if (type == 6)
 		g_temp = ft_substr(temp3, i + 2, ft_strlen(temp3) - i - 1);
 	else
 		g_temp = ft_substr(temp3, i + 1, ft_strlen(temp3) - i);
-	free(temp3);
+	free_temp(temp3);
 	temp3 = NULL;
 }
 
@@ -57,7 +65,7 @@ void			all_parse(t_cmd *head, char *temp2, char *temp3,
 			else
 				g_type = BREDIR;
 			add_next_node(head, ft_trim(temp2), g_type);
-			free(temp2);
+			free_temp(temp2);
 			sub_input(temp3, i, g_type);
 			i = -1;
 		}
@@ -76,15 +84,8 @@ int				parse_flags(t_cmd *head, t_minishell *minishell)
 	i = -1;
 	if (g_temp != NULL)
 		all_parse(head, temp2, temp3, i);
-	if (g_temp && g_temp != NULL)
-	{
-		free(g_temp);
-		g_temp = NULL;
-	}
-	if (temp2 && temp2 != NULL)
-	{
-		free(temp2);
-		temp2 = NULL;
-	}
+	free_temp(g_temp);
+	free_temp(temp2);
+	free_temp(temp3);
 	return (1);
 }

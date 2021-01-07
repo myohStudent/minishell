@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:48:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 01:34:24 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/07 12:01:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,12 @@ void		tild_handler(t_minishell *minishell, t_cmd *curr)
 		curr->option = ft_strjoin(g_home_dir, curr->option + 1);
 }
 
-t_cmd		*parse3(t_minishell *minishell, t_cmd *curr)
+t_cmd		*parse3(t_minishell *minishell)
 {
-	int		i;
 	t_cmd	*head;
 
-	minishell->cnt = 1;
-	curr = curr->next;
 	head = (t_cmd *)malloc(sizeof(t_cmd));
-	minishell->scmd = (t_cmd *)malloc(sizeof(t_cmd));
 	head->next = NULL;
-	i = 0;
 	parse_flags(head, minishell);
 	return (reverse_node(head));
 }

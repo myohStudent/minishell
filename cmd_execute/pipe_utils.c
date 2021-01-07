@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 20:24:14 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/07 11:41:17 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,29 @@ void			add_node(t_cmd *target, char *s)
 	new->next = target->next;
 	new->command = ft_strdup(s);
 	target->next = new;
+}
+
+void			reverse_clear(t_cmd *cmd)
+{
+	clear_scmd(cmd, NULL);
+	while (cmd->prev)
+	{
+		if (cmd->command)
+		{
+			free(cmd->command);
+			cmd->command = NULL;
+		}
+		if (cmd->option)
+		{
+			free(cmd->option);
+			cmd->option = NULL;
+		}
+		if (cmd->type)
+			cmd->type = 0;
+		cmd->fd = 0;
+		cmd->argc = 0;
+		cmd = cmd->prev;
+	}
 }
 
 t_cmd			*reverse_node(t_cmd *head)
@@ -39,6 +62,10 @@ t_cmd			*reverse_node(t_cmd *head)
 		head->next = q;
 	}
 	return (q);
+	reverse_clear(p);
+	reverse_clear(q);
+	reverse_clear(r);
+	reverse_clear(head);
 }
 
 void			delete_space_flag(char **temp, char flag)

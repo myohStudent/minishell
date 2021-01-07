@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/06 16:40:39 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 12:01:00 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 		return (-1);
 	if (g_pipe_num > 0 || minishell->redir_num > 0)
 	{
-		minishell->scmd = parse3(minishell, curr);
+		minishell->scmd = parse3(minishell);
 		if (minishell->scmd && g_pipe_num > 0 && minishell->redir_num > 0)
 		{
 			too_many_tokens(minishell);
@@ -41,7 +41,7 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 void		ft_clear(char *input, t_minishell *minishell,
 			t_cmd *curr)
 {
-	curr = NULL;
+	clear_scmd(curr, NULL);
 	free(input);
 	input = NULL;
 	while (minishell->cmd)
