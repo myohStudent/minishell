@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:04:26 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 17:08:56 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:53:15 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char			*split_cmd(char *s)
 	i = 0;
 	while (s[i] && s[i] != ' ')
 		i++;
-	str = malloc(sizeof(char) * i);
+	str = malloc(sizeof(char) * 1);
 	str = ft_substr(s, 0, i);
 	str[i] = '\0';
 	return (str);
@@ -93,10 +93,13 @@ char			*split_opt(char *s)
 void			add_next_node(t_cmd *target, char *s, int i)
 {
 	t_cmd		*new;
+	char		*t;
 
 	new = (t_cmd *)malloc(sizeof(t_cmd));
 	new->next = target->next;
-	new->command = ft_strdup(split_cmd(s));
+	t = split_cmd(s);
+	new->command = ft_strdup(t);
+	free_command(t);
 	new->option = split_opt(s);
 	new->type = i;
 	if (ft_compare(new->command, "export") || ft_compare(new->command, "unset")

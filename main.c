@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/06 16:42:11 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:53:30 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,5 @@ int				main(int ac, char **av, char **env)
 		if (g_sigexit != 1 && g_sigexit != 2)
 			cmd_handler(&minishell);
 	}
-	clear_env(minishell.env_list);
-	free_arr(g_envp_list);
-	free(minishell.path);
-	free(g_home_dir);
-	free(g_input);
 	return (0);
 }

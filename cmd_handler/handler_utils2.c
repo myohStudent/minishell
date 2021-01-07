@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 16:43:14 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:49:06 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int			check_last_token(char *input)
 		|| s[ft_strlen(s) - 1] == '<')
 	{
 		ft_printf("올바르게 다시 입력하세요\n");
-		free(input);
-		free(s);
+		free_command(s);
 		return (-1);
 	}
 	free(g_input);
@@ -50,10 +49,11 @@ int			check_token(t_minishell *minishell, t_cmd *curr)
 	init_num(minishell);
 	input = ft_strdup(g_input);
 	i = 0;
-	if (exceptions(input) < 0)
+	if (exceptions(input) < 0 || check_last_token(input) < 0)
+	{
+		free(input);
 		return (0);
-	if (check_last_token(input) < 0)
-		return (0);
+	}	
 	while (input[i])
 	{
 		if (input[i] == '|')
@@ -62,8 +62,7 @@ int			check_token(t_minishell *minishell, t_cmd *curr)
 			minishell->redir_num++;
 		i++;
 	}
-	free(input);
-	input = NULL;
+	free_command(input);
 	return (1);
 }
 
@@ -73,11 +72,6 @@ void		free_globals(void)
 	{
 		free(g_input);
 		g_input = NULL;
-	}
-	if (g_cmd_array)
-	{
-		free_arr(g_cmd_array);
-		g_cmd_array = NULL;
 	}
 }
 

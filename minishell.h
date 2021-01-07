@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 16:59:24 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:57:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,6 @@ void				exec_piperedir(t_minishell *minishell);
 void				create_pipe_array(t_minishell *minishell);
 void				free_command(char *command);
 void				close_fds(int pipe_fd[2]);
-char				*add_dir(t_minishell *minishell, char *command);
 void				big_pipe(char *command, t_minishell *minishell,
 					t_cmd *scmd);
 /*

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 19:50:45 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 15:45:12 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:49:23 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,17 @@ int			exceptions2(char *input, int i)
 		if (input[i] == '|' && input[i + 1] == '|')
 		{
 			ft_printf("syntax error near unexpected token `|'\n");
-			free(input);
 			return (-1);
 		}
 		else if (input[i] == '<' && (input[i + 1] == '<' ||
 			input[i + 1] == '>'))
 		{
 			ft_printf("syntax error near unexpected token `newline'\n");
-			free(input);
 			return (-1);
 		}
 		else if (input[i] == '>' && input[i + 1] == '>' && input[i + 2] == '>')
 		{
 			ft_printf("syntax error near unexpected token `newline'\n");
-			free(input);
 			return (-1);
 		}
 		i++;
@@ -82,13 +79,11 @@ int			exceptions(char *input)
 	if (input[i] == '|')
 	{
 		ft_printf("syntax error near unexpected token `|'\n");
-		free(input);
 		return (-1);
 	}
 	else if (input[i] == '>' || input[i] == '<')
 	{
 		ft_printf("syntax error near unexpected token `newline'\n");
-		free(input);
 		return (-1);
 	}
 	if (exceptions2(input, i) < 0)

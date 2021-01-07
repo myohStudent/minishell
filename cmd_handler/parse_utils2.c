@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 16:52:11 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:55:25 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void			sub_input(char *temp3, int i, int type)
 
 void			all_parse(t_cmd *head, char *temp2, char *temp3,
 				int i)
-{	while (g_temp[++i])
+{
+	while (g_temp[++i])
 	{
 		while (g_temp[i] == '<' || g_temp[i] == '>' || g_temp[i] == '|')
 		{

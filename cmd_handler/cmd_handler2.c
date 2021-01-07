@@ -6,35 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 18:14:48 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 16:43:20 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 21:57:12 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char			*add_dir(t_minishell *minishell, char *command)
-{
-	if (!command)
-	{
-		ft_printf("no command ");
-		return (NULL);
-	}
-	if ((ft_compare(command, "pwd")))
-		return (ft_strdup("pwd"));
-	else if ((ft_compare(command, "echo")))
-		return (ft_strdup("echo"));
-	else if ((ft_compare(command, "cd")))
-		return (ft_strdup("cd"));
-	else if ((ft_compare(command, "unset")))
-		return (ft_strdup("unset"));
-	else if ((ft_compare(command, "export")))
-		return (ft_strdup("export"));
-	else if ((ft_compare(command, "env")))
-		return (ft_strdup("env"));
-	else if ((ft_compare(command, "exit")))
-		return (ft_strdup("exit"));
-	return (ft_strdup(command));
-}
+#include "../minishell.h"
 
 void			free_command(char *command)
 {
@@ -57,9 +35,9 @@ void			big_pipe(char *command, t_minishell *minishell, t_cmd *scmd)
 	{
 		dup2(g_pipe_fd[0], 0);
 		close(g_pipe_fd[1]);
-		if (scmd->type != LASTPIPE && !(ft_compare(command, "exit")) &&
-		!(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) &&
-		!(ft_compare(command, "cd")) && !(ft_compare(command, "echo")) &&
+		if (scmd->type != LASTPIPE && !(ft_compare(command, "exit")) && \
+		!(ft_compare(command, "pwd")) && !(ft_compare(command, "unset")) && \
+		!(ft_compare(command, "cd")) && !(ft_compare(command, "echo")) && \
 		!(ft_compare(command, "env")) && !(ft_compare(command, "export")))
 		{
 			ft_printf("%s:command not found\n", scmd->command);
