@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 21:49:06 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 22:39:38 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			check_token(t_minishell *minishell, t_cmd *curr)
 	{
 		free(input);
 		return (0);
-	}	
+	}
 	while (input[i])
 	{
 		if (input[i] == '|')
