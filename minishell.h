@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 12:01:30 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 16:59:24 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,9 @@ void				tild_handler(t_minishell *minishell, t_cmd *curr);
 char				*ft_trimchar(char *str, char c);
 char				*space_trim(char *s);
 void				too_many_tokens(t_minishell *minishell);
-t_cmd				*parse3(t_minishell *minishell);
+void				parse3(t_minishell *minishell);
 void				get_cmd_argc(t_cmd *new);
-t_cmd				*add_next_node(t_cmd *target, char *s, int i);
+void				add_next_node(t_cmd *target, char *s, int i);
 int					parse_flags(t_cmd *head, t_minishell *minishell);
 
 /*
@@ -269,7 +269,6 @@ int					parse_cmd(t_minishell *minishell, t_cmd *cmd, char *input);
 ** pipe_utils.c & pipe_utils2.c
 */
 
-void				add_node(t_cmd *target, char *s);
 void				reverse_clear(t_cmd *cmd);
 t_cmd				*reverse_node(t_cmd *head);
 int					parse_flag(t_cmd *curr, t_cmd *head, t_minishell *minishell,

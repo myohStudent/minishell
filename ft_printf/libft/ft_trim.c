@@ -6,13 +6,13 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 22:02:52 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 11:31:50 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 17:10:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	ft_delim(char c)
+static	int	ft_del(char c)
 {
 	if (c == ' ' || c == '\n' || c == '\t')
 		return (1);
@@ -29,10 +29,10 @@ char		*ft_trim(char *s)
 	if (!s)
 		return (NULL);
 	i = 0;
-	while (ft_delim(s[i]) == 1)
+	while (ft_del(s[i]) == 1)
 		i++;
 	j = ft_strlen(s) - 1;
-	while (ft_delim(s[j]) == 1)
+	while (ft_del(s[j]) == 1)
 		j--;
 	l = j - i + 1;
 	if (l < 0)

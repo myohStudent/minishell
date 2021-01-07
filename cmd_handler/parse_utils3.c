@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:04:26 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 21:28:56 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/07 17:08:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char			*split_opt(char *s)
 	return (str);
 }
 
-t_cmd			*add_next_node(t_cmd *target, char *s, int i)
+void			add_next_node(t_cmd *target, char *s, int i)
 {
 	t_cmd		*new;
 
@@ -104,5 +104,4 @@ t_cmd			*add_next_node(t_cmd *target, char *s, int i)
 		get_cmd_argc(new);
 	new->fd = 0;
 	target->next = new;
-	return (target);
 }

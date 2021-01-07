@@ -6,20 +6,11 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 23:38:15 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 11:41:17 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 17:07:27 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void			add_node(t_cmd *target, char *s)
-{
-	t_cmd		*new;
-
-	new->next = target->next;
-	new->command = ft_strdup(s);
-	target->next = new;
-}
 
 void			reverse_clear(t_cmd *cmd)
 {

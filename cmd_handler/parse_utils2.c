@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:26:22 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 11:39:26 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/07 16:52:11 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,24 @@ void			free_temp(char *temp)
 
 void			last_input(char *temp, int type, t_cmd *head)
 {
+	char		*t;
+
 	if (temp)
 	{
 		if (type == PIPE)
 			type = LASTPIPE;
 		else
 			type = LASTREDIR;
-		head = add_next_node(head, ft_trim(temp), type);
+		t = ft_trim(temp);
+		add_next_node(head, t, type);
 	}
+	if (t)
+		free_temp(t);
 }
 
 void			sub_input(char *temp3, int i, int type)
 {
+	free_temp(temp3);
 	temp3 = ft_strdup(g_temp);
 	free_temp(g_temp);
 	if (type == 6)
@@ -42,13 +48,11 @@ void			sub_input(char *temp3, int i, int type)
 	else
 		g_temp = ft_substr(temp3, i + 1, ft_strlen(temp3) - i);
 	free_temp(temp3);
-	temp3 = NULL;
 }
 
 void			all_parse(t_cmd *head, char *temp2, char *temp3,
 				int i)
-{
-	while (g_temp[++i])
+{	while (g_temp[++i])
 	{
 		while (g_temp[i] == '<' || g_temp[i] == '>' || g_temp[i] == '|')
 		{
@@ -64,7 +68,8 @@ void			all_parse(t_cmd *head, char *temp2, char *temp3,
 			}
 			else
 				g_type = BREDIR;
-			add_next_node(head, ft_trim(temp2), g_type);
+			temp3 = ft_trim(temp2);
+			add_next_node(head, temp3, g_type);
 			free_temp(temp2);
 			sub_input(temp3, i, g_type);
 			i = -1;
