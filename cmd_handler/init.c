@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 21:25:44 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/06 16:41:57 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 03:39:00 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void			init_env(char **env, t_minishell *minishell, t_env *env_list)
 		i++;
 	}
 	env_list->next = NULL;
+	minishell->export_list = (t_env *)malloc(sizeof(t_env));
+	copy_env(minishell, minishell->export_list, minishell->env_list);
 }
 
 void			get_envp(char **env, int i)

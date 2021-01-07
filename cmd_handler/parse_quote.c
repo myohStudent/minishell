@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 21:20:24 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 01:32:09 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/08 03:08:27 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int			ft_remove_quote(t_cmd *curr)
 			temp = ft_trimchar(curr->command, '\"');
 		free(curr->command);
 		curr->command = ft_strdup(temp);
+		free(temp);
 	}
 	if (curr->quote_type == 0)
 	{

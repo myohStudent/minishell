@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 10:21:33 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 22:39:38 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 04:14:10 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,24 +75,28 @@ void		free_globals(void)
 	}
 }
 
-void		clear_scmd(t_cmd *cmd, t_minishell *minishell)
+void		clear_scmd(t_cmd *curr, t_minishell *minishell)
 {
-	while (cmd)
+	t_cmd		*next;
+
+	while (curr != NULL)
 	{
-		if (cmd->command)
+		if (curr->command != NULL)
 		{
-			free(cmd->command);
-			cmd->command = NULL;
+			free(curr->command);
+			curr->command = NULL;
 		}
-		if (cmd->option)
+		if (curr->option != NULL)
 		{
-			free(cmd->option);
-			cmd->option = NULL;
+			free(curr->option);
+			curr->option = NULL;
 		}
-		if (cmd->type)
-			cmd->type = 0;
-		cmd->fd = 0;
-		cmd->argc = 0;
-		cmd = cmd->next;
+		if (curr->type)
+			curr->type = 0;
+		curr->fd = 0;
+		curr->argc = 0;
+		next = curr->next;
+		free(curr);
+		curr = next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:14:23 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 21:57:23 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 02:45:35 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ typedef struct		s_cmd
 	int				cnt;
 	int				argc;
 	int				type;
-	char			*pipe_bin;
-	char			**pipe_array;
 	int				fdin;
 	int				fdout;
 	int				fd;
@@ -82,9 +80,6 @@ typedef struct		s_cmd
 	int				hasquote;
 	char			*command;
 	char			*option;
-	char			**argv;
-	char			**option_av;
-	struct s_list	*env_list;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }					t_cmd;

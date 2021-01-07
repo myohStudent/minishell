@@ -6,7 +6,7 @@
 /*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 11:06:43 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/04 01:55:43 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/08 04:14:41 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,6 @@ void			cmd_export(t_cmd *curr, t_minishell *minishell)
 	int			i;
 
 	i = 0;
-	if (!minishell->export_list)
-	{
-		minishell->export_list = (t_env *)malloc(sizeof(t_env));
-		copy_env(minishell, minishell->export_list, minishell->env_list);
-	}
 	sort_env(minishell);
 	if (curr->argc == 1)
 		print_export(minishell->export_list);

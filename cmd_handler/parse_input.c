@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 01:03:31 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/07 10:38:51 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 04:08:21 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			get_argc(t_cmd *curr)
 		i++;
 	}
 	i--;
-	while (ft_isspace(curr->command[i]))
+	while (curr->command[i] && ft_isspace(curr->command[i]))
 	{
 		curr->argc--;
 		i--;
@@ -98,6 +98,7 @@ t_cmd		*create_node(t_minishell *minishell, char *data, int word_len)
 	i = 0;
 	if (!(new = (t_cmd *)malloc(sizeof(t_cmd))))
 		return (NULL);
+	new->argc = 0;
 	new->hasquote = 0;
 	new->hasenv = 0;
 	new->quote_type = 0;

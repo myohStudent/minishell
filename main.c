@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/07 21:53:30 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 02:57:50 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int				main(int ac, char **av, char **env)
 		if (g_sigexit != 1 && g_sigexit != 2)
 			cmd_handler(&minishell);
 	}
+	free(minishell.env_list);
 	return (0);
 }

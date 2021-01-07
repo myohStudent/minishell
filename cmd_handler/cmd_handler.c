@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/07 21:56:39 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 04:13:10 by seohchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,6 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 	return (1);
 }
 
-void		ft_clear(char *input, t_minishell *minishell,
-			t_cmd *curr)
-{
-	clear_scmd(curr, NULL);
-	free(input);
-	input = NULL;
-	while (minishell->cmd)
-	{
-		minishell->cmd->argc = 0;
-		if (minishell->cmd->command)
-			free(minishell->cmd->command);
-		if (minishell->cmd->option)
-			free(minishell->cmd->option);
-		if (minishell->cmd)
-			free(minishell->cmd);
-		minishell->cmd = minishell->cmd->next;
-	}
-	minishell->cmd = 0;
-	g_sigexit = 0;
-}
-
 void		buf_init(char buf1, char buf2, char **input,
 			t_minishell *minishell)
 {
@@ -67,6 +46,9 @@ void		buf_init(char buf1, char buf2, char **input,
 	buf2 = '\0';
 	*input = ft_strdup("");
 	minishell->cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	minishell->cmd->argc = 0;
+	minishell->cmd->option = NULL;
+	minishell->cmd->command = NULL;
 }
 
 void		controld(int b, char *input)
@@ -79,6 +61,7 @@ int			cmd_handler(t_minishell *minishell)
 {
 	char		buf[2];
 	int			b;
+	t_cmd		*curr;
 
 	buf_init(buf[0], buf[1], &g_input, minishell);
 	while (buf[0] != '\n')
@@ -89,17 +72,16 @@ int			cmd_handler(t_minishell *minishell)
 		controld(b, g_input);
 	}
 	parse_cmd(minishell, minishell->cmd, g_input);
-	while (minishell->cmd->next != NULL)
+	curr = minishell->cmd->next;
+	while (curr != NULL)
 	{
-		if (minishell->cmd->next->command)
-		{
-			if (!(cmd_executer(minishell, minishell->cmd->next)))
+		if (curr->command)
+			if (!(cmd_executer(minishell, curr)))
 				break ;
-			if (minishell->cmd->next->next)
-				free(minishell->cmd->next);
-			minishell->cmd->next = minishell->cmd->next->next;
-		}
+		curr = curr->next;
 	}
-	ft_clear(g_input, minishell, minishell->cmd->next);
+	free(g_input);
+	g_input = NULL;
+	clear_scmd(minishell->cmd, NULL);
 	return (1);
 }
