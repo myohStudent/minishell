@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:54:57 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/08 04:13:10 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/08 11:59:45 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int			cmd_executer(t_minishell *minishell, t_cmd *curr)
 			exec_scmd(minishell);
 		else
 			exec_redir_scmd(minishell);
-		reverse_clear(minishell->scmd);
 		if (minishell->scmd)
 			clear_scmd(minishell->scmd, minishell);
 	}

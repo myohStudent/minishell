@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 20:46:41 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/07 21:58:04 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 12:00:22 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void			exec_redir_scmd(t_minishell *minishell)
 		waitpid(pid, NULL, 0);
 		scmd = scmd->next;
 	}
-	g_sigexit = 1;
+	g_sigexit = 0;
 }
 
 void			exec_scmd(t_minishell *minishell)
