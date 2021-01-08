@@ -6,32 +6,21 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 20:46:41 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/08 12:00:22 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 23:46:44 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void			create_pipe_array(t_minishell *minishell)
+int				count_commandnb(t_cmd *scmd)
 {
-	int			i;
-
-	i = g_pipe_num;
-	if (!(g_cmd_array = (char **)malloc(sizeof(char *) * (i + 2))))
-	{
-		ft_printf("no array\n");
-		return ;
-	}
-	i = 0;
-	while (minishell->scmd->command && i <= g_pipe_num)
-	{
-		g_cmd_array[i] = ft_strdup(minishell->scmd->command);
-		i++;
-		if (minishell->scmd->next)
-			minishell->scmd = minishell->scmd->next;
-	}
-	g_cmd_array[++i] = NULL;
-	i = 0;
+	if (!(ft_compare(scmd->command, "pwd")) && !(ft_compare(scmd->command,
+	"echo")) && !(ft_compare(scmd->command, "env")) &&
+	!(ft_compare(scmd->command, "cd")) && !(ft_compare(scmd->command, "export"))
+	&& !(ft_compare(scmd->command, "unset")) &&
+	!(ft_compare(scmd->command, "exit")))
+		return (127);
+	return (0);
 }
 
 int				exec_else(t_minishell *minishell, t_cmd *curr)
@@ -53,7 +42,7 @@ int				exec_else(t_minishell *minishell, t_cmd *curr)
 		cmd_export(curr, minishell);
 	else if (ft_strncmp(curr->command, "unset\0", 5) == 0)
 		cmd_unset(curr, minishell);
-	else
+	else if (ft_strncmp(curr->command, "$?\0", 3) != 0)
 	{
 		ft_printf("%s: command not found\n", curr->command);
 		g_command_nb = 127;
@@ -102,6 +91,7 @@ void			exec_redir_scmd(t_minishell *minishell)
 		waitpid(pid, NULL, 0);
 		scmd = scmd->next;
 	}
+	g_command_nb = count_commandnb(minishell->scmd);
 	g_sigexit = 0;
 }
 
@@ -124,4 +114,5 @@ void			exec_scmd(t_minishell *minishell)
 		close_fds(g_pipe_fd);
 		g_pipe_num--;
 	}
+	g_command_nb = count_commandnb(scmd->prev);
 }

@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 18:17:11 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/03 16:59:03 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/08 22:30:56 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ int		cmd_cd(t_cmd *curr, t_minishell *minishell)
 	{
 		if (chdir(g_home_dir) < 0)
 		{
-			g_command_nb = 127;
+			g_command_nb = 0;
 			return (-1);
 		}
+		g_command_nb = 0;
 	}
 	else if (curr->argc == 2)
 	{

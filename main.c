@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seohchoi <seohchoi@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 02:55:05 by seohchoi          #+#    #+#             */
-/*   Updated: 2021/01/08 02:57:50 by seohchoi         ###   ########.fr       */
+/*   Updated: 2021/01/08 23:41:51 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int				main(int ac, char **av, char **env)
 {
 	t_minishell	minishell;
 
+	ft_printf("ac : %d, av : %s\n",ac,av[0]);
 	welcome_shell();
 	minishell.env_list = (t_env *)malloc(sizeof(t_env));
 	init_env(env, &minishell, minishell.env_list);

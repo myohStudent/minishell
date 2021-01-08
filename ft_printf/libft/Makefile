@@ -46,7 +46,7 @@ INC		=	libft.h
 OBJS	=	${SRC:.c=.o}
 
 $(NAME) : ${OBJS}
-	ar rcs ${NAME} ${OBJS}
+	@ar rcs ${NAME} ${OBJS}
 
 %.o		:	%.c $(INC)
 	@$(CC) $(FLAG) -c $< -o $@

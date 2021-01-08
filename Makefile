@@ -42,11 +42,13 @@ OBJ_EXE = $(EXE:%.c=%.o)
 
 LIB = -L ./ft_printf -lftprintf
 
+FLAG	=	-Wall -Wextra -Werror
+
 all:	$(NAME)
 
 $(NAME): $(OBJ_CMD) $(OBJ_EXE)
 	@$(MAKE) -C ./ft_printf all
-	gcc $(SRCS) $(OBJ_CMD) $(OBJ_EXE) $(LIB) -o minishell
+	gcc $(FLAG) $(SRCS) $(OBJ_CMD) $(OBJ_EXE) $(LIB) -o minishell
 
 clean:
 	@$(MAKE) -C ./ft_printf clean

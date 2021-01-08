@@ -21,7 +21,7 @@ all		:	$(NAME)
 $(NAME)	: $(OBJ)
 	@$(MAKE) -C ./libft all
 	@cp ./libft/libft.a ./$(NAME)
-	ar rc $(NAME) $(OBJ)
+	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
