@@ -6,7 +6,7 @@
 /*   By: myoh <myoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 20:46:41 by myoh              #+#    #+#             */
-/*   Updated: 2021/01/08 23:46:44 by myoh             ###   ########.fr       */
+/*   Updated: 2021/01/09 12:00:20 by myoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ void			exec_scmd(t_minishell *minishell)
 		if (g_pid[0] != -1)
 			big_pipe(scmd->command, minishell, scmd);
 		i++;
+		g_command_nb = count_commandnb(scmd);
 		scmd = scmd->next;
 		close_fds(g_pipe_fd);
 		g_pipe_num--;
 	}
-	g_command_nb = count_commandnb(scmd->prev);
 }
